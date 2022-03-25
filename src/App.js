@@ -1,24 +1,21 @@
-import logo from './assets/img/logo.svg';
+
 import './assets/css/App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle'
+// import 'bootstrap/dist/js/bootstrap.esm'
+import './assets/css/custom.css';
+import LoginPage from './pages/auth/login/login.page';
+import IndexStaff from './pages/staff/index/index.page';
+import { BrowserRouter ,Routes,Router, Route, Switch } from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Welcome to mitrais frontend
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LoginPage />}></Route>
+        <Route path="/staff/" element={<IndexStaff />}></Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

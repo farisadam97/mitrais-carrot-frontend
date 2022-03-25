@@ -1,0 +1,13 @@
+html,body{
+    background-color: whitesmoke;
+}
+
+.logo{
+    width: 200px;
+}
+
+.btn-mitrais{
+    color: white;
+    font-weight: 600;
+    background-color: #6607C5;
+}
