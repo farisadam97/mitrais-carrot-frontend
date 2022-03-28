@@ -5,6 +5,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faBell } from '@fortawesome/free-solid-svg-icons'
 
 import './assets/css/index.css';
+import './assets/css/dataTables.bootstrap4.min.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 

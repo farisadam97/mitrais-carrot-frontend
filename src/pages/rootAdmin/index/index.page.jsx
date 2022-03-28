@@ -34,7 +34,7 @@ const RootAdminIndex = props => {
                         <a href="#" className="nav-link">DISTRIBUTION</a>
                     </div>
                     <div className="col-md-auto nav-pills">
-                        <a href="#" className="nav-link">SETTINGS</a>
+                        <a href="/rootadmin/setting" className="nav-link">SETTINGS</a>
                     </div>
 
                 </div>
