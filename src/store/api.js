@@ -1,3 +1,5 @@
 import { createAction } from "@reduxjs/toolkit";
 
-export const apiRequest = createAction("apiRequest");
+const GetBazaarItem = createAction("GetBazaarItem")
+
+export const apiRequest = [GetBazaarItem];

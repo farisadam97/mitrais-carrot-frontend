@@ -1,8 +1,8 @@
 import axios from "axios";
 import { fetchBazaarItemSuccess, fetchBazaarItemFailed } from "../bazaarItem";
 
-const api = store => next => async action => {
-    if(action.type !== 'apiRequest') return next(action);
+const FetchBazaarItem = store => next => async action => {
+    if(action.type !== 'GetBazaarItem"') return next(action);
 
     next(action);
 
@@ -24,4 +24,4 @@ const api = store => next => async action => {
         }))
     }
 }
-export default api;
+export default FetchBazaarItem;
