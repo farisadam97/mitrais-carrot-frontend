@@ -1,15 +1,21 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const BazaarItem = (props) => {
+    console.log(props)
     return(
-        <div className="col-md-4">
-            <div className="card">
-                <div className="card-body">
-                    <h5 className="card-title">15" MacBook Pro</h5>
-                    <p className="card-text">150.000 Carrots</p>
+        <div>
+            {props.items.map(item => (
+                <div className="col-md-4" key={item.id}>
+                    <div className="card">
+                        <div className="card-body">
+                            <h5 className="card-title">{item.name}</h5>
+                            <p className="card-text">{item.rate} Carrots</p>
+                        </div>
+                        <Link to="#" className="btn btn-carrot">BUY</Link>
+                    </div>
                 </div>
-                <a href="#" className="btn btn-carrot">BUY</a>
-            </div>
+            ))}
         </div>
     )
 }

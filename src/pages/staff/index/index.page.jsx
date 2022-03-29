@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 const IndexStaff = (props) => {
     useEffect(() => {
         props.loadItem()
-        console.log(props)
+        console.log(props.items)
     },[])
 
     return(
@@ -21,9 +21,7 @@ const IndexStaff = (props) => {
                 <StaffSummary></StaffSummary>
                 <ContainerContent title="BAZAAR">
                     <div className="row mt-3">
-                        <BazaarItem />
-                        <BazaarItem />
-                        <BazaarItem />
+                        {props.items && <BazaarItem items={props.items}/>}
                     </div>
                 </ContainerContent>
             </Container>
@@ -43,14 +41,14 @@ const mapDispatchToProps = dispatch => {
     return {
         loadItem: () => {
             return dispatch({
-                type: 'apiRequest',
+                type: 'GetBazaarItem"',
                 payload: {
                     url: '/reward',
                     method: 'POST',
                     data:{
                         category: "reward",
                         location: "2",
-                        fields: "name, description",
+                        fields: "name, description, id, rate, stock",
                         page_number: "0",
                         page_size: "10",
                         sort_by: "name",

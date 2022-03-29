@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import reducer from './rootReducer';
-import api from './middleware/api';
+import FetchBazaarItem from './middleware/FetchBazaarItem';
+
+const api = [FetchBazaarItem];
 
 export default function(){
     return configureStore({
         reducer,
-        middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api)
+        middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(...api)
     })
 };
