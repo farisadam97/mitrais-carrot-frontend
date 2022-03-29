@@ -1,12 +1,36 @@
 import React from "react";
-import mitraisLogo from '../../assets/img/mitrais-logo.png'
+import axios from "axios";
+import DefaultConfig from "../../config/config";
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import AuthContext from "../../hooks/AuthProvider";
+import Cookies from "universal-cookie";
+import mitraisLogo from '../../assets/img/mitrais-logo.png'
 import  './navbar.component.css'
 
 import { NavDropdown } from "react-bootstrap";
 
 const NavbarComponent = props =>{
     const fontAwesomeBell = <FontAwesomeIcon icon={['fas','bell']} size='lg' />
+    const {setAuth} = useContext(AuthContext)
+    const navigate = useNavigate()
+    const cookies = new Cookies()
+
+    const logout = async () => {
+        // cookies.remove('access_token')
+        // cookies.remove('role')
+        axios.post(`${DefaultConfig.base_api}/auth/signout`)
+        .then((response) => {
+            localStorage.removeItem('role')
+            localStorage.removeItem('access_token')
+            setAuth({})
+            navigate('/login')
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+
     return(
         <nav className="navbar navbar-expand-lg navbar-light bg-light shadow py-2">
             <div className="container-fluid">
@@ -35,7 +59,7 @@ const NavbarComponent = props =>{
                             <NavDropdown.Divider />
                             <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
                         </NavDropdown>
-                        <button type="button" className="btn btn-outline-primary py-1 font-size-8">Log Out</button>
+                        <button type="button" className="btn btn-outline-primary py-1 font-size-8" onClick={logout}>Log Out</button>
                     </div>
                 </div>
             </div>
