@@ -4,6 +4,9 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 // import { fab } from '@fortawesome/free-brands-svg-icons'
 import { faBell } from '@fortawesome/free-solid-svg-icons'
 
+import { AuthProvider } from './hooks/AuthProvider';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 import './assets/css/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -11,7 +14,13 @@ import reportWebVitals from './reportWebVitals';
 library.add(faBell)
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route path='/*' element={<App />} />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
