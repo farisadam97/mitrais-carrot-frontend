@@ -1,8 +1,8 @@
 const  RolesConfig = {
-    ROOT_ADMIN : 'root_admin',
-    ADMIN : 'admin',
-    MANAGER : 'manager',
-    STAFF: 'staff'
+    ROOT_ADMIN : 'ROLE_ROOTADMIN',
+    ADMIN : 'ROLE_ADMIN',
+    MANAGER : 'ROLE_MANAGER',
+    STAFF: 'ROLE_STAFF'
 }
 
 export default RolesConfig
