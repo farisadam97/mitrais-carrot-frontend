@@ -14,12 +14,12 @@ const RecentBirthday = (props) => {
   
   return (
     <div className="">
-          <HistoryTitle title="RECENT COLLEAGUE BIRTHDAY"/>
-            <ContainerContent>
-              <div className="row mt-3">
-              <RecentBirthdayItem lists={props.lists} isLoading={props.isLoading}/>
-              </div>  
-            </ContainerContent>
+      <HistoryTitle title="RECENT COLLEAGUE BIRTHDAY"/>
+        <ContainerContent>
+          <div className="row mt-3">
+          <RecentBirthdayItem lists={props.lists} isLoading={props.isLoading}/>
+          </div>  
+        </ContainerContent>
     </div>
   )
 }
