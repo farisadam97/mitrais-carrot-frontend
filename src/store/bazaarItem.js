@@ -3,29 +3,32 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     items: null,
     error: null,
-    isLoading: true,
+    detailItem: null,
 }
 
 const slice = createSlice({
     name: "bazaar items",
     initialState,
     reducers: {
-        fetchBazaarItemSuccess: (state, action) => {
+        fetchBazaarItemSuccess: (state = initialState, action) => {
             state.items = action.payload.items;
-            state.isLoading = false;
             state.error = null;
         },
-        fetchBazaarItemFailed: (state, action) => {
+        fetchDetailItemSuccess: (state = initialState, action) => {
+            state.detailItem = action.payload.detailItem;
+            state.error = null;
+        },
+        fetchFailed: (state, action) => {
             state.items = [];
             state.error = action.payload.error;
-            state.isLoading = false;
         }
     }
 });
 
 export const {
     fetchBazaarItemSuccess,
-    fetchBazaarItemFailed
+    fetchFailed,
+    fetchDetailItemSuccess,
 } = slice.actions;
 
 export default slice.reducer;

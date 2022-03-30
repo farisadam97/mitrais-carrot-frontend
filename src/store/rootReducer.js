@@ -1,6 +1,8 @@
 import { combineReducers } from "redux";
 import bazaarItemReducer from "./bazaarItem";
+import FetchTransaction from "./middleware/FetchTransaction";
 
 export default combineReducers({
-    bazaarItem: bazaarItemReducer
+    bazaarItem: bazaarItemReducer,
+    transaction: FetchTransaction,
 })

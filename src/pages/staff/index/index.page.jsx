@@ -1,63 +1,21 @@
-import React, { useEffect } from "react";
+import React from "react";
 import NavbarComponent from "../../../components/navbar/navbar.component";
 import Container from "../../container";
-import PageTitle from "../../../components/text/pageTitle.component";
-import ContainerContent from "../../../components/container/container.component";
-import BazaarItem from "../../../components/bazaar/item.component"
-import StaffSummary from "../../../components/summary/staff.component";
-import { connect } from "react-redux";
+import { Outlet } from "react-router-dom";
 
 const IndexStaff = (props) => {
-    useEffect(() => {
-        props.loadItem()
-        console.log(props.items)
-    },[])
 
     return(
         <div className="">
             <NavbarComponent />
             <Container>
-                <PageTitle title="DASHBOARD"></PageTitle>
-                <StaffSummary></StaffSummary>
-                <ContainerContent title="BAZAAR">
-                    <div className="row mt-3">
-                        {props.items && <BazaarItem items={props.items}/>}
-                    </div>
-                </ContainerContent>
+                {/* insert outlet nested router here */}
+                <Outlet/>
+                {/* from up there to here move this into dashboard staff component */}
+                {/* we have got item details */}
             </Container>
         </div>
     )
 }
 
-const mapStateToProps = state => {
-    return {
-        items: state.bazaarItem.items,
-        isLoading: state.bazaarItem.isLoading,
-        error: state.bazaarItem.error
-    }
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        loadItem: () => {
-            return dispatch({
-                type: 'GetBazaarItem"',
-                payload: {
-                    url: '/reward',
-                    method: 'POST',
-                    data:{
-                        category: "reward",
-                        location: "2",
-                        fields: "name, description, id, rate, stock",
-                        page_number: "0",
-                        page_size: "10",
-                        sort_by: "name",
-                        sort_dir: "asc"
-                    }
-                }
-            })
-        }
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(IndexStaff)
+export default IndexStaff;
