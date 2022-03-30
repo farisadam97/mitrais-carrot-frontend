@@ -1,7 +1,8 @@
-
-import './assets/css/App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle'
+import "./assets/css/App.css";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/css/bootstrap.css.map";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle";
 // import 'bootstrap/dist/js/bootstrap.esm'
 import './assets/css/custom.css';
 import Layout from './pages/layout';
@@ -16,6 +17,8 @@ import RouteConfig from './config/Route';
 import RolesConfig from './config/Roles';
 import DashboardStaff from './components/staff/dashboard.component';
 import DetailsItem from './components/bazaar/itemDetails.component';
+import RecentBirthday from "./pages/staff/birthday/recent.birthday.page";
+import HistoryTransaction from "./pages/staff/history-transaction/shared.page";
 
 function App() {
   return (
@@ -26,6 +29,8 @@ function App() {
             <Route path={RouteConfig.STAFF} element={<IndexStaff />}>
               <Route index element={<DashboardStaff/>}/>
               <Route path="reward/:id" element={<DetailsItem />}/>
+              <Route path="/history-transaction" element={<HistoryTransaction />} />
+              <Route path="/recent-birthday" element={<RecentBirthday />} />
             </Route>
           {/* </Route> */}
 
