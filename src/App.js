@@ -12,24 +12,24 @@ import RootAdminIndex from './pages/rootAdmin/index/index.page';
 import Missing from './pages/missing';
 import { Routes, Route } from 'react-router-dom';
 import RequireAuth from './hooks/RequireAuth';
+import RouteConfig from './config/Route';
+import RolesConfig from './config/Roles';
 
 function App() {
   return (
       <Routes>
-        <Route path="/" element={<Layout/>}>
-          <Route path="login" element={<LoginPage />}></Route>
+          <Route path="/" element={<LoginPage />}></Route>
 
-          <Route element={<RequireAuth allowedRoles={["ROLE_STAFF"]} />}>
-            <Route path="staff" element={<IndexStaff />}></Route>
+          <Route element={<RequireAuth allowedRoles={[RolesConfig.STAFF]} />}>
+            <Route path={RouteConfig.STAFF} element={<IndexStaff />}></Route>
           </Route>
 
-          <Route element={<RequireAuth allowedRoles={["ROLE_ROOTADMIN"]} />}>
-            <Route path="rootadmin" element={<RootAdminIndex />}></Route>
+          <Route element={<RequireAuth allowedRoles={[RolesConfig.ROOT_ADMIN]} />}>
+            <Route path={RouteConfig.ROOT_ADMIN} element={<RootAdminIndex />}></Route>
           </Route>
 
-          <Route path="unauthorized" element={<Unauthorized/>}></Route>
+          <Route path={RouteConfig.UNAUTHORIZED} element={<Unauthorized/>}></Route>
           {/* catch all */}
-        </Route>
         {/* <Route path="*" element={<Missing />} /> */}
 
       </Routes>

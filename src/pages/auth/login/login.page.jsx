@@ -6,6 +6,8 @@ import axios from "axios";
 import DefaultConfig from "../../../config/config";
 import Cookies from "universal-cookie";
 import useAuth from "../../../hooks/useAuth";
+import RouteConfig from "../../../config/Route";
+import RolesConfig from "../../../config/Roles";
 import './login.page.css'
 
 const LoginPage = () => {
@@ -44,11 +46,11 @@ const LoginPage = () => {
                 localStorage.setItem("access_token",accessToken)
                 setAuth({user,pwd,roles,accessToken})
                 switch (roles) {
-                    case 'ROLE_ROOTADMIN':
-                        navigate('/rootadmin',{replace:true})
+                    case RolesConfig.ROOT_ADMIN:
+                        navigate(`${RouteConfig.ROOT_ADMIN}`,{replace:true})
                         break;
-                    case 'ROLE_STAFF':
-                        navigate('/staff',{replace:true})
+                    case RolesConfig.STAFF:
+                        navigate(`${RouteConfig.STAFF}`,{replace:true})
                         break;
                 
                     default:

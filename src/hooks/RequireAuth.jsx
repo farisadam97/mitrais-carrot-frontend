@@ -1,6 +1,7 @@
 import { useLocation,Navigate,Outlet } from "react-router-dom";
 import Cookies from "universal-cookie";
 import useAuth from "./useAuth";
+import RouteConfig from "../config/Route";
 
 const RequireAuth = ({allowedRoles}) => {
     const {auth} = useAuth()
@@ -15,8 +16,8 @@ const RequireAuth = ({allowedRoles}) => {
         (role === allowedRoles[0])
             ?<Outlet/>
             : (accessToken !== null)
-                ? <Navigate to = "/unathorized" state={{from: location}} replace />
-                : <Navigate to = "/login" state={{from:location}} replace />
+                ? <Navigate to = {RouteConfig.UNAUTHORIZED} state={{from: location}} replace />
+                : <Navigate to = "/" state={{from:location}} replace />
     )
 }
 
