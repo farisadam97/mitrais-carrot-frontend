@@ -18,7 +18,7 @@ const IndexStaff = (props) => {
             <NavbarComponent />
             <Container>
                 <PageTitle title="DASHBOARD"></PageTitle>
-                <StaffSummary></StaffSummary>
+                <StaffSummary />
                 <ContainerContent title="BAZAAR">
                     <div className="row mt-3">
                         {props.items && <BazaarItem items={props.items}/>}

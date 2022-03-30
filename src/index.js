@@ -1,19 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { library } from '@fortawesome/fontawesome-svg-core'
+import React from "react";
+import ReactDOM from "react-dom";
+import { library } from "@fortawesome/fontawesome-svg-core";
 // import { fab } from '@fortawesome/free-brands-svg-icons'
-import { faBell } from '@fortawesome/free-solid-svg-icons'
+import { faBell } from "@fortawesome/free-solid-svg-icons";
 
-import './assets/css/index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import "./assets/css/index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
 
-library.add(faBell)
+library.add(faBell);
 ReactDOM.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
