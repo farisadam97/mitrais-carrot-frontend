@@ -8,6 +8,7 @@ import LoginPage from './pages/auth/login/login.page';
 import IndexStaff from './pages/staff/index/index.page';
 import RootAdminIndex from './pages/rootAdmin/index/index.page';
 import { BrowserRouter ,Routes,Router, Route, Switch } from 'react-router-dom';
+import ManagerComponent from './components/admin/manager.component';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/login" element={<LoginPage />}></Route>
         <Route path="/staff/" element={<IndexStaff />}></Route>
         <Route path="/rootadmin/" element={<RootAdminIndex />}></Route>
+        <Route path="/rootadmin/manager" element={<ManagerComponent />}></Route>
       </Routes>
     </BrowserRouter>
   );
