@@ -17,9 +17,12 @@ const BazaarAdminPage = () => {
     const [inputName,setInputName] = useState('')
     const [inputDesc, setInputDesc] = useState('')
     const [filterCategory, setFilterCategory] =  useState('')
+    const [filterLocation,setFilterLocation] = useState('')
     const [selectCategory,setSelectCategory] = useState('reward')
+    const [selectLocation,setSelectLocation] = useState('1')
     const [inputCarrot, setInputCarrot] = useState(1)
     const [inputStock,setInputStock] = useState(1)
+    const [inputMinCarrot,setInputMinCarrot] = useState(0)
     const [inputDate,setInputDate] = useState()
 
     const [show, setShow] = useState(false);
@@ -34,7 +37,7 @@ const BazaarAdminPage = () => {
     const getDataReward = () => {
         const body = {
             "category":filterCategory,
-            "location":"",
+            "location":filterLocation,
             "fields":"id,category,name,description,rate,stock,carrot_price,expire_date,is_active,location",
             "page_number":"0",
             "page_size":"10",
@@ -46,7 +49,14 @@ const BazaarAdminPage = () => {
             .then(response => {
                 setIsLoading(false)
                 setItemsBazaar(response.data?.body)
-                console.log(response)
+                setInputName("")
+                setInputDesc("")
+                setSelectCategory("reward")
+                setSelectLocation("1")
+                setInputCarrot(1)
+                setInputStock(1)
+                setInputMinCarrot(0)
+                setInputDate("")
             })
             .catch((error) => {
                 console.log(error)
@@ -55,10 +65,14 @@ const BazaarAdminPage = () => {
 
     useEffect(()=>{
         getDataReward()
-    },[filterCategory])
+    },[filterCategory,filterLocation])
 
     const filterCategoryHandle = (e) => {
         setFilterCategory(e.currentTarget.value)
+    }
+
+    const filterLocationHandle = (e) => {
+        setFilterLocation(e.currentTarget.value)
     }
 
     const nameInputHandle = (e) => {
@@ -74,6 +88,10 @@ const BazaarAdminPage = () => {
         setSelectCategory(e.currentTarget.value)
     }
 
+    const selectLocationHandle = (e) => {
+        setSelectLocation(e.currentTarget.value)
+    }
+
     const carrotInputHandle = (e) => {
         setInputCarrot(e.currentTarget.value)
         
@@ -83,6 +101,12 @@ const BazaarAdminPage = () => {
         setInputStock(e.currentTarget.value)
         
     }
+
+    const minCarrotInputHandle = (e) => {
+        setInputMinCarrot(e.currentTarget.value)
+        
+    }
+
 
     const expireDateHandle = (e) => {
         setInputDate(e.currentTarget.value)
@@ -99,7 +123,9 @@ const BazaarAdminPage = () => {
                 "rate":inputCarrot,
                 "expireDate":inputDate,
                 "label":null,
-                "location":0,
+                "location":selectLocation,
+                "collectedCarrots":0,
+                "minCarrots":inputMinCarrot,
                 "isActive":0
             }, 
             {
@@ -129,11 +155,24 @@ const BazaarAdminPage = () => {
                         <div className="row">
                             <div className="col-3">
                                 <div className="mb-3">
-                                    <label htmlFor="filterCategory" className="form-label">Select Category</label>
+                                    <label htmlFor="filterCategory" className="form-label">Filter Category</label>
                                     <select id='filterCategory' className="form-select" aria-label="Default select example" value={filterCategory} onChange={filterCategoryHandle} required >
                                         <option value="">All Items</option>
                                         <option value="reward">Reward</option>
                                         <option value="socfound">Social Foundation</option>
+                                    </select>
+                                </div>  
+                            </div>
+                            <div className="col-3">
+                                <div className="mb-3">
+                                    <label htmlFor="filterCategory" className="form-label">Filter Location</label>
+                                    <select id='filterCategory' className="form-select" aria-label="Default select example" value={filterLocation} onChange={filterLocationHandle} required >
+                                        <option value="">All Locations</option>
+                                        <option value="1">Bali</option>
+                                        <option value="2">Yogyakarta</option>
+                                        <option value="3">Bandung</option>
+                                        <option value="4">Jakarta</option>
+                                        <option value="5">Social Foundation</option>
                                     </select>
                                 </div>  
                             </div>
@@ -143,9 +182,9 @@ const BazaarAdminPage = () => {
                                 <table className="table">
                                     <thead>
                                         <tr>
-                                            <th scope="col">#</th>
                                             <th scope="col">Name</th>
                                             <th scope="col">Category</th>
+                                            <th scope="col">Location</th>
                                             <th scope="col">Stock</th>
                                             <th scope="col">Price</th>
                                             <th scope="col">Expiry Date</th>
@@ -157,11 +196,11 @@ const BazaarAdminPage = () => {
                                             itemsBazaar?.data.map((element) => 
                                                 (
                                                     <tr key={v4()}>
-                                                        <td key={v4()}>{
-
-                                                        }</td>
                                                         <td key={v4()}>{element.name}</td>
-                                                        <td key={v4()}>{element.category}</td>
+                                                        <td key={v4()}>{element.category.toUpperCase()}</td>
+                                                        <td key={v4()}>{
+                                                            element.location == "1" ? "Bali" : element.location == "2" ? "Yogyakarta" : element.location == "3" ? "Bandung" : element.location == "4" ? "Jakarta" : "Singapore"
+                                                        }</td>
                                                         <td key={v4()}>{element.stock}</td>
                                                         <td key={v4()}>{element.rate}</td>
                                                         <td key={v4()}>{element.expireDate}</td>
@@ -204,12 +243,26 @@ const BazaarAdminPage = () => {
                         </select>
                     </div>
                     <div className="mb-3">
+                        <label htmlFor="filterCategory" className="form-label">Location</label>
+                        <select id='filterCategory' className="form-select" aria-label="Default select example" value={selectLocation} onChange={selectLocationHandle} required >
+                            <option value="1">Bali</option>
+                            <option value="2">Yogyakarta</option>
+                            <option value="3">Bandung</option>
+                            <option value="4">Jakarta</option>
+                            <option value="5">Social Foundation</option>
+                        </select>
+                    </div> 
+                    <div className="mb-3">
                         <label htmlFor="inputCarrot" className="form-label">Carrot</label>
                         <input type="number" min={1} className="form-control" id="inputCarrot" aria-describedby="emailHelp" value={inputCarrot} onChange={carrotInputHandle} required />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="inputStock" className="form-label">Stock</label>
                         <input type="number" min={0} className="form-control" id="inputStock" aria-describedby="emailHelp" value={inputStock} onChange={stockInputHandle} required />
+                    </div>
+                    <div className={`mb-3 ${selectCategory == "socfound" ? "d-block" : "d-none"}`}>
+                        <label htmlFor="inputMinimumCarrot" className="form-label">Minimum Carrots</label>
+                        <input type="number" min={0} className="form-control" id="inputMinimumCarrot" aria-describedby="emailHelp" value={selectCategory == "socfound" ? inputMinCarrot : 0} onChange={minCarrotInputHandle} required />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="inputDate" className="form-label">Expire Date</label>
