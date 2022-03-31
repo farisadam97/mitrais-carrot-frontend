@@ -26,12 +26,12 @@ function App() {
             <Route path={RouteConfig.STAFF} element={<IndexStaff />}></Route>
           </Route>
 
-          <Route element={<RequireAuth allowedRoles={[RolesConfig.ADMIN]} />}>
+          {/* <Route element={<RequireAuth allowedRoles={[RolesConfig.ADMIN]} />}> */}
             <Route path={RouteConfig.ADMIN} >
               <Route index element={<CarrotSummary />} />
               <Route path='bazaar'element={<BazaarAdminPage />} />
             </Route>
-          </Route>
+          {/* </Route> */}
 
           <Route element={<RequireAuth allowedRoles={[RolesConfig.ROOT_ADMIN]} />}>
             <Route path={RouteConfig.ROOT_ADMIN} element={<RootAdminIndex />}></Route>

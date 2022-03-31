@@ -16,6 +16,7 @@ const BazaarAdminPage = () => {
 
     const [inputName,setInputName] = useState('')
     const [inputDesc, setInputDesc] = useState('')
+    const [filterCategory, setFilterCategory] =  useState('')
     const [selectCategory,setSelectCategory] = useState('reward')
     const [inputCarrot, setInputCarrot] = useState(1)
     const [inputStock,setInputStock] = useState(1)
@@ -32,7 +33,8 @@ const BazaarAdminPage = () => {
 
     const getDataReward = () => {
         const body = {
-            "category":"reward",
+            "category":filterCategory,
+            "location":"",
             "fields":"id,category,name,description,rate,stock,carrot_price,expire_date,is_active,location",
             "page_number":"0",
             "page_size":"10",
@@ -53,7 +55,11 @@ const BazaarAdminPage = () => {
 
     useEffect(()=>{
         getDataReward()
-    },[])
+    },[filterCategory])
+
+    const filterCategoryHandle = (e) => {
+        setFilterCategory(e.currentTarget.value)
+    }
 
     const nameInputHandle = (e) => {
         setInputName(e.currentTarget.value)
@@ -118,6 +124,18 @@ const BazaarAdminPage = () => {
                                 <button className='btn btn-carrot' onClick={handleShow}>
                                     Add New
                                 </button>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-3">
+                                <div className="mb-3">
+                                    <label htmlFor="filterCategory" className="form-label">Select Category</label>
+                                    <select id='filterCategory' className="form-select" aria-label="Default select example" value={filterCategory} onChange={filterCategoryHandle} required >
+                                        <option value="">All Items</option>
+                                        <option value="reward">Reward</option>
+                                        <option value="socfound">Social Foundation</option>
+                                    </select>
+                                </div>  
                             </div>
                         </div>
                         <div className="row">
