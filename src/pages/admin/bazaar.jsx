@@ -1,0 +1,213 @@
+import React from 'react'
+import { useEffect, useState } from 'react'
+import { Modal, Button} from 'react-bootstrap'
+import NavbarComponent from '../../components/navbar/navbar.component'
+import Container from '../container'
+import ContainerContent from '../../components/container/container.component'
+import Header from './header'
+import DefaultConfig from '../../config/config'
+import axios from 'axios'
+import {v4} from 'uuid'
+import PageTitle from '../../components/text/pageTitle.component'
+
+const BazaarAdminPage = () => {
+    const [itemsBazaar,setItemsBazaar] = useState()
+    const [isLoading,setIsLoading] = useState(true)
+
+    const [inputName,setInputName] = useState('')
+    const [inputDesc, setInputDesc] = useState('')
+    const [selectCategory,setSelectCategory] = useState('reward')
+    const [inputCarrot, setInputCarrot] = useState(1)
+    const [inputStock,setInputStock] = useState(1)
+    const [inputDate,setInputDate] = useState()
+
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    const url = `${DefaultConfig.base_api}/v1/reward`
+    const header = {
+        'Authorization' : `Bearer ${localStorage.getItem('access_token')}`
+    }
+
+    const getDataReward = () => {
+        const body = {
+            "category":"reward",
+            "fields":"id,category,name,description,rate,stock,carrot_price,expire_date,is_active,location",
+            "page_number":"0",
+            "page_size":"10",
+            "sort_by":"id",
+            "sort_dir":"asc"
+        }
+        
+        axios.post(url,body,{headers: header})
+            .then(response => {
+                setIsLoading(false)
+                setItemsBazaar(response.data?.body)
+                console.log(response)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+
+    useEffect(()=>{
+        getDataReward()
+    },[])
+
+    const nameInputHandle = (e) => {
+        setInputName(e.currentTarget.value)
+    }
+
+    const descInputHandle = (e) => {
+        setInputDesc(e.currentTarget.value)
+        
+    }
+
+    const selectCategoryHandle = (e) => {
+        setSelectCategory(e.currentTarget.value)
+    }
+
+    const carrotInputHandle = (e) => {
+        setInputCarrot(e.currentTarget.value)
+        
+    }
+
+    const stockInputHandle = (e) => {
+        setInputStock(e.currentTarget.value)
+        
+    }
+
+    const expireDateHandle = (e) => {
+        setInputDate(e.currentTarget.value)
+    }
+
+    const sumbitAddReward = (e)=>{
+        e.preventDefault()
+        axios.post(`${url}/add`,
+            {
+                "category":selectCategory,
+                "description":inputDesc,
+                "name":inputName,
+                "stock":inputStock,
+                "rate":inputCarrot,
+                "expireDate":inputDate,
+                "label":null,
+                "location":0,
+                "isActive":0
+            }, 
+            {
+                headers:header
+            }
+        ).then(response => {
+            handleClose()
+            getDataReward()
+        })
+    }
+
+    return (
+        
+        <div className="">
+            <NavbarComponent />
+            <Container>
+                <Header />
+                <hr className='box-title-hr'></hr>
+                    <ContainerContent title="BAZAAR">
+                        <div className="row justify-content-center my-4">
+                            <div className="col-md-3">
+                                <button className='btn btn-carrot' onClick={handleShow}>
+                                    Add New
+                                </button>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-12">
+                                <table className="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Category</th>
+                                            <th scope="col">Stock</th>
+                                            <th scope="col">Price</th>
+                                            <th scope="col">Expiry Date</th>
+                                            <th scope="col">Active</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {   
+                                            itemsBazaar?.data.map((element) => 
+                                                (
+                                                    <tr key={v4()}>
+                                                        <td key={v4()}>{
+
+                                                        }</td>
+                                                        <td key={v4()}>{element.name}</td>
+                                                        <td key={v4()}>{element.category}</td>
+                                                        <td key={v4()}>{element.stock}</td>
+                                                        <td key={v4()}>{element.rate}</td>
+                                                        <td key={v4()}>{element.expireDate}</td>
+                                                        <td key={v4()}>
+                                                            <div className="form-check form-switch">
+                                                                <input className="form-check-input" type="checkbox" id="flexSwitchCheckChecked" defaultChecked={!element.isActive} />
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    // console.log(element)
+                                                )
+                                            )
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </ContainerContent>
+
+            </Container>
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Add Reward</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                <form>
+                    <div className="mb-3">
+                        <label htmlFor="inputName" className="form-label">Name</label>
+                        <input type="text" className="form-control" id="inputName" aria-describedby="emailHelp" value={inputName} onChange={nameInputHandle} required />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="inputDescription" className="form-label">Description</label>
+                        <textarea rows={2} className="form-control" id="inputDescription" aria-describedby="emailHelp" value={inputDesc} onChange={descInputHandle} required />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="selectCategory" className="form-label">Category</label>
+                        <select id='selectCategory' className="form-select" aria-label="Default select example" value={selectCategory} onChange={selectCategoryHandle} required >
+                            <option value="reward">Reward</option>
+                            <option value="socfound">Social Foundation</option>
+                        </select>
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="inputCarrot" className="form-label">Carrot</label>
+                        <input type="number" min={1} className="form-control" id="inputCarrot" aria-describedby="emailHelp" value={inputCarrot} onChange={carrotInputHandle} required />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="inputStock" className="form-label">Stock</label>
+                        <input type="number" min={0} className="form-control" id="inputStock" aria-describedby="emailHelp" value={inputStock} onChange={stockInputHandle} required />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="inputDate" className="form-label">Expire Date</label>
+                        <input id="inputDate" name="" type="date" className="form-control here"  onChange={expireDateHandle} required />
+                    </div>
+                    
+                </form>
+                </Modal.Body>
+                <Modal.Footer>
+                <Button variant="primary" onClick={sumbitAddReward}>
+                    Save New Reward
+                </Button>
+                </Modal.Footer>
+            </Modal>
+        </div>
+    )
+}
+
+export default BazaarAdminPage
