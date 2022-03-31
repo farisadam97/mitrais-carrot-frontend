@@ -3,7 +3,7 @@ const  RouteConfig = {
     ADMIN : 'admin',
     MANAGER : 'manager',
     STAFF: 'staff',
-    UNAUTHORIZED: 'unauthorized'
+    UNAUTHORIZED: 'unauthorized',
 }
 
 export default RouteConfig
