@@ -4,5 +4,6 @@ const GetBazaarItem = createAction("GetBazaarItem");
 const GetItemDetails = createAction("GetItemDetails");
 const GetSharedHistory = createAction("GetSharedHistory");
 const GetRecentBirthday = createAction("GetRecentBirthday");
+const GetUsersList = createAction("GetUsersList");
 
-export const apiRequest = [GetBazaarItem, GetSharedHistory, GetRecentBirthday, GetItemDetails];
+export const apiRequest = [GetBazaarItem, GetSharedHistory, GetRecentBirthday, GetItemDetails, GetUsersList];
