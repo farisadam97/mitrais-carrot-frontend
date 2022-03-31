@@ -1,11 +1,11 @@
 import axios from "axios";
 import {
-  apiHistoryTrxRequestSucceeded,
-  apiHistoryTrxRequestFailed,
-} from "../historyTransaction";
+  apiRewardHistoryRequestSucceeded,
+  apiRewardHistoryRequestFailed,
+} from "../rewardHistory";
 
-const FetchSharedHistory = (store) => (next) => async (action) => {
-  if (action.type !== "GetSharedHistory") return next(action);
+const FetchRewardHistory = (store) => (next) => async (action) => {
+  if (action.type !== "GetRewardHistory") return next(action);
 
   next(action);
 
@@ -19,18 +19,18 @@ const FetchSharedHistory = (store) => (next) => async (action) => {
       data,
     });
     store.dispatch(
-      apiHistoryTrxRequestSucceeded({
+      apiRewardHistoryRequestSucceeded({
         lists: response.data.body.data,
         pagination: response.data.body.pagination,
       })
     );
   } catch (error) {
     store.dispatch(
-      apiHistoryTrxRequestFailed({
+      apiRewardHistoryRequestFailed({
         error: error.message,
       })
     );
   }
 };
 
-export default FetchSharedHistory;
+export default FetchRewardHistory;
