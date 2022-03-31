@@ -1,4 +1,6 @@
 import axios from "axios";
+import { fetchFailed } from "../bazaarItem";
+import { fetchTransactionSuccess } from "../transaction";
 import { baseURL } from "./BaseUrl";
 
 const FetchTransaction = store => next => async action => {
@@ -13,11 +15,14 @@ const FetchTransaction = store => next => async action => {
                     method,
                     data,
                 })
-                // store.dispatch(fetchTransactionSuccess({
-                    //todo dispatch this after email solved
-                // }))
+                if(!response.data.payload.id) throw Error('Exchange Item Failed')
+                store.dispatch(fetchTransactionSuccess({
+                    transaction: response.data.payload
+                }))
             }catch(error){
-                store.dispatch()
+                store.dispatch(fetchFailed({
+                    error: error.message
+                }))
             }
             break;
         default:

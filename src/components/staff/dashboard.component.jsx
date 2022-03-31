@@ -8,6 +8,8 @@ import { connect } from "react-redux";
 const Dashboard = (props) => {
     const [isLoading, setIsLoading] = useState(true);
 
+    //todo: change location 
+
     useEffect(() => {
         props.loadItem();
         setIsLoading(false);
@@ -18,10 +20,9 @@ const Dashboard = (props) => {
             <PageTitle title="DASHBOARD"></PageTitle>
             <StaffSummary></StaffSummary>
             <ContainerContent title="BAZAAR">
-                <div className="row mt-3">
-                    {isLoading && <p>Loading...</p>}
-                    {props.items && <BazaarItem items={props.items}/>}
-                </div>
+                {(!props.items && !props.error) && <p>Loading...</p>}
+                {props.error && <p>{props.error}</p>}
+                {props.items && <BazaarItem items={props.items}/>}
             </ContainerContent>
         </div>
     );
@@ -44,7 +45,7 @@ const mapDispatchToProps = dispatch => {
                     method: 'POST',
                     data:{
                         category: "reward",
-                        location: "2",//change to dynamic value
+                        location: "2",//<--- here change to dynamic value
                         fields: "name, description, id, rate, stock",
                         page_number: "0",
                         page_size: "10",

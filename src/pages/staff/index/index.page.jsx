@@ -5,14 +5,12 @@ import { Outlet } from "react-router-dom";
 
 const IndexStaff = (props) => {
 
+    // todo: add navbar for bazaar and social foundation
     return(
         <div className="">
             <NavbarComponent />
             <Container>
-                {/* insert outlet nested router here */}
                 <Outlet/>
-                {/* from up there to here move this into dashboard staff component */}
-                {/* we have got item details */}
             </Container>
         </div>
     )

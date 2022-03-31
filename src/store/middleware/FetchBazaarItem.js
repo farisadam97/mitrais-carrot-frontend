@@ -31,7 +31,6 @@ const FetchBazaarItem = store => next => async action => {
                         method,
                         data,
                     });
-                    if(response.payload )
                     store.dispatch(fetchDetailItemSuccess({
                         detailItem: response.data.body.data
                     }))

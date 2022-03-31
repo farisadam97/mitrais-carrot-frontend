@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const BazaarItem = (props) => {
     return(
-        <div>
+        <div className="row mt-3">
             {props.items.map(item => (
                 <div className="col-md-4" key={item.id}>
                     <div className="card">

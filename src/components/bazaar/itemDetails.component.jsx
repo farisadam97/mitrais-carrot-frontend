@@ -4,21 +4,32 @@ import { useEffect, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 const ItemDetails = (props) => {
     const { id } = useParams();
-    const [isLoading, setIsLoading] = useState(true);
     const [show, setShow] = useState(false);
+    const [trxIsLoading, setTrxIsLoading] = useState(false);
+
+    //to do: add proper loading, add proper message modal, change buyerId
 
     useEffect(() => {
         props.loadItemDetail(id);
-        setIsLoading(false);
     },[])
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     const handleClickBuy = () => {
-        props.exchangeItem(id);
+        setTrxIsLoading(true);
+        props.exchangeItem(id, 25); //<----here buyer id
         handleClose();
     }
+
+    useEffect(() => {
+        setTrxIsLoading(false);
+    },[props])
+
+    useEffect(() => {
+        setTrxIsLoading(false);
+        props.loadItemDetail(id);
+    },[props.transactionId])
 
     return (
         <div>
@@ -30,6 +41,9 @@ const ItemDetails = (props) => {
                     Bazaar
                 </h2>
             </main>
+            {trxIsLoading && <p>transfer loading...</p>}
+            {(!props.detailItem && !props.error) && <p>Loading...</p>}
+            {props.error && <p>{props.error}</p>}
             {props.detailItem && (
                 <section className="bazaar-1-item mb-4">
                     <div className="container search-box pb-4">
@@ -77,6 +91,9 @@ const mapStateToProps = state => {
     return {
         detailItem: state.bazaarItem.detailItem,
         error: state.bazaarItem.error,
+        transactionId: state.transaction.transactionId,
+        transactionStatus: state.transaction.status,
+        spentCarrot: state.transaction.spentCarrot,
     }
 }
 
@@ -94,16 +111,16 @@ const mapDispatchToProps = dispatch => {
                 }
             })
         },
-        exchangeItem: (id) => {
+        exchangeItem: (id, buyerId) => {
             return dispatch({
                 type: 'exchangeReward',
                 payload: {
-                    url: ``,
+                    url: `transaction/redeem-item`,
                     method: 'POST',
                     data: {
                         category: 'reward',
-                        buyerId: 2,
-                        itemId: id,
+                        buyerId: parseInt(buyerId),
+                        itemId: parseInt(id),
                         amount: 1,
                     }
                 }
