@@ -1,28 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { configureStore } from '@reduxjs/toolkit';
+import reducer from './rootReducer';
+import FetchManagerList from './middleware/fetchManagerList';
 
-const initialState = {
-    manager: null,
-    error: null,
-}
+const api = [FetchManagerList];
 
-const slice = createSlice({
-    name: "managerList",
-    initialState,
-    reducers: {
-        fetchManagerListSuccess: (state = initialState, action) => {
-            state.manager = action.payload.items;
-            state.error = null;
-        },
-        fetchFailed: (state, action) => {
-            state.manager = [];
-            state.error = action.payload.error;
-        }
-    }
-});
-
-export const {
-    fetchManagerListSuccess,
-    fetchFailed,
-} = slice.actions;
-
-export default slice.reducer;
+export default function(){
+    return configureStore({
+        reducer,
+        middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(...api)
+    })
+};

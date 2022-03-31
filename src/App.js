@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.css.map";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle";
-// import 'bootstrap/dist/js/bootstrap.esm'
+// import 'bootstrap/dist/js/bootstrap.esm;'
 import "./assets/css/custom.css";
 import Layout from "./pages/layout";
 import LoginPage from "./pages/auth/login/login.page";
@@ -31,6 +31,7 @@ import StaffGroupDetail from "./components/admin/staffGroupDetail";
 import "./assets/css/custom.css";
 import InsertUpdateUser from "./pages/rootAdmin/insertUser/insert.user.page";
 import DashboardRootAdmin from "./pages/rootAdmin/dashboard/dashboard.page";
+import ManagerComponent from './components/admin/manager.component';
 
 function App() {
   return (
@@ -62,6 +63,7 @@ function App() {
         <Route path="bazaar" element={<BazaarAdminPage />} />
         <Route path="staff-group" element={<StaffGroup />} />
         <Route path="staff-group/:id" element={<StaffGroupDetail />} />
+        <Route path="manager" element={<ManagerComponent />}/>
       </Route>
       </Route>
 
