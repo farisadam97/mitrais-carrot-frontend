@@ -18,7 +18,7 @@ const ItemDetails = (props) => {
 
     const handleClickBuy = () => {
         setTrxIsLoading(true);
-        props.exchangeItem(id, 25); //<----here buyer id
+        props.exchangeItem(id, 25, props.detailItem[0].category); //<----here buyer id
         handleClose();
     }
 
@@ -50,7 +50,7 @@ const ItemDetails = (props) => {
                         <div className="row d-flex">
                             <div className="col-md-12">
                                 <hr className="box-title-hr"/>
-                                <h4 className="my-2 box-title">Reward</h4>
+                                <h4 className="my-2 box-title">{props.detailItem[0].category === "reward"? "Reward" : "Social Foundation"}</h4>
                             </div>
                             <div className="col-md-6 br-1">
                                 <img src="img/bazaar_vespa.jpg" className="img-fluid p-3" alt=""/>
@@ -59,7 +59,7 @@ const ItemDetails = (props) => {
                                 <h3>{props.detailItem[0].name}</h3>
                                 <h4><strong className="carrot-orange">{props.detailItem[0].rate} Carrots</strong></h4>
                                 <p>{props.detailItem[0].description}</p>
-                                <p className={props.detailItem[0].stock <= 5? "text-danger" : "text-success"}>Current stock: {props.detailItem[0].stock}</p>
+                                <p className={props.detailItem[0].stock <= 5? "text-danger" : "text-success"}>{props.detailItem[0].category === "reward"? "Current stock" : "Total donation"}: {props.detailItem[0].stock}</p>
                                 <p className="btn btn-carrot radius-5" onClick={handleShow} data-toggle="modal" data-target="#exampleModal">Exchange</p>
                                 {/* <p className="mt-2"><small className="text-danger">You don't have enough carrots to buy this item.</small></p> */}
                             </div>
@@ -111,14 +111,14 @@ const mapDispatchToProps = dispatch => {
                 }
             })
         },
-        exchangeItem: (id, buyerId) => {
+        exchangeItem: (id, buyerId, category) => {
             return dispatch({
                 type: 'exchangeReward',
                 payload: {
                     url: `transaction/redeem-item`,
                     method: 'POST',
                     data: {
-                        category: 'reward',
+                        category: category,
                         buyerId: parseInt(buyerId),
                         itemId: parseInt(id),
                         amount: 1,

@@ -6,20 +6,35 @@ import StaffSummary from "../summary/staff.component";
 import { connect } from "react-redux";
 
 const Dashboard = (props) => {
-    const [isLoading, setIsLoading] = useState(true);
+    const [category, setCategory] = useState("reward");
 
     //todo: change location 
 
+    const reward = () => {
+        setCategory("reward");
+    }
+
+    const socFound = () => {
+        setCategory("socFound");
+    }
+
     useEffect(() => {
-        props.loadItem();
-        setIsLoading(false);
-    },[])
+        props.loadItem(category);
+    },[category])
 
     return (
         <div>
             <PageTitle title="DASHBOARD"></PageTitle>
             <StaffSummary></StaffSummary>
-            <ContainerContent title="BAZAAR">
+            <div className="row admin-tabs mb-4">
+                <div className="col-md-auto nav-pills">
+                    <a onClick={reward} className={"nav-link " + (category === "reward"? "active" : "")}>BAZAAR</a>
+                </div>
+                <div className="col-md-auto nav-pills">
+                    <a onClick={socFound} className={"nav-link " + (category === "socFound"? "active" : "")}>SOCIAL FOUNDATION</a>
+                </div>
+            </div>
+            <ContainerContent title={category === "reward"? "BAZAAR": "SOCIAL FOUNDATION"}>
                 {(!props.items && !props.error) && <p>Loading...</p>}
                 {props.error && <p>{props.error}</p>}
                 {props.items && <BazaarItem items={props.items}/>}
@@ -37,14 +52,14 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        loadItem: () => {
+        loadItem: (category) => {
             return dispatch({
                 type: 'GetBazaarItem',
                 payload: {
                     url: '/reward',
                     method: 'POST',
                     data:{
-                        category: "reward",
+                        category: category,
                         location: "2",//<--- here change to dynamic value
                         fields: "name, description, id, rate, stock",
                         page_number: "0",

@@ -22,16 +22,16 @@ function App() {
       <Routes>
           <Route path="/" element={<LoginPage />}></Route>
 
-          <Route element={<RequireAuth allowedRoles={[RolesConfig.STAFF]} />}>
+          {/* <Route element={<RequireAuth allowedRoles={[RolesConfig.STAFF]} />}> */}
             <Route path={RouteConfig.STAFF} element={<IndexStaff />}>
               <Route index element={<DashboardStaff/>}/>
               <Route path="reward/:id" element={<DetailsItem />}/>
             </Route>
-          </Route>
+          {/* </Route> */}
 
-          <Route element={<RequireAuth allowedRoles={[RolesConfig.ROOT_ADMIN]} />}>
+          {/* <Route element={<RequireAuth allowedRoles={[RolesConfig.ROOT_ADMIN]} />}> */}
             <Route path={RouteConfig.ROOT_ADMIN} element={<RootAdminIndex />}></Route>
-          </Route>
+          {/* </Route> */}
 
           <Route path={RouteConfig.UNAUTHORIZED} element={<Unauthorized/>}></Route>
           {/* catch all */}

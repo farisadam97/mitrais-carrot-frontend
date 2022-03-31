@@ -5,8 +5,8 @@ const BazaarItem = (props) => {
     return(
         <div className="row mt-3">
             {props.items.map(item => (
-                <div className="col-md-4" key={item.id}>
-                    <div className="card">
+                <div className="col-md-3" key={item.id}>
+                    <div className="card mb-4">
                         <div className="card-body">
                             {/* add image here */}
                             <h5 className="card-title">{item.name}</h5>
