@@ -8,18 +8,26 @@ import LoginPage from './pages/auth/login/login.page';
 import IndexStaff from './pages/staff/index/index.page';
 import RootAdminIndex from './pages/rootAdmin/index/index.page';
 import { BrowserRouter ,Routes,Router, Route, Switch } from 'react-router-dom';
-import ManagerList from './store/admin/managerList';
+import configureStore from './store/configureStore';
+import { Provider } from 'react-redux';
+import AnnualCarrot from './pages/rootAdmin/annualCarrot/annual.page';
+import DistributionCarrot from './pages/rootAdmin/distribution/distribution.page';
+
+const store = configureStore();
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<LoginPage />}></Route>
-        <Route path="/staff/" element={<IndexStaff />}></Route>
-        <Route path="/rootadmin/" element={<RootAdminIndex />}></Route>
-        <Route path="/admin/manager" element={<ManagerList />}></Route>
-      </Routes>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+            <Route path="/login" element={<LoginPage />}></Route>
+            <Route path="/staff/" element={<IndexStaff />}></Route>
+            <Route path="/rootadmin/" element={<RootAdminIndex />}></Route>
+            <Route path="/rootadmin/harvest" element={<AnnualCarrot />}></Route>
+            <Route path="/rootadmin/distribution" element={<DistributionCarrot />}></Route>
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   );
 }
 
