@@ -1,6 +1,7 @@
 import React from 'react'
 
-const ManagerComponent = () => {
+const ManagerComponent = ({lists, isLoading}) => {
+  console.log(lists);
   return (
     <div>
         <div className="dataTables_wrapper dt-bootstrap5 no-footer">
@@ -20,17 +21,33 @@ const ManagerComponent = () => {
                         <th scope="col" rowSpan={"1"} colSpan={"1"} style={{width: "150px"}}>Resign Date</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr role={"row"}>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                <tbody id="table-admin-list-manager">
+                {lists.length > 0 ? (
+                    lists.map((item) => (
+                    <tr key={item.id}>
+                        <td scope="row">{item.id}</td>
+                        <td>{item.name}</td>
+                        <td>{item.jf}</td>
+                        <td>{item.grade}</td>
+                        <td>{item.office}</td>
+                        <td>{item.email}</td>
+                        <td>{item.status}</td>
+                        <td>{item.resignDate}</td>
                     </tr>
+                    ))
+                ) : isLoading ? (
+                    <tr>
+                    <td colSpan={6} className="text-center">
+                        Loading...
+                    </td>
+                    </tr>
+                ) : (
+                    <tr>
+                    <td colSpan={6} className="text-center">
+                        Data tidak ditemukan
+                    </td>
+                    </tr>
+                )}
                 </tbody>
             </table>
         </div>
