@@ -1,5 +1,5 @@
 import axios from "axios";
-import { fetchManagerListSuccess, fetchFailed } from "../configureStore";
+import { fetchManagerListSuccess, fetchManagerListFailed } from "../managerList";
 import { baseURL } from "./BaseUrl";
 
 const FetchManagerList = store => next => async action => {
@@ -17,7 +17,7 @@ const FetchManagerList = store => next => async action => {
                     manager: response.data.body.data
                 }))
             }catch(error){
-                store.dispatch(fetchFailed({
+                store.dispatch(fetchManagerListFailed({
                     error
                 }))
             }

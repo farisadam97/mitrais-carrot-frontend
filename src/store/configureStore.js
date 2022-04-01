@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import FetchManagerList from "./admin/middleware/fetchManagerList";
 import FetchBazaarItem from "./middleware/FetchBazaarItem";
 import FetchRecentBirthday from "./middleware/FetchRecentBirthday";
 import FetchSharedHistory from "./middleware/FetchSharedHistory";
@@ -10,6 +11,7 @@ const api = [
   FetchSharedHistory,
   FetchRecentBirthday,
   FetchUsersList,
+  FetchManagerList,
 ];
 
 export default function () {
