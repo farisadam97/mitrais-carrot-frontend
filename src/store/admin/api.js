@@ -1,6 +1,5 @@
-import { combineReducers } from "redux";
-import managerListReducer from "./managerList";
+import { createAction } from "@reduxjs/toolkit";
 
-export default combineReducers({
-    bazaarItem: managerListReducer,
-})
+const GetManagerList = createAction("GetManagerList")
+
+export const apiRequest = [GetManagerList];
