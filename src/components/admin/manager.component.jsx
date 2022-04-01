@@ -1,15 +1,6 @@
-import { connect } from "react-redux";
-import { useEffect, useState } from "react";
+import React from 'react'
 
-const ManagerComponent = (props) => {
-    const [isLoading, setIsLoading] = useState(true);
-    const [show, setShow] = useState(false);
-
-    useEffect(() => {
-        props.loadManager();
-        setIsLoading(false);
-    },[])
-
+const ManagerComponent = () => {
   return (
     <div>
         <div className="dataTables_wrapper dt-bootstrap5 no-footer">
@@ -20,36 +11,31 @@ const ManagerComponent = (props) => {
                 <thead>
                     <tr role={"row"}>
                         <th scope="col" rowSpan={"1"} colSpan={"1"} style={{width: "18px"}}>#</th>
+                        <th scope="col" rowSpan={"1"} colSpan={"1"} style={{width: "160px"}}>Name</th>
+                        <th scope="col" rowSpan={"1"} colSpan={"1"} style={{width: "22px"}}>JF</th>
+                        <th scope="col" rowSpan={"1"} colSpan={"1"} style={{width: "56px"}}>Grade</th>
+                        <th scope="col" rowSpan={"1"} colSpan={"1"} style={{width: "54px"}}>Office</th>
+                        <th scope="col" rowSpan={"1"} colSpan={"1"} style={{width: "92px"}}>Email</th>
+                        <th scope="col" rowSpan={"1"} colSpan={"1"} style={{width: "59px"}}>Status</th>
+                        <th scope="col" rowSpan={"1"} colSpan={"1"} style={{width: "150px"}}>Resign Date</th>
                     </tr>
                 </thead>
+                <tbody>
+                    <tr role={"row"}>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
   )
 }
 
-const mapStateToProps = state => {
-    return {
-        managerList: state.managerList.manager,
-        error: state.managerList.error,
-    }
-}
-
-const mapDispatchToProps = dispatch => {
-    return{
-        loadManager: () => {
-            return dispatch({
-                type: 'GetManagerList',
-                payload: {
-                    url: `/user`,
-                    method: 'POST',
-                    data: {
-                        fields: 'name, description, id, rate, stock, category'
-                    }
-                }
-            })
-        },
-    }
-}
- 
-export default connect(mapStateToProps, mapDispatchToProps)(ManagerComponent);
+export default ManagerComponent
