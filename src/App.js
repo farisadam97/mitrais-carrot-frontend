@@ -31,7 +31,7 @@ import StaffGroupDetail from "./components/admin/staffGroupDetail";
 import "./assets/css/custom.css";
 import InsertUpdateUser from "./pages/rootAdmin/insertUser/insert.user.page";
 import DashboardRootAdmin from "./pages/rootAdmin/dashboard/dashboard.page";
-import ManagerComponent from './components/admin/manager.component';
+import ManagerList from './store/admin/managerList';
 
 function App() {
   return (
@@ -63,7 +63,7 @@ function App() {
         <Route path="bazaar" element={<BazaarAdminPage />} />
         <Route path="staff-group" element={<StaffGroup />} />
         <Route path="staff-group/:id" element={<StaffGroupDetail />} />
-        <Route path="manager" element={<ManagerComponent />}/>
+        <Route path="manager" element={<ManagerList />}/>
       </Route>
       </Route>
 
