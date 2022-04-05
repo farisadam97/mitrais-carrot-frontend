@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import reducer from './rootReducer';
-import FetchManagerList from './middleware/fetchManagerList';
+import FetchManagerList from './middleware_admin/FetchManagerList';
 
 const api = [FetchManagerList];
 
