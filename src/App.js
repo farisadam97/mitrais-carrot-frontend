@@ -22,6 +22,8 @@ import DashboardStaff from './components/staff/dashboard.component';
 import DetailsItem from './components/bazaar/itemDetails.component';
 import RecentBirthday from "./pages/staff/birthday/recent.birthday.page";
 import HistoryTransaction from "./pages/staff/history-transaction/shared.page";
+import Setting from "./components/rootAdmin/setting";
+import AssignRole from "./components/rootAdmin/asignRole";
 
 function App() {
   return (
@@ -32,8 +34,8 @@ function App() {
             <Route path={RouteConfig.STAFF} element={<IndexStaff />}>
               <Route index element={<DashboardStaff/>}/>
               <Route path="reward/:id" element={<DetailsItem />}/>
-              <Route path="/history-transaction" element={<HistoryTransaction />} />
-              <Route path="/recent-birthday" element={<RecentBirthday />} />
+              <Route path="history-transaction" element={<HistoryTransaction />} />
+              <Route path="recent-birthday" element={<RecentBirthday />} />
             </Route>
           {/* </Route> */}
 
@@ -48,9 +50,9 @@ function App() {
           {/* </Route> */}
 
           {/* <Route element={<RequireAuth allowedRoles={[RolesConfig.ROOT_ADMIN]} />}> */}
-            <Route path={RouteConfig.ROOT_ADMIN}>
-              <Route index element={<RootAdminIndex />}></Route>
-
+            <Route path={RouteConfig.ROOT_ADMIN} element={<RootAdminIndex />}>
+              <Route path="settings" element={<Setting/>}/>
+              <Route path="asign-role" element={<AssignRole/>}/>
             </Route>
           {/* </Route> */}
 

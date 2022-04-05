@@ -16,15 +16,15 @@ const RecentBirthday = (props) => {
   
   return (
     <div className="">
-      <NavbarComponent />
-        <Container>
+      {/* <NavbarComponent />
+        <Container> */}
           <HistoryTitle title="RECENT COLLEAGUE BIRTHDAY"/>
             <ContainerContent>
               <div className="row mt-3">
               <RecentBirthdayItem lists={props.lists} isLoading={props.isLoading}/>
               </div>  
             </ContainerContent>
-        </Container>
+        {/* </Container> */}
       <Footer />
     </div>
   )

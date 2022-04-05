@@ -26,8 +26,8 @@ const HistoryTransaction = (props) => {
 
   return (
     <div>
-      <NavbarComponent />
-      <Container>
+      {/* <NavbarComponent />
+      <Container> */}
         <HistoryTitle title="History Transactions" />
         <Basket />
         <ContainerContent>
@@ -37,7 +37,7 @@ const HistoryTransaction = (props) => {
             <Pagination {...props.pagination} />
           </div>
         </ContainerContent>
-      </Container>
+      {/* </Container> */}
       <Footer />
     </div>
   );

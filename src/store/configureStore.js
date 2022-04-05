@@ -5,8 +5,10 @@ import FetchTransaction from './middleware/FetchTransaction';
 import FetchRecentBirthday from "./middleware/FetchRecentBirthday";
 import FetchSharedHistory from "./middleware/FetchSharedHistory";
 import FetchUsersList from "./middleware/FetchUsersList";
+import FetchUser from './middleware/FetchUser';
+import FetchSetting from './middleware/FetchSetting';
 
-const api = [FetchBazaarItem, FetchTransaction, FetchSharedHistory, FetchRecentBirthday, FetchUsersList,];
+const api = [FetchBazaarItem, FetchTransaction, FetchSharedHistory, FetchRecentBirthday, FetchUsersList, FetchUser, FetchSetting];
 
 export default function () {
   return configureStore({
