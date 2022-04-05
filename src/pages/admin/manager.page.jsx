@@ -1,4 +1,5 @@
 import React from 'react'
+import { useEffect } from 'react'
 import AdminTitle from '../../components/text/adminTitle.page'
 import NavbarComponent from '../../components/navbar/navbar.component'
 import ContainerContent from '../../components/container/container.component'
@@ -10,6 +11,10 @@ import { connect } from 'react-redux'
 
 
 const ManagerPage = (props) => {
+  useEffect(() => {
+    props.loadManager()
+    console.log(props)
+  }, [])
   return (
     <div className="">
       <NavbarComponent />
@@ -29,10 +34,10 @@ const ManagerPage = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-      lists: state.history.lists,
-      isLoading: state.history.isLoading,
-      error: state.history.error,
-      pagination: state.history.pagination,
+      lists: state.managerList.lists,
+      isLoading: state.managerList.isLoading,
+      error: state.managerList.error,
+      pagination: state.managerList.pagination,
     };
   };
   
@@ -42,12 +47,12 @@ const mapStateToProps = (state) => {
         return dispatch({
           type: "GetManagerList",
           payload: {
-            url: "/user/",
+            url: "/user/data",
             method: "POST",
             data: {
-              role : "4",
+              role : "2",
               fields:
-                "id, name, grades, office, email, status, resigndate",
+                "id, name, position, office, email, status",
               pageNumber: "0",
               pageSize: "10",
               sortBy: "id",
@@ -60,12 +65,12 @@ const mapStateToProps = (state) => {
         return dispatch({
           type: "GetManagerList",
           payload: {
-            url: "/user",
+            url: "/user/data",
             method: "POST",
             data: {
-              role : "4",
+              role : "2",
               fields:
-                "id, name, grades, office, email, status, resigndate",
+                "id, name, position, office, email, status",
               pageNumber: pageNumber - 1,
               pageSize: "10",
               sortBy: "id",
