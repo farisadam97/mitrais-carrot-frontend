@@ -18,7 +18,7 @@ const FetchManagerList = store => next => async action => {
                     data,
                 });
                 store.dispatch(fetchManagerListSuccess({
-                    manager: response.data.body.data,
+                    lists: response.data.body.data,
                     pagination: response.data.body.pagination,
                 }))
             }catch(error){
