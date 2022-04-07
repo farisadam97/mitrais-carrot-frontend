@@ -13,26 +13,25 @@ const ManagerComponent = ({lists, isLoading}) => {
                     <tr role={"row"}>
                         <th scope="col" rowSpan={"1"} colSpan={"1"} style={{width: "18px"}}>#</th>
                         <th scope="col" rowSpan={"1"} colSpan={"1"} style={{width: "160px"}}>Name</th>
-                        {/* <th scope="col" rowSpan={"1"} colSpan={"1"} style={{width: "22px"}}>JF</th> */}
+                        <th scope="col" rowSpan={"1"} colSpan={"1"} style={{width: "22px"}}>JF</th>
                         <th scope="col" rowSpan={"1"} colSpan={"1"} style={{width: "56px"}}>Grade</th>
                         <th scope="col" rowSpan={"1"} colSpan={"1"} style={{width: "54px"}}>Office</th>
                         <th scope="col" rowSpan={"1"} colSpan={"1"} style={{width: "92px"}}>Email</th>
                         <th scope="col" rowSpan={"1"} colSpan={"1"} style={{width: "59px"}}>Status</th>
-                        {/* <th scope="col" rowSpan={"1"} colSpan={"1"} style={{width: "150px"}}>Resign Date</th> */}
+                        <th scope="col" rowSpan={"1"} colSpan={"1"} style={{width: "150px"}}>Resign Date</th>
                     </tr>
                 </thead>
                 <tbody id="table-admin-list-manager">
                 {lists.length > 0 ? (
                     lists.map((item) => (
                     <tr key={item.id}>
-                        <td scope="row">{item.id}</td>
-                        <td>{item.name}</td>
-                        {/* <td>{item.grade}</td> */}
+                        <td scope="row">{item.name}</td>
                         <td>{item.position}</td>
+                        <td>{item.grade}</td>
                         <td>{item.office}</td>
                         <td>{item.email}</td>
                         <td>{item.status}</td>
-                        {/* <td>{item.resign_date}</td> */}
+                        <td>{item.resign_date}</td>
                     </tr>
                     ))
                 ) : isLoading ? (

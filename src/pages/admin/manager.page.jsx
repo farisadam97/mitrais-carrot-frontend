@@ -15,6 +15,7 @@ const ManagerPage = (props) => {
     props.loadManager()
     console.log(props)
   }, [])
+
   return (
     <div className="">
       <NavbarComponent />
@@ -50,9 +51,9 @@ const mapStateToProps = (state) => {
             url: "/user/data",
             method: "POST",
             data: {
-              role : "2",
+              role : "4",
               fields:
-                "id, name, position, office, email, status",
+                "id, name, position, grades, office, email, status, resign_date",
               pageNumber: "0",
               pageSize: "10",
               sortBy: "id",
@@ -68,9 +69,9 @@ const mapStateToProps = (state) => {
             url: "/user/data",
             method: "POST",
             data: {
-              role : "2",
+              role : "4",
               fields:
-                "id, name, position, office, email, status",
+                "id, name, position, grades, office, email, status, resign_date",
               pageNumber: pageNumber - 1,
               pageSize: "10",
               sortBy: "id",
