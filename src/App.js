@@ -33,9 +33,12 @@ function App() {
             </Route>
           {/* </Route> */}
 
-          <Route element={<RequireAuth allowedRoles={[RolesConfig.ROOT_ADMIN]} />}>
-            <Route path={RouteConfig.ROOT_ADMIN} element={<RootAdminIndex />}></Route>
-          </Route>
+          {/* <Route element={<RequireAuth allowedRoles={[RolesConfig.ROOT_ADMIN]} />}> */}
+            <Route path={RouteConfig.ROOT_ADMIN}>
+              <Route index element={<RootAdminIndex />}></Route>
+
+            </Route>
+          {/* </Route> */}
 
           <Route path={RouteConfig.UNAUTHORIZED} element={<Unauthorized/>}></Route>
           {/* catch all */}

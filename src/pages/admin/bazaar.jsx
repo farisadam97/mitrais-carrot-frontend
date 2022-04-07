@@ -9,25 +9,40 @@ import DefaultConfig from '../../config/config'
 import axios from 'axios'
 import {v4} from 'uuid'
 import PageTitle from '../../components/text/pageTitle.component'
+import LoadingModal from '../../components/modal/loading'
 
 const BazaarAdminPage = () => {
     const [itemsBazaar,setItemsBazaar] = useState()
-    const [isLoading,setIsLoading] = useState(true)
+    const [isLoading,setIsLoading] = useState(false)
+
+    const [filterCategory, setFilterCategory] =  useState('')
+    const [filterLocation,setFilterLocation] = useState('')
 
     const [inputName,setInputName] = useState('')
     const [inputDesc, setInputDesc] = useState('')
-    const [filterCategory, setFilterCategory] =  useState('')
-    const [filterLocation,setFilterLocation] = useState('')
     const [selectCategory,setSelectCategory] = useState('reward')
     const [selectLocation,setSelectLocation] = useState('1')
     const [inputCarrot, setInputCarrot] = useState(1)
     const [inputStock,setInputStock] = useState(1)
     const [inputMinCarrot,setInputMinCarrot] = useState(0)
     const [inputDate,setInputDate] = useState()
-
+    const [editedId,setEditedId] = useState()
+    
+    const [isEdit,setIsEdit] = useState(false)
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        setIsEdit(false)
+        setShow(true)
+        setEditedId('')
+        setInputName('')
+        setInputDesc('')
+        setSelectCategory('reward')
+        setSelectLocation('1')
+        setInputCarrot(1)
+        setInputStock(1)
+        setInputDate()
+    };
 
     const url = `${DefaultConfig.base_api}/v1/reward`
     const header = {
@@ -112,8 +127,7 @@ const BazaarAdminPage = () => {
         setInputDate(e.currentTarget.value)
     }
 
-    const sumbitAddReward = (e)=>{
-        e.preventDefault()
+    const sumbitAddItem = ()=>{
         axios.post(`${url}/add`,
             {
                 "category":selectCategory,
@@ -134,6 +148,99 @@ const BazaarAdminPage = () => {
         ).then(response => {
             handleClose()
             getDataReward()
+        })
+    }
+
+    const submitEditItem = () => {
+        axios.put(
+            `${url}`,
+            {
+                "id": editedId,
+                "idUser": 6,
+                "name": inputName,
+                "description": inputDesc,
+                "stock": inputStock,
+                "rate": inputCarrot,
+                "expireDate": inputDate,
+                "category": selectCategory,
+                "label": "",
+                "location": selectLocation
+            },
+            {
+                headers:header
+            }
+        ).then(response => {
+            setIsLoading(false)
+            setIsEdit(false)
+            alert(`Item successfully edited`)
+            handleClose()
+            getDataReward()
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+    const submitBtnHandle = (e) => {
+        e.preventDefault()
+        setIsLoading(true)
+        if(isEdit){
+            submitEditItem()
+        } else {
+            sumbitAddItem()
+        }
+    }
+
+    const deleteRewardHandle = (e,productId) => {
+        e.preventDefault()
+        if(window.confirm("Are you user delete this item?")){
+            axios.delete(`${url}/${productId}`,{
+                heders:header
+            })
+            .then((response) => {
+                alert("Item deleted")
+                getDataReward()
+            })
+            .catch((error) => {
+                alert("Something wrong!")
+            })
+        }
+        
+    }
+
+    const editItemHandle = (e,element) => {
+        e.preventDefault()
+        setShow(true)
+        setIsEdit(true)
+        setEditedId(element.id)
+        setInputName(element.name)
+        setInputDesc(element.description)
+        setSelectCategory(element.category)
+        setSelectLocation(element.location)
+        setInputCarrot(element.rate)
+        setInputStock(element.stock)
+        setInputDate(element.expireDate)
+
+    }
+
+    const toggleActive = (element) => {
+        let msg = (element.isActive === 0) ? "Item "+element.name + " has been activated" : "Item "+element.name + " has been deactivated"
+
+        setIsLoading(true)
+        axios.put(
+            `${url}/toggle-active`,
+            {
+                "id":`${element.id}`,
+                "message":msg
+            },
+            {
+                headers:header
+            }
+        ).then(response => {
+            setIsLoading(false)
+            alert(msg)
+            getDataReward()
+        }).catch(error => {
+            console.log(error)
         })
     }
 
@@ -172,7 +279,7 @@ const BazaarAdminPage = () => {
                                         <option value="2">Yogyakarta</option>
                                         <option value="3">Bandung</option>
                                         <option value="4">Jakarta</option>
-                                        <option value="5">Social Foundation</option>
+                                        <option value="5">Singapore</option>
                                     </select>
                                 </div>  
                             </div>
@@ -189,6 +296,7 @@ const BazaarAdminPage = () => {
                                             <th scope="col">Price</th>
                                             <th scope="col">Expiry Date</th>
                                             <th scope="col">Active</th>
+                                            <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -199,14 +307,30 @@ const BazaarAdminPage = () => {
                                                         <td key={v4()}>{element.name}</td>
                                                         <td key={v4()}>{element.category.toUpperCase()}</td>
                                                         <td key={v4()}>{
-                                                            element.location == "1" ? "Bali" : element.location == "2" ? "Yogyakarta" : element.location == "3" ? "Bandung" : element.location == "4" ? "Jakarta" : "Singapore"
+                                                            element.location === "1" ? "Bali" : element.location === "2" ? "Yogyakarta" : element.location === "3" ? "Bandung" : element.location === "4" ? "Jakarta" : "Singapore"
                                                         }</td>
                                                         <td key={v4()}>{element.stock}</td>
                                                         <td key={v4()}>{element.rate}</td>
                                                         <td key={v4()}>{element.expireDate}</td>
                                                         <td key={v4()}>
                                                             <div className="form-check form-switch">
-                                                                <input className="form-check-input" type="checkbox" id="flexSwitchCheckChecked" defaultChecked={!element.isActive} />
+                                                                <input 
+                                                                    className="form-check-input" 
+                                                                    type="checkbox" id="flexSwitchCheckChecked" 
+                                                                    defaultChecked={
+                                                                        (element.isActive) == 0 ? false : true
+                                                                    } 
+                                                                    onClick={(event) => toggleActive(element)} />
+                                                            </div>
+                                                        </td>
+                                                        <td key={v4()}>
+                                                            <div className="w-100">
+                                                                <div className="">
+                                                                    <a href="#" onClick={(e) => {editItemHandle(e,element)}} className='mr-3'>Edit</a>
+                                                                </div>
+                                                                <div className="">
+                                                                    <a href="#" onClick={(e) => {deleteRewardHandle(e,element.id)}}>Delete</a>
+                                                                </div>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -221,9 +345,14 @@ const BazaarAdminPage = () => {
                     </ContainerContent>
 
             </Container>
-            <Modal show={show} onHide={handleClose}>
+
+            <Modal show={show} onHide={handleClose} backdrop="static">
                 <Modal.Header closeButton>
-                    <Modal.Title>Add Reward</Modal.Title>
+                    <Modal.Title>
+                        {
+                            isEdit ? "Edit Item" : "Add Reward"
+                        }
+                    </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                 <form>
@@ -243,8 +372,8 @@ const BazaarAdminPage = () => {
                         </select>
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="filterCategory" className="form-label">Location</label>
-                        <select id='filterCategory' className="form-select" aria-label="Default select example" value={selectLocation} onChange={selectLocationHandle} required >
+                        <label htmlFor="selectLocation" className="form-label">Location</label>
+                        <select id='selectLocation' className="form-select" aria-label="Default select example" value={selectLocation} onChange={selectLocationHandle} required >
                             <option value="1">Bali</option>
                             <option value="2">Yogyakarta</option>
                             <option value="3">Bandung</option>
@@ -260,23 +389,27 @@ const BazaarAdminPage = () => {
                         <label htmlFor="inputStock" className="form-label">Stock</label>
                         <input type="number" min={0} className="form-control" id="inputStock" aria-describedby="emailHelp" value={inputStock} onChange={stockInputHandle} required />
                     </div>
-                    <div className={`mb-3 ${selectCategory == "socfound" ? "d-block" : "d-none"}`}>
+                    <div className={`mb-3 ${selectCategory === "socfound" ? "d-block" : "d-none"}`}>
                         <label htmlFor="inputMinimumCarrot" className="form-label">Minimum Carrots</label>
-                        <input type="number" min={0} className="form-control" id="inputMinimumCarrot" aria-describedby="emailHelp" value={selectCategory == "socfound" ? inputMinCarrot : 0} onChange={minCarrotInputHandle} required />
+                        <input type="number" min={0} className="form-control" id="inputMinimumCarrot" aria-describedby="emailHelp" value={selectCategory === "socfound" ? inputMinCarrot : 0} onChange={minCarrotInputHandle} required />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="inputDate" className="form-label">Expire Date</label>
-                        <input id="inputDate" name="" type="date" className="form-control here"  onChange={expireDateHandle} required />
+                        <input id="inputDate" name="" type="date" className="form-control here" value={inputDate} onChange={expireDateHandle} required />
                     </div>
                     
                 </form>
                 </Modal.Body>
                 <Modal.Footer>
-                <Button variant="primary" onClick={sumbitAddReward}>
-                    Save New Reward
+                <Button variant="primary" onClick={submitBtnHandle}>
+                    {
+                        isEdit ? "Update Item" : "Save New Reward"
+                    }
                 </Button>
                 </Modal.Footer>
             </Modal>
+
+            <LoadingModal isLoading={isLoading}></LoadingModal>
         </div>
     )
 }
