@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import FetchCarrotStaff from "./admin/middleware_admin/FetchCarrotStaff";
 import FetchManagerList from "./admin/middleware_admin/FetchManagerList";
 import FetchBazaarItem from "./middleware/FetchBazaarItem";
 import FetchRecentBirthday from "./middleware/FetchRecentBirthday";
@@ -12,6 +13,7 @@ const api = [
   FetchRecentBirthday,
   FetchUsersList,
   FetchManagerList,
+  FetchCarrotStaff
 ];
 
 export default function () {

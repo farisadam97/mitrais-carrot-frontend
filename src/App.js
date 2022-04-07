@@ -15,6 +15,7 @@ import HistoryTransaction from "./pages/staff/history-transaction/shared.page";
 import { Provider } from "react-redux";
 import RecentBirthday from "./pages/staff/birthday/recent.birthday.page";
 import ManagerPage from "./pages/admin/manager.page";
+import CarrotStaffPage from "./pages/admin/carrot.staff.page";
 
 const store = configureStore();
 
@@ -29,6 +30,7 @@ function App() {
           <Route path="/history-transaction" element={<HistoryTransaction />} />
           <Route path="/recent-birthday" element={<RecentBirthday />} />
           <Route path="/manager-list" element={<ManagerPage />} />
+          <Route path="/carrot-summary" element={<CarrotStaffPage />} />
         </Routes>
       </BrowserRouter>
     </Provider>
