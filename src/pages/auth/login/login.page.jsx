@@ -52,7 +52,9 @@ const LoginPage = () => {
                     case RolesConfig.STAFF:
                         navigate(`${RouteConfig.STAFF}`,{replace:true})
                         break;
-                
+                    case RolesConfig.ADMIN:
+                        navigate(`${RouteConfig.ADMIN}`,{replace:true})
+                        break
                     default:
                         break;
                 }
