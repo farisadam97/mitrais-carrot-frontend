@@ -16,15 +16,20 @@ import { Routes, Route, Switch} from 'react-router-dom';
 import RequireAuth from './hooks/RequireAuth';
 import RouteConfig from './config/Route';
 import RolesConfig from './config/Roles';
+import DashboardStaff from './components/staff/dashboard.component';
+import DetailsItem from './components/bazaar/itemDetails.component';
 
 function App() {
   return (
       <Routes>
           <Route path="/" element={<LoginPage />}></Route>
 
-          <Route element={<RequireAuth allowedRoles={[RolesConfig.STAFF]} />}>
-            <Route path={RouteConfig.STAFF} element={<IndexStaff />}></Route>
-          </Route>
+          {/* <Route element={<RequireAuth allowedRoles={[RolesConfig.STAFF]} />}> */}
+            <Route path={RouteConfig.STAFF} element={<IndexStaff />}>
+              <Route index element={<DashboardStaff/>}/>
+              <Route path="reward/:id" element={<DetailsItem />}/>
+            </Route>
+          {/* </Route> */}
 
           {/* <Route element={<RequireAuth allowedRoles={[RolesConfig.ADMIN]} />}> */}
             <Route path={RouteConfig.ADMIN} >
@@ -43,7 +48,6 @@ function App() {
           <Route path={RouteConfig.UNAUTHORIZED} element={<Unauthorized/>}></Route>
           {/* catch all */}
         {/* <Route path="*" element={<Missing />} /> */}
-
       </Routes>
   );
 }
