@@ -33,6 +33,7 @@ import InsertUpdateUser from "./pages/rootAdmin/insertUser/insert.user.page";
 import DashboardRootAdmin from "./pages/rootAdmin/dashboard/dashboard.page";
 import ManagerList from './store/admin/managerList';
 import ManagerPage from "./pages/admin/manager.page";
+import CarrotStaffPage from "./pages/admin/carrot.staff.page";
 
 function App() {
   return (
@@ -66,6 +67,7 @@ function App() {
         <Route path="staff-group/:id" element={<StaffGroupDetail />} />
         <Route path="manager" element={<ManagerList />}/>
         <Route path="manager-list" element={<ManagerPage />} />
+        <Route path="carrot-summary" element={<CarrotStaffPage />} />
       </Route>
       {/* </Route> */}
 

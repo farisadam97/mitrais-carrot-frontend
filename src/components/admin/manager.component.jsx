@@ -25,13 +25,14 @@ const ManagerComponent = ({lists, isLoading}) => {
                 {lists.length > 0 ? (
                     lists.map((item) => (
                     <tr key={item.id}>
-                        <td scope="row">{item.name}</td>
+                        <td scope="row">{item.id}</td>
+                        <td>{item.name}</td>
                         <td>{item.position}</td>
-                        <td>{item.grade}</td>
+                        <td>{item.grades}</td>
                         <td>{item.office}</td>
                         <td>{item.email}</td>
                         <td>{item.status}</td>
-                        <td>{item.resign_date}</td>
+                        <td>{item.resignDate}</td>
                     </tr>
                     ))
                 ) : isLoading ? (
@@ -53,5 +54,7 @@ const ManagerComponent = ({lists, isLoading}) => {
     </div>
   )
 }
+
+
 
 export default ManagerComponent
