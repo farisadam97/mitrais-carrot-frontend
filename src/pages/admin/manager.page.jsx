@@ -53,7 +53,7 @@ const mapStateToProps = (state) => {
             data: {
               role : "4",
               fields:
-                "id, name, position, grades, office, email, status, resign_date",
+                "id, name, position, grades, office, email, status, resignDate",
               pageNumber: "0",
               pageSize: "10",
               sortBy: "id",
@@ -71,7 +71,7 @@ const mapStateToProps = (state) => {
             data: {
               role : "4",
               fields:
-                "id, name, position, grades, office, email, status, resign_date",
+                "id, name, position, grades, office, email, status, resignDate",
               pageNumber: pageNumber - 1,
               pageSize: "10",
               sortBy: "id",
