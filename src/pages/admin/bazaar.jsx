@@ -44,7 +44,7 @@ const BazaarAdminPage = () => {
         setInputDate()
     };
 
-    const url = `${DefaultConfig.base_api}/v1/reward`
+    const url = `${DefaultConfig.base_api}/reward`
     const header = {
         'Authorization' : `Bearer ${localStorage.getItem('access_token')}`
     }
@@ -378,7 +378,7 @@ const BazaarAdminPage = () => {
                             <option value="2">Yogyakarta</option>
                             <option value="3">Bandung</option>
                             <option value="4">Jakarta</option>
-                            <option value="5">Social Foundation</option>
+                            <option value="5">Singapore</option>
                         </select>
                     </div> 
                     <div className="mb-3">
