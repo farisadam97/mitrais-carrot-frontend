@@ -11,6 +11,12 @@ const slice = createSlice({
   name: "historyTransaction",
   initialState,
   reducers: {
+    resetHistory: (historyTransaction, action) => {
+      historyTransaction.lists = [];
+      historyTransaction.isLoading = false;
+      historyTransaction.error = null;
+      historyTransaction.pagination = null;
+    },
     apiHistoryTrxRequestSucceeded: (historyTransaction, action) => {
       historyTransaction.lists = action.payload.lists;
       historyTransaction.isLoading = false;
@@ -26,7 +32,10 @@ const slice = createSlice({
   },
 });
 
-export const { apiHistoryTrxRequestSucceeded, apiHistoryTrxRequestFailed } =
-  slice.actions;
+export const {
+  resetHistory,
+  apiHistoryTrxRequestSucceeded,
+  apiHistoryTrxRequestFailed,
+} = slice.actions;
 
 export default slice.reducer;
