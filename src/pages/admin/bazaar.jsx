@@ -247,10 +247,10 @@ const BazaarAdminPage = () => {
     return (
         
         <div className="">
-            <NavbarComponent />
-            <Container>
-                <Header />
-                <hr className='box-title-hr'></hr>
+            {/* <NavbarComponent /> */}
+            {/* <Container> */}
+                {/* <Header /> */}
+                {/* <hr className='box-title-hr'></hr> */}
                     <ContainerContent title="BAZAAR">
                         <div className="row justify-content-center my-4">
                             <div className="col-md-3">
@@ -344,7 +344,7 @@ const BazaarAdminPage = () => {
                         </div>
                     </ContainerContent>
 
-            </Container>
+            {/* </Container> */}
 
             <Modal show={show} onHide={handleClose} backdrop="static">
                 <Modal.Header closeButton>

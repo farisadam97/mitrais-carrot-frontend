@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import PageTitle from "../text/pageTitle.component";
 import ContainerContent from "../container/container.component";
 import BazaarItem from "../bazaar/item.component"
 import StaffSummary from "../summary/staff.component";
@@ -24,7 +23,6 @@ const Dashboard = (props) => {
 
     return (
         <div>
-            <PageTitle title="DASHBOARD"></PageTitle>
             <StaffSummary></StaffSummary>
             <div className="row admin-tabs mb-4">
                 <div className="col-md-auto nav-pills">

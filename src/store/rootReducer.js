@@ -5,6 +5,7 @@ import historyTrxReducer from "./historyTransaction";
 import recentBirthdayReducer from "./recentBirthday";
 import usersList from "./usersList";
 import carrotSettings from "./carrotSettings";
+import groupReducer from "./userGroup";
 
 export default combineReducers({
     bazaarItem: bazaarItemReducer,
@@ -13,4 +14,5 @@ export default combineReducers({
     RecentBirthdayItem: recentBirthdayReducer,
     user: usersList,
     setting: carrotSettings,
+    group: groupReducer,
 })

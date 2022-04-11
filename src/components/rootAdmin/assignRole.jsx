@@ -3,7 +3,7 @@ import { Table } from "react-bootstrap";
 
 const AssignRole = (props) => {
     return (
-        <ContainerContent title="Asign Role As Admin">
+        <ContainerContent title="Assign Role As Admin">
             <Table bordered hover striped>
                 <thead>
                     <tr>
@@ -35,4 +35,18 @@ const AssignRole = (props) => {
     );
 }
  
+
+const mapStateToProps = state => {
+    return {
+
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        getAlluser: () => {
+            return dispatch()
+        }
+    }
+}
 export default AssignRole;

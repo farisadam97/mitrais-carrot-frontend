@@ -8,6 +8,12 @@ const GetUsersList = createAction("GetUsersList");
 const GetUser = createAction("GetUser");
 const GetSettings = createAction("GetSettings");
 const UpdateSettings = createAction("UpdateSettings");
+const GetGroupList = createAction("GetGroupList");
+const AddGroup = createAction("AddGroup");
+const UpdateGroup = createAction("UpdateGroup");
+const DeleteGroup = createAction("DeleteGroup");
+const GetGroupDetails = createAction("GetGroupDetails");
+const GetGroupStaff = createAction("GetGroupStaff");
 
 export {
     GetBazaarItem, 
@@ -18,4 +24,10 @@ export {
     GetUser,
     GetSettings,
     UpdateSettings,
+    GetGroupList,
+    AddGroup,
+    UpdateGroup,
+    DeleteGroup,
+    GetGroupDetails,
+    GetGroupStaff,
 };

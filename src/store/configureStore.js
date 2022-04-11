@@ -7,8 +7,9 @@ import FetchSharedHistory from "./middleware/FetchSharedHistory";
 import FetchUsersList from "./middleware/FetchUsersList";
 import FetchUser from './middleware/FetchUser';
 import FetchSetting from './middleware/FetchSetting';
+import FetchGroup from './middleware/FetchGroup';
 
-const api = [FetchBazaarItem, FetchTransaction, FetchSharedHistory, FetchRecentBirthday, FetchUsersList, FetchUser, FetchSetting];
+const api = [FetchBazaarItem, FetchTransaction, FetchSharedHistory, FetchRecentBirthday, FetchUsersList, FetchUser, FetchSetting, FetchGroup];
 
 export default function () {
   return configureStore({
