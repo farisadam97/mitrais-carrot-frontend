@@ -24,7 +24,7 @@ const ManagerPage = (props) => {
         <ContainerContent title="MANAGER LIST">
           <div className="row mt-3">
               <ManagerComponent lists={props.lists} isLoading={props.isLoading} />
-              <Pagination {...props.pagination} />
+              {/* <Pagination {...props.pagination} /> */}
           </div>
         </ContainerContent>
       </Container>

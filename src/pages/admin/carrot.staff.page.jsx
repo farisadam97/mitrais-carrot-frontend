@@ -16,17 +16,13 @@ const CarrotStaffPage = (props) => {
       }, [])
   return (
     <div className="">
-        <NavbarComponent />
-        <Container>
-            <AdminTitle active1="active" />
             <ContainerContent title="CARROT SUMMARY">
                 <div className="row mt-3">
-                    <SummaryCarrot lists={props.lists} isLoading={props.isLoading}/>
+                    {/* <SummaryCarrot lists={props.lists} isLoading={props.isLoading}/> */}
                     {/* <ManagerComponent lists={props.lists} isLoading={props.isLoading} /> */}
-                    <Pagination {...props.pagination}/>
+                    {/* <Pagination {...props.pagination}/> */}
                 </div>
             </ContainerContent>
-        </Container>
         <Footer />
     </div>
   )
