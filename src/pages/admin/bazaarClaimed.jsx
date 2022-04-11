@@ -31,10 +31,10 @@ const BazaarClaimedPage = () => {
 
     return (
         <div className="">
-            <NavbarComponent />
+            {/* <NavbarComponent />
             <Container>
                 <Header />
-                <hr className='box-title-hr'></hr>
+                <hr className='box-title-hr'></hr> */}
                 <ContainerContent title="CLAIMED BAZAAR ITEMS">
                     <div className="my-3"></div>
                     <Tab.Container defaultActiveKey={"reward"}>
@@ -59,7 +59,7 @@ const BazaarClaimedPage = () => {
                         </Tab.Content>
                     </Tab.Container>
                 </ContainerContent>
-            </Container>
+            {/* </Container> */}
         </div>
     )
 }

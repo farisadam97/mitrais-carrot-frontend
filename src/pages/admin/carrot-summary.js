@@ -39,10 +39,10 @@ const CarrotSummary = () => {
 
   return (
     <div>
-        <NavbarComponent />
-        <Container>
-            <Header />
-            <hr className='box-title-hr'></hr>
+        {/* <NavbarComponent /> */}
+        {/* <Container> */}
+            {/* <Header /> */}
+            {/* <hr className='box-title-hr'></hr> */}
             <ContainerContent title="CARROT SUMARY">
                 <div className='col-md-12'>
                     <div id='staff-table-carrot' className='dataTables_wrapper dr-bootstrap4 no-footer'>
@@ -114,7 +114,7 @@ const CarrotSummary = () => {
                     </table>
                 </div>
             </ContainerContent>
-        </Container>
+        {/* </Container> */}
     </div>
   )
 }

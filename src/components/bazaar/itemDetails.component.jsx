@@ -2,6 +2,8 @@ import { Link, useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import { useEffect, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
+import HistoryTitle from "../text/historyTitle.component";
+
 const ItemDetails = (props) => {
     const { id } = useParams();
     const [show, setShow] = useState(false);
@@ -33,14 +35,7 @@ const ItemDetails = (props) => {
 
     return (
         <div>
-            <main role="main" className="container">
-                <h2 className="my-4 pl-0 text-grey ml-0">
-                    <span className="back-button">
-                        <Link to={-1}><img src="../../assets/img/back.png" alt="" className="back" /></Link>
-                    </span> 
-                    Bazaar
-                </h2>
-            </main>
+            <HistoryTitle title="Bazaar"/>
             {trxIsLoading && <p>transfer loading...</p>}
             {(!props.detailItem && !props.error) && <p>Loading...</p>}
             {props.error && <p>{props.error}</p>}

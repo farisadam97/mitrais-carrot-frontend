@@ -3,6 +3,7 @@ import PageTitle from "../../../components/text/pageTitle.component";
 import NavbarComponent from "../../../components/navbar/navbar.component";
 import ContainerContent from "../../../components/container/container.component";
 import Container from "../../container";
+import { Outlet } from "react-router-dom";
 
 const RootAdminIndex = props => {
     return(
@@ -38,9 +39,7 @@ const RootAdminIndex = props => {
                     </div>
 
                 </div>
-                <ContainerContent title="SUMMARY">
-
-                </ContainerContent>
+                <Outlet/>
             </Container>
         </div>
     )
