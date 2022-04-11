@@ -3,6 +3,7 @@ import ContainerContent from "../container/container.component";
 import BazaarItem from "../bazaar/item.component"
 import StaffSummary from "../summary/staff.component";
 import { connect } from "react-redux";
+import PageTitle from "../text/pageTitle.component";
 
 const Dashboard = (props) => {
     const [category, setCategory] = useState("reward");
@@ -23,6 +24,7 @@ const Dashboard = (props) => {
 
     return (
         <div>
+            <PageTitle title="DASHBOARD"></PageTitle>
             <StaffSummary></StaffSummary>
             <div className="row admin-tabs mb-4">
                 <div className="col-md-auto nav-pills">

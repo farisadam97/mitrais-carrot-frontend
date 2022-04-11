@@ -5,34 +5,38 @@ import { Modal, Button } from "react-bootstrap";
 import Select from "react-select";
 import { connect } from "react-redux";
 import axios from "axios";
+import basketHistory from "../../store/basketHistory";
 
-const dummyData = [
-  {
-    title: "Rewards",
-    description: "Earn points for every purchase",
-    icon: iconCarrot,
-    link: "/rewards",
-    amount: 600,
-    amountStr: "+600 Carrots",
-  },
-  {
-    title: "Shared",
-    description: "Earn points for every purchase",
-    icon: iconCarrot,
-    link: "/rewards",
-    amount: 70,
-    amountStr: "-70 Carrots",
-  },
+const initialBasket = [
   {
     title: "Bazaar",
     description: "Earn points for every purchase",
     icon: iconCarrot,
     link: "/rewards",
-    amount: 30,
-    amountStr: "+30 Carrots",
+    amount: 0,
+    amountStr: `Loading...`,
+    class: "box-reward",
   },
-];
-
+  {
+    title: "Donation",
+    description: "Earn points for every purchase",
+    icon: iconCarrot,
+    link: "/rewards",
+    amount: 0,
+    amountStr: `0 Carrots`,
+    class: "box-shared",
+  },
+  {
+    title: "Share",
+    description: "Earn points for every purchase",
+    icon: iconCarrot,
+    link: "/rewards",
+    amount: 0,
+    amountStr: `0 Carrots`,
+    class: "box-bazaar",
+  },
+]
+      
 const Basket = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingSubmit, setLoadingSubmit] = useState(false);
@@ -40,17 +44,40 @@ const Basket = (props) => {
   const [getUsers, setUsers] = useState([]);
   const [getSelectedUser, setSelectedUser] = useState("");
   const [getMessage, setMessage] = useState("");
-  const [getAmount, setAmount] = useState("");
+  const [getAmount, setAmount] = useState(1);
+  const [getBasket, setBasket] = useState({});
+  const [getCardBasket, setCardBasket] = useState(initialBasket);
 
   useEffect(() => {
     props.loadUsers();
+    props.loadBasketHistory();
     setIsLoading(false);
   }, []);
+
+  useEffect(() => {
+    const initial = initialBasket.filter((e) => {
+      if (e.title == "Bazaar") {
+        e.amount = getBasket.spentAmount
+        e.amountStr = e.amount > 0 ? `-${getBasket.spentAmount} Carrots` : "0 Carrot";
+      } else if (e.title == "Donation") {
+        e.amount = getBasket.donateAmount
+        e.amountStr = e.amount > 0 ? `-${getBasket.donateAmount} Carrots` : "0 Carrot";
+      } else if (e.title == "Share") {
+        e.amount = getBasket.sharedAmount
+        e.amountStr = e.amount > 0 ? `-${getBasket.sharedAmount} Carrots` : "0 Carrot";
+      }
+      return e;
+    })
+    setCardBasket(initial)
+  }, [getBasket])
 
   useEffect(() => {
     props.lists.map((user) =>
       setUsers((e) => [...e, { value: user.id, label: user.name }])
     );
+    props.basket.map((basketHistory) => {
+      setBasket(basketHistory);
+    });
   }, [props]);
 
   const handleModal = () => setShow(!show);
@@ -73,17 +100,23 @@ const Basket = (props) => {
 
     const url = "http://localhost:2022/api/v1/transaction/send-carrot";
     const payload = {
-      senderId: 5,
+      senderId: 7,
       receiverId: parseInt(getSelectedUser),
       message: getMessage,
       amount: parseInt(getAmount),
     };
 
     try {
-      axios.post(url, payload).then(() => {
+      axios.post(url, payload).then((res) => {
+        if (res.data.status == "INTERNAL_SERVER_ERROR") {
+          alert("Something is wrong! Please Try Again.")
+        }
+      })
         setLoadingSubmit(false);
+        setSelectedUser("");
+        setMessage("");
+        setAmount("");
         handleModal();
-      });
     } catch (e) {
       alert("error request:", e);
     }
@@ -105,10 +138,10 @@ const Basket = (props) => {
     <div>
       <section className="mini-dashboard px-3 my-4">
         <div className="row gx-5">
-          {dummyData.map((item, index) => {
+          {getCardBasket.map((item, index) => {
             return (
-              <div className="col-md-4 my-auto" key={index}>
-                <div className="row box-reward px-0 mr-0">
+              <div className="col-md-4 pr-2 my-auto" key={index}>
+                <div className={`row ${item.class} px-0 mr-0`}>
                   <div className="col-md-4 my-auto">
                     <img
                       src={item.icon}
@@ -119,14 +152,14 @@ const Basket = (props) => {
                   <div className="col-md-8 my-auto">
                     <p className="sub-title">{item.title}</p>
                     <h2 className="text-white">{item.amountStr}</h2>
-                    <p
+                    <a
                       className="badge badge-white"
                       onClick={handleModal}
                       data-toggle="modal"
                       data-target="#exampleModal"
                     >
                       Share carrot!
-                    </p>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -168,10 +201,14 @@ const Basket = (props) => {
                 id="amount"
                 type="number"
                 className="form-control"
+                min="1"
+                max={getBasket.currentAmount}
                 value={getAmount}
                 onChange={handleInputAmount}
                 required
               />
+              {getAmount > parseInt(getBasket.currentAmount) ? <div>The carrot amount is insufficient</div> : null}
+              {getAmount <= 0 ? <div>The minimum amount is 1</div> : null}
             </div>
             <div className="form-group">
               <label htmlFor="text1">Carrot Left</label>
@@ -179,7 +216,7 @@ const Basket = (props) => {
                 id="carrot-left"
                 type="number"
                 className="form-control here"
-                placeholder="555"
+                placeholder={getBasket.currentAmount}
                 disabled
               />
             </div>
@@ -194,9 +231,9 @@ const Basket = (props) => {
             form="send-carrot-form"
             className="btn btn-carrot radius-5"
             onClick={handleClickShare}
-            isLoading={isLoadingSubmit}
+            disabled = {isLoadingSubmit}
           >
-            Send Carrot
+            {isLoadingSubmit ? 'Loading...' : 'Send Carrot'}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -209,7 +246,8 @@ const mapStateToProps = (state) => {
     lists: state.user.lists,
     isLoading: state.user.isLoading,
     error: state.user.error,
-    pagination: state.user.pagination,
+    basket: state.basketItem.lists,
+    // pagination: state.user.pagination,
   };
 };
 
@@ -222,12 +260,24 @@ const mapDispatchToProps = (dispatch) => {
           url: "/user",
           method: "POST",
           data: {
-            role: "5",
-            fields: "id, name",
+            roleId: "5",
             pageNumber: "0",
-            pageSize: "100",
+            pageSize: "1000",
             sortBy: "name",
             sortDir: "asc",
+          },
+        },
+      });
+    },
+    loadBasketHistory: () => {
+      return dispatch({
+        type: "GetBasketHistory",
+        payload: {
+          url: "/basket/7",
+          method: "POST",
+          data: {
+            role: "5",
+            fields: "id, shared_amount, donate_amount, spent_amount, current_amount",
           },
         },
       });
