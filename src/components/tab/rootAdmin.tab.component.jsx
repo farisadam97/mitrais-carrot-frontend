@@ -1,35 +1,31 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const RootTabs = ({ url }) => {
-    const [isActive, setIsActive] = useState(false);
-    useEffect(() => {
-        if (url === "/rootadmin/insert-update") {
-            setIsActive(true);
-        }
-    }, []);
+    const [nav, setNav] = useState("dashboard");
 
     return (
         <div className="row admin-tabs mb-4">
             <div className="col-md-auto nav-pills">
-                <a href="/rootadmin/" className={`nav-link ${isActive ? 'active' : ''}`}>DASHBOARD</a>
+                <Link className={`nav-link ${nav === 'dashboard'? 'active' : '' }`} to="" onClick={() => setNav("dashboard")}>DASHBOARD</Link>
             </div>
             <div className="col-md-auto nav-pills">
-                <a href="/rootadmin/" className={`nav-link ${isActive ? 'active' : ''}`}>BAZAAR</a>
+                <Link className={`nav-link ${nav === 'bazaar'? 'active' : '' }`} to="" onClick={() => setNav("bazaar")}>BAZAAR</Link>
             </div>
             <div className="col-md-auto nav-pills">
-                <a href="/rootadmin/" className={`nav-link ${isActive ? 'active' : ''}`}>ASIGN ROLE</a>
+                <Link className={`nav-link ${nav === 'assign-role'? 'active' : '' }`} to="assign-role" onClick={() => setNav("assign-role")}>ASSIGN ROLE</Link>
             </div>
             <div className="col-md-auto nav-pills">
-                <a href="/rootadmin/" className={`nav-link ${isActive ? 'active' : ''}`}>HARVEST</a>
+                <Link className={`nav-link ${nav === 'harvest'? 'active' : '' }`} to="" onClick={() => setNav("harvest")}>HARVEST</Link>
             </div>
             <div className="col-md-auto nav-pills">
-                <a href="/rootadmin/" className={`nav-link ${isActive ? 'active' : ''}`}>DISTRIBUTION</a>
+                <Link className={`nav-link ${nav === 'distribution'? 'active' : '' }`} to="" onClick={() => setNav("distribution")}>DISTRIBUTION</Link>
             </div>
             <div className="col-md-auto nav-pills">
-                <a href="/rootadmin/" className={`nav-link ${isActive ? 'active' : ''}`}>SETTING</a>
+                <Link className={`nav-link ${nav === 'settings'? 'active' : '' }`} to="settings" onClick={() => setNav("settings")}>SETTING</Link>
             </div>
             <div className="col-md-auto nav-pills">
-                <a href="/rootadmin/insert-update" className={`nav-link ${isActive ? 'active' : ''}`}>INSERT/UPDATE STAFF</a>
+                <Link className={`nav-link ${nav === 'insert-update'? 'active' : '' }`} to="insert-update" onClick={() => setNav("insert-update")}>INSERT/UPDATE STAFF</Link>
             </div>
         </div>
     )
