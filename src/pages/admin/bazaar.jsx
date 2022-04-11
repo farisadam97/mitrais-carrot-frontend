@@ -30,6 +30,9 @@ const BazaarAdminPage = () => {
     
     const [isEdit,setIsEdit] = useState(false)
     const [show, setShow] = useState(false);
+    const [showDetailSocfound,setShowDetailSocfound] = useState(false)
+    const [dataSocfound,setDataSocfound] = useState({})
+    const [cashoutAmount,setCashoutAmount] = useState(0)
     const handleClose = () => setShow(false);
     const handleShow = () => {
         setIsEdit(false)
@@ -53,7 +56,7 @@ const BazaarAdminPage = () => {
         const body = {
             "category":filterCategory,
             "location":filterLocation,
-            "fields":"id,category,name,description,rate,stock,carrot_price,expire_date,is_active,location",
+            "fields":"id,category,name,description,rate,stock,expire_date,is_active,location,min_carrots,collected_carrots",
             "page_number":"0",
             "page_size":"10",
             "sort_by":"id",
@@ -101,6 +104,9 @@ const BazaarAdminPage = () => {
 
     const selectCategoryHandle = (e) => {
         setSelectCategory(e.currentTarget.value)
+        if(e.currentTarget.value === "socfound") {
+            setInputStock(1)
+        }
     }
 
     const selectLocationHandle = (e) => {
@@ -244,6 +250,51 @@ const BazaarAdminPage = () => {
         })
     }
 
+    const detailSocfound = (e,element) => {
+        e.preventDefault()
+        setShowDetailSocfound(true)
+        setDataSocfound({
+            "id":element.id,
+            "name": element.name,
+            "desc": element.description,
+            "minCarrots":element.minCarrots,
+            "totalCarrot":element.collectedCarrots
+        })
+    }
+
+    const handleCloseDetailSocfound = () => {
+        setShowDetailSocfound(false)
+        setDataSocfound({})
+    }
+
+    const inputCashoutHandle = e => {
+        setCashoutAmount(e.currentTarget.value)
+    }
+
+    const cashOutSocfound = () => {
+        if(window.confirm(`Do you want to cashout ${cashoutAmount} carrots? from ${dataSocfound.name}`)){
+            setIsLoading(true)
+            axios.post(
+                `${DefaultConfig.base_api}/transaction/cash-out`,
+                {
+                    "id":dataSocfound.id,
+                    "adminId":6,
+                    "amount":cashoutAmount
+                },
+                {headers:header}
+            ).then(response => {
+                alert("Successfully Cashout Carrots!")
+                setIsLoading(false)
+                setShowDetailSocfound(false)
+                setDataSocfound({})
+                setCashoutAmount(0)
+            }).catch(error => {
+                console.log(error)
+            })
+        }
+        
+    }
+
     return (
         
         <div className="">
@@ -331,6 +382,11 @@ const BazaarAdminPage = () => {
                                                                 <div className="">
                                                                     <a href="#" onClick={(e) => {deleteRewardHandle(e,element.id)}}>Delete</a>
                                                                 </div>
+                                                                <div className="">
+                                                                    {
+                                                                        (element.category.toUpperCase() === "SOCFOUND") ? <a href="#" onClick={(e) => {detailSocfound(e,element)}}>Detail</a> : ""
+                                                                    }
+                                                                </div>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -346,6 +402,7 @@ const BazaarAdminPage = () => {
 
             {/* </Container> */}
 
+            {/* Modal add/edit item */}
             <Modal show={show} onHide={handleClose} backdrop="static">
                 <Modal.Header closeButton>
                     <Modal.Title>
@@ -387,10 +444,10 @@ const BazaarAdminPage = () => {
                     </div>
                     <div className="mb-3">
                         <label htmlFor="inputStock" className="form-label">Stock</label>
-                        <input type="number" min={0} className="form-control" id="inputStock" aria-describedby="emailHelp" value={inputStock} onChange={stockInputHandle} required />
+                        <input type="number" min={0} className="form-control" id="inputStock" aria-describedby="emailHelp" value={inputStock} onChange={stockInputHandle} disabled={selectCategory === "socfound" ? true : false} required />
                     </div>
                     <div className={`mb-3 ${selectCategory === "socfound" ? "d-block" : "d-none"}`}>
-                        <label htmlFor="inputMinimumCarrot" className="form-label">Minimum Carrots</label>
+                        <label htmlFor="inputMinimumCarrot" className="form-label">Minimum Carrots Collected</label>
                         <input type="number" min={0} className="form-control" id="inputMinimumCarrot" aria-describedby="emailHelp" value={selectCategory === "socfound" ? inputMinCarrot : 0} onChange={minCarrotInputHandle} required />
                     </div>
                     <div className="mb-3">
@@ -409,6 +466,49 @@ const BazaarAdminPage = () => {
                 </Modal.Footer>
             </Modal>
 
+            {/* Modal detail Socfound */}
+            <Modal show={showDetailSocfound} onHide={handleCloseDetailSocfound} >
+                <Modal.Header closeButton>
+                    <Modal.Title>
+                        Detail Socfound
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                <form className='was-validated'>
+                    <div className="mb-3">
+                        <label htmlFor="inputName" className="form-label">Name</label>
+                        <input type="text" className="form-control" id="name-socfound" value={dataSocfound.name} onChange={e=>{}} aria-describedby="emailHelp" disabled />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="inputDescription" className="form-label">Description</label>
+                        <textarea rows={2} className="form-control" id="desc-socfound" value={dataSocfound.desc} onChange={e=>{}} aria-describedby="emailHelp"  disabled/>
+                    </div>
+                    <div className={`mb-3 `}>
+                        <label htmlFor="min-carrot" className="form-label">Minimum Carrots Collected</label>
+                        <input type="text" className="form-control" id="min-carrot" value={dataSocfound.minCarrots} onChange={e=>{}} aria-describedby="emailHelp" disabled />
+                    </div>
+                    <div className={`mb-3 `}>
+                        <label htmlFor="total-carrot" className="form-label">Total Carrots Collected</label>
+                        <input type="text" className="form-control" id="total-carrot" value={dataSocfound.totalCarrot} onChange={e=>{}} aria-describedby="emailHelp" disabled />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="cashout-amount" className="form-label">Cashout Amount</label>
+                        <input id="cashout-amount" min={0} type="number" className="form-control here" 
+                            value={cashoutAmount} onChange={inputCashoutHandle} disabled={(dataSocfound.totalCarrot > dataSocfound.minCarrots) ? false : true} />
+                        <div className={`invalid-feedback ${dataSocfound.totalCarrot < dataSocfound.minCarrots ? "d-block" : ""}`}>
+                            Collected carrot amount less than minimum carrots
+                        </div>
+                    </div>
+                    <div className="d-grid">
+                        <Button variant="warning" size="lg" onClick={cashOutSocfound} disabled={cashOutSocfound>0? false:true}>
+                            Cash Out Carrots
+                        </Button>
+
+                    </div>
+                    
+                </form>
+                </Modal.Body>
+            </Modal>
             <LoadingModal isLoading={isLoading}></LoadingModal>
         </div>
     )
