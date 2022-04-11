@@ -31,9 +31,9 @@ import StaffGroupDetail from "./components/admin/staffGroupDetail";
 import "./assets/css/custom.css";
 import InsertUpdateUser from "./pages/rootAdmin/insertUser/insert.user.page";
 import DashboardRootAdmin from "./pages/rootAdmin/dashboard/dashboard.page";
-import ManagerList from './store/admin/managerList';
 import ManagerPage from "./pages/admin/manager.page";
 import CarrotStaffPage from "./pages/admin/carrot.staff.page";
+import HarvestPage from "./pages/rootAdmin/harvest.page";
 
 function App() {
   return (
@@ -65,7 +65,6 @@ function App() {
         <Route path="bazaar" element={<BazaarAdminPage />} />
         <Route path="staff-group" element={<StaffGroup />} />
         <Route path="staff-group/:id" element={<StaffGroupDetail />} />
-        <Route path="manager" element={<ManagerList />}/>
         <Route path="manager-list" element={<ManagerPage />} />
         <Route path="carrot-summary" element={<CarrotStaffPage />} />
       </Route>
@@ -76,6 +75,7 @@ function App() {
         <Route path="settings" element={<Setting />} />
         <Route path="assign-role" element={<AssignRole />} />
         <Route path="insert-update" element={<InsertUpdateUser />} />
+        <Route path="harvest" element={<HarvestPage />} />
       </Route>
       {/* </Route> */}
 

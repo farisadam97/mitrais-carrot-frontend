@@ -9,6 +9,9 @@ import groupReducer from "./userGroup";
 import basketHistoryReducer from "./basketHistory";
 import donationHistoryReducer from "./donationHistory";
 import rewardHistoryReducer from "./rewardHistory";
+import managerList from "./admin/managerList";
+import carrotStaff from "./admin/carrotStaff";
+import harvestList from "./rootadmin/harvest";
 
 export default combineReducers({
   bazaarItem: bazaarItemReducer,
@@ -21,4 +24,7 @@ export default combineReducers({
   rewardHistory: rewardHistoryReducer,
   setting: carrotSettings,
   group: groupReducer,
+  managerList: managerList,
+  carrotStaff : carrotStaff,
+  harvestList : harvestList,
 });
