@@ -4,20 +4,44 @@ import DefaultConfig from '../../../config/config'
 import { Modal,Button} from 'react-bootstrap'
 import LoadingModal from '../../modal/loading'
 
-const SocfoundTab = () => {
+const SocfoundTab = (props) => {
     const url = `${DefaultConfig.base_api}`
     const header = {
         'Authorization' : `Bearer ${localStorage.getItem('access_token')}`
     }
-    const [isLoadingTable,setIsLoadingTable] = useState(false)
+    const [isLoadingTable,setIsLoadingTable] = useState(true)
     const [isLoading,setIsLoading] = useState(false)
+    
+
+    const [listHistorySocFound,setListHistorySocfound] = useState([])
+    const [amountRow,setAmountRow] = useState(10)
+
+    const getDataSocfoundHistory = () => {
+        axios.get(
+            `${url}/rewardSort?category=socfound&pageNo=0&pageSize=${amountRow}&sortBy=id&sortDir=asc`
+        ).then(response => {
+            console.log(response)
+            setIsLoadingTable(false)
+            setListHistorySocfound(response?.data?.carrotTrx)
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+    const changeAmountRow = (e) => {
+        setAmountRow(e.currentTarget.value)
+    }
+
+    useEffect(() => {
+        getDataSocfoundHistory()
+    },[amountRow])
 
 
     return (
         <div className="">
             <div className="dataTables_length" id="staff-table_length">
                 <label>Show
-                    <select name="staff-table_length" aria-controls="staff-table" className="form-control-sm mx-3" style={{borderColor: "#ced4da"}}>
+                    <select name="staff-table_length" aria-controls="staff-table" className="form-control-sm mx-3" value={amountRow} onChange={changeAmountRow} style={{borderColor: "#ced4da"}}>
                         <option value="10">10 rows</option>
                         <option value="25">25 rows</option>
                         <option value="50">50 rows</option>
@@ -32,17 +56,15 @@ const SocfoundTab = () => {
                     <tr role="row " className='text-center'>
                         <th scope="col" className="sorting_desc"  aria-controls="staff-table" colSpan={"1"} aria-sort="descending" aria-label="#: activate to sort column ascending" style={{width: "3%"}}>#</th>
                         <th scope="col" className="sorting" aria-controls="staff-table" colSpan={"1"} style={{width: ""}}>Staff Name</th>
-                        <th scope="col" className="sorting" aria-controls="staff-table" colSpan={"1"} style={{width: ""}}>Reward Name</th>
-                        <th scope="col" className="sorting" aria-controls="staff-table" colSpan={"1"} style={{width: "4%"}}>Carrot</th>
-                        <th scope="col" className="sorting" aria-controls="staff-table" colSpan={"1"} style={{width: "25%"}}>Exchange Date</th>
-                        <th scope="col" className="sorting" aria-controls="staff-table" colSpan={"1"} style={{width: "15%"}}>Status</th>
-
+                        <th scope="col" className="sorting" aria-controls="staff-table" colSpan={"1"} style={{width: ""}}>Social Foundation</th>
+                        <th scope="col" className="sorting" aria-controls="staff-table" colSpan={"1"} style={{width: "4%"}}>Total Carrot</th>
+                        <th scope="col" className="sorting" aria-controls="staff-table" colSpan={"1"} style={{width: "25%"}}>Transaction Date</th>
                     </tr>
                 </thead>
                 <tbody id='table-admin-carrot-summary'>
-                {/* { listHistoryReward.length > 0 ? 
+                { listHistorySocFound.length > 0 ? 
                     (
-                        listHistoryReward.map((item) => (
+                        listHistorySocFound.map((item) => (
                             <tr key={item.id}>
                                 <td scope="row">{item.id}</td>
                                 <td>{item.userEntity}</td>
@@ -50,15 +72,7 @@ const SocfoundTab = () => {
                                 <td className='text-center'>{item.spentAmount}</td>
                                 <td>
                                     {
-                                        formatDate(item.trxDate)
-                                    }
-                                </td>
-                                <td className='text-center'>
-                                    {
-                                        (item.status === "waiting") ?
-                                            <a href="" onClick={(e) => actionProcess(e,item) } className='btn btn-warning' style={{fontSize:8,padding:8}}>Process ?</a> :
-                                            (item.status === "approved") ? <span className='badge bg-success p-2'>Approved</span> :
-                                                <span className='badge bg-danger p-3'>Ref</span>
+                                        props.formatDate(item.trxDate)
                                     }
                                 </td>
                             </tr>
@@ -76,7 +90,7 @@ const SocfoundTab = () => {
                         </td>
                         </tr>
                     )
-                } */}
+                }
                 </tbody>
             </table>
         </div>

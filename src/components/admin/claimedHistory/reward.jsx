@@ -4,7 +4,7 @@ import DefaultConfig from '../../../config/config'
 import { Modal,Button} from 'react-bootstrap'
 import LoadingModal from '../../modal/loading'
 
-const RewardTab = () => {
+const RewardTab = (props) => {
     const url = `${DefaultConfig.base_api}`
     const header = {
         'Authorization' : `Bearer ${localStorage.getItem('access_token')}`
@@ -13,7 +13,7 @@ const RewardTab = () => {
     const [show, setShow] = useState(false);
     
     const [listHistoryReward,setListHistoryReward] = useState([])
-    const [isLoadingTable,setIsLoadingTable] = useState(false)
+    const [isLoadingTable,setIsLoadingTable] = useState(true)
     const [isLoading,setIsLoading] = useState(false)
     const [amountRow,setAmountRow] = useState(10)
     const [approveValue, setApproveValue] = useState("false")
@@ -46,6 +46,7 @@ const RewardTab = () => {
         axios.get(
             `${url}/rewardSort?category=reward&pageNo=0&pageSize=${amountRow}&sortBy=id&sortDir=asc`
         ).then(response => {
+            setIsLoadingTable(false)
             setListHistoryReward(response?.data?.carrotTrx)
         }).catch(error => {
             console.log(error)
@@ -58,31 +59,11 @@ const RewardTab = () => {
         let msg = ""
 
         if(value === "true"){
-            msg = returnOffice(location) + " Office"
+            msg = props.returnOffice(location) + " Office"
         } else {
             msg = ""
         }
         setMessage(msg)
-    }
-
-    const returnOffice = (location) => {
-        if(location == 1){
-            return "Bali"
-        } else if (location == 2){
-            return "Yogyakarta"
-        } else if(location == 3){
-            return "Bandung"
-        } else if (location == 4){
-            return "Jakarta"
-        } else {
-            return "Singapore"
-        }
-    }
-
-    const formatDate = (date) => {
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        let newDate = new Date(date)
-        return newDate.toLocaleString('id-id',{dateStyle:"medium",timeStyle:"short"})
     }
 
     const inputReasonHandler = (e) => {
@@ -153,7 +134,7 @@ const RewardTab = () => {
                                 <td className='text-center'>{item.spentAmount}</td>
                                 <td>
                                     {
-                                        formatDate(item.trxDate)
+                                        props.formatDate(item.trxDate)
                                     }
                                 </td>
                                 <td className='text-center'>
@@ -209,7 +190,7 @@ const RewardTab = () => {
                             </select>
                         </div>
                         <div className={`mb-3 ${approveValue === "true" ? "d-block" : "d-none" }`}>
-                            <label htmlFor="itemLocation" className="form-label">Item location</label>
+                            <label htmlFor="itemLocation" className="form-label">Pick Up location</label>
                             <input type="text" className="form-control" id="itemLocation" value={message} disabled required />
                         </div>
                         <div className={`mb-3 ${approveValue === "false" ? "d-block" : "d-none" }`}>
