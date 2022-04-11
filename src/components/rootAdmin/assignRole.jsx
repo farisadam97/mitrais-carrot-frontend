@@ -3,6 +3,7 @@ import { Table, Button, Modal } from "react-bootstrap";
 import { connect } from "react-redux";
 import { GetUsersList } from "../../store/apiActions";
 import { useEffect, useState } from "react";
+import Pagination from "../pagination/pagination.component";
 
 const AssignRole = (props) => {
     const [selectedUser, setSelecteduser] = useState(null);
@@ -10,7 +11,7 @@ const AssignRole = (props) => {
     const [selectedUserName, setSelectedUserName] = useState("");
 
     useEffect(() => {
-        props.getAlluser();
+        props.getAllUser(1);
     },[])
 
     const handleShow = (id, name) => {
@@ -59,8 +60,10 @@ const AssignRole = (props) => {
                     ):(<tr>
                         <td colSpan={5} className="text-center">Data Not Found</td>
                     </tr>)}
+                    {props.isLoading && (<tr><td colSpan={5} className="text-center">Loading...</td></tr>)}
                 </tbody>
             </Table>
+            {props.pagination > 0 && <Pagination {...props} pagination={props.pagination} type={"userListRole"}/>}         
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
@@ -87,20 +90,22 @@ const AssignRole = (props) => {
 
 const mapStateToProps = state => {
     return {
-        usersList : state.user.lists,
+        usersList: state.user.lists,
+        pagination: state.user.pagination,
+        isLoading: state.user.isLoading 
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        getAlluser: () => {
+        getAllUser: (pageNumber) => {
             return dispatch(GetUsersList({
                 url: `/user`,
                 method: 'POST',
                 data: {
                     role: "9",
                     fields: "id, name, username, roleId",
-                    pageNumber: "0",
+                    pageNumber: (pageNumber - 1).toString(),
                     pageSize: "10",
                     sortBy: "name",
                     sortDir: "asc",

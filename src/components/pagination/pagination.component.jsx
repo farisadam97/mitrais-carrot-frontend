@@ -22,6 +22,10 @@ const Pagination = ({type, pagination, ...props}) => {
       props.onPageChangeReward(pageNumber);
     } else if (type === "userList") {
       props.onPageChange(pageNumber);
+    } else if (type === "group"){
+      props.loadGroups(pageNumber);
+    } else if (type === "userListRole"){
+      props.getAllUser(pageNumber);
     }
   };
 
