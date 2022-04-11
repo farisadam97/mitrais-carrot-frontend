@@ -1,9 +1,16 @@
 import React, { useState } from "react";
+import * as date from "../../utils/date/date.util";
+import { resetHistory } from "../../store/historyTransaction";
+import { resetDonationHistory } from "../../store/donationHistory";
+import configureStore from "../../store/configureStore";
+import { resetRewardHistory } from "../../store/rewardHistory";
+
+const store = configureStore();
 
 const FilterComponent = (props) => {
-  const [getType, setType] = useState();
-  const [getStartDate, setStartDate] = useState("");
-  const [getEndDate, setEndDate] = useState("");
+  const [getType, setType] = useState("share");
+  const [getStartDate, setStartDate] = useState(date.GetLastMonthDate("-"));
+  const [getEndDate, setEndDate] = useState(date.GetCurrentDate("-"));
 
   const clickHandler = (e) => {
     e.preventDefault();
@@ -15,8 +22,23 @@ const FilterComponent = (props) => {
     if (Date.parse(getEndDate) < Date.parse(getEndDate)) {
       alert("End date must be after start date");
     }
-
-    props.loadHistories(getStartDate, getEndDate);
+    
+    if (getType == "share") {
+      props.resetRewardHistories();
+      props.resetDonationHistories();
+      props.resetHistories();
+      props.loadHistories(getStartDate, getEndDate);
+    } else if (getType == "donation") {
+      props.resetHistories();
+      props.resetRewardHistories();
+      props.resetDonationHistories();
+      props.loadDonationHistory(getStartDate, getEndDate);
+    } else if (getType == "bazaar") {
+      props.resetDonationHistories();
+      props.resetHistories();
+      props.resetRewardHistories();
+      props.loadRewardHistory(getStartDate, getEndDate);
+    }
   };
 
   return (
@@ -32,10 +54,12 @@ const FilterComponent = (props) => {
                     id="carrot-type"
                     name="carrot-type"
                     className="form-select"
+                    onChange={(e) => setType(e.target.value)}
+                    defaultValue={getType}
                   >
-                    <option value="type1">Rewards</option>
-                    <option value="type2">Shared</option>
-                    <option value="type3">Bazaar</option>
+                    <option value="bazaar">Bazaar</option>
+                    <option value="share">Share</option>
+                    <option value="donation">Donation</option>
                   </select>
                 </div>
               </div>
@@ -49,6 +73,7 @@ const FilterComponent = (props) => {
                   name=""
                   type="date"
                   className="form-control here"
+                  defaultValue= {getStartDate}
                 />
               </div>
             </div>
@@ -61,6 +86,7 @@ const FilterComponent = (props) => {
                   name="date-to"
                   type="date"
                   className="form-control here"
+                  defaultValue={getEndDate}
                 />
               </div>
             </div>

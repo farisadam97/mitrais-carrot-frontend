@@ -1,11 +1,11 @@
 import axios from "axios";
 import {
-  apiRewardHistoryRequestSucceeded,
-  apiRewardHistoryRequestFailed,
-} from "../rewardHistory";
+  apiBasketHistoryRequestSucceeded,
+  apiBasketHistoryRequestFailed,
+} from "../basketHistory";
 
-const FetchRewardHistory = (store) => (next) => async (action) => {
-  if (action.type !== "GetRewardHistory") return next(action);
+const FetchBasketHistory = (store) => (next) => async (action) => {
+  if (action.type !== "GetBasketHistory") return next(action);
 
   next(action);
 
@@ -19,18 +19,17 @@ const FetchRewardHistory = (store) => (next) => async (action) => {
       data,
     });
     store.dispatch(
-      apiRewardHistoryRequestSucceeded({
+      apiBasketHistoryRequestSucceeded({
         lists: response.data.body.data,
-        pagination: response.data.body.pagination,
       })
     );
   } catch (error) {
     store.dispatch(
-      apiRewardHistoryRequestFailed({
+      apiBasketHistoryRequestFailed({
         error: error.message,
       })
     );
   }
 };
 
-export default FetchRewardHistory;
+export default FetchBasketHistory;

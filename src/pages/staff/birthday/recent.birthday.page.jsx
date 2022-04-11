@@ -11,7 +11,6 @@ import HistoryTitle from "../../../components/text/historyTitle.component";
 const RecentBirthday = (props) => {
   useEffect(() => {
     props.loadRecentBirthday()
-    console.log(props)
   }, [])
   
   return (

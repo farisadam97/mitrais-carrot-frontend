@@ -1,7 +1,6 @@
 import React from "react";
 
 const RecentBirthdayItem = ({ lists, isLoading }) => {
-  console.log(lists)
   return (
           <div className="col-md-12 p-0">
             <table className="table table-hover mt-3">
