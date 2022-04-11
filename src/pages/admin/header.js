@@ -26,6 +26,11 @@ const Header = () => {
                     </Link>
                 </div>
                 <div className="col-md-auto nav-pills">
+                    <Link  to="/admin/bazaar/claimed" className="nav-link">
+                        Bazaar Claimed
+                    </Link>
+                </div>
+                <div className="col-md-auto nav-pills">
                     <a href="#" className="nav-link">ASIGN ROLE</a>
                 </div>
                 <div className="col-md-auto nav-pills">
@@ -37,7 +42,7 @@ const Header = () => {
                 <div className="col-md-auto nav-pills">
                     <a href="#" className="nav-link">SETTINGS</a>
                 </div>
-         </div>
+        </div>
     </div>
   )
 }

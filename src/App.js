@@ -11,6 +11,7 @@ import Unauthorized from './pages/unauthorized';
 import RootAdminIndex from './pages/rootAdmin/index/index.page';
 import CarrotSummary from './pages/admin/carrot-summary';
 import BazaarAdminPage from './pages/admin/bazaar';
+import BazaarClaimedPage from './pages/admin/bazaarClaimed';
 import Missing from './pages/missing';
 import { Routes, Route, Switch} from 'react-router-dom';
 import RequireAuth from './hooks/RequireAuth';
@@ -34,7 +35,10 @@ function App() {
           {/* <Route element={<RequireAuth allowedRoles={[RolesConfig.ADMIN]} />}> */}
             <Route path={RouteConfig.ADMIN} >
               <Route index element={<CarrotSummary />} />
-              <Route path='bazaar'element={<BazaarAdminPage />} />
+              <Route path='bazaar'>
+                <Route index element={<BazaarAdminPage />}></Route>
+                <Route path='claimed'element={<BazaarClaimedPage />} />
+              </Route>
             </Route>
           {/* </Route> */}
 
