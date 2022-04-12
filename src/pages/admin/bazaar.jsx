@@ -1,6 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 import { Modal, Button} from 'react-bootstrap'
+import Cookies from "universal-cookie";
 import NavbarComponent from '../../components/navbar/navbar.component'
 import Container from '../container'
 import ContainerContent from '../../components/container/container.component'
@@ -11,7 +12,10 @@ import {v4} from 'uuid'
 import PageTitle from '../../components/text/pageTitle.component'
 import LoadingModal from '../../components/modal/loading'
 
+import decryptData from '../../config/config'
+
 const BazaarAdminPage = () => {
+    const cookie = new Cookies()
     const [itemsBazaar,setItemsBazaar] = useState()
     const [isLoading,setIsLoading] = useState(false)
 
@@ -278,7 +282,7 @@ const BazaarAdminPage = () => {
                 `${DefaultConfig.base_api}/transaction/cash-out`,
                 {
                     "id":dataSocfound.id,
-                    "adminId":6,
+                    "adminId":decryptData(cookie.get("id")),
                     "amount":cashoutAmount
                 },
                 {headers:header}
