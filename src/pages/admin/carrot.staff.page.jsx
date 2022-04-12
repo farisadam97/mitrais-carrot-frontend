@@ -18,9 +18,8 @@ const CarrotStaffPage = (props) => {
     <div className="">
             <ContainerContent title="CARROT SUMMARY">
                 <div className="row mt-3">
-                    {/* <SummaryCarrot lists={props.lists} isLoading={props.isLoading}/> */}
-                    {/* <ManagerComponent lists={props.lists} isLoading={props.isLoading} /> */}
-                    {/* <Pagination {...props.pagination}/> */}
+                    <SummaryCarrot lists={props.lists} isLoading={props.isLoading}/>
+                    {/* <Pagination {...props.pagination}/> component pagination ada perubahaan cara makenya, jadi tak comment*/}
                 </div>
             </ContainerContent>
         <Footer />

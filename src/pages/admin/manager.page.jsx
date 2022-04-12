@@ -1,10 +1,6 @@
 import React from 'react'
 import { useEffect } from 'react'
-import AdminTitle from '../../components/text/adminTitle.page'
-import NavbarComponent from '../../components/navbar/navbar.component'
 import ContainerContent from '../../components/container/container.component'
-import Container from '../container'
-import Footer from '../../components/footer/footer.component'
 import ManagerComponent from '../../components/admin/manager.component'
 import Pagination from '../../components/pagination/pagination.component'
 import { connect } from 'react-redux'
@@ -18,17 +14,12 @@ const ManagerPage = (props) => {
 
   return (
     <div className="">
-      <NavbarComponent />
-      <Container>
-        <AdminTitle active2="active" />
         <ContainerContent title="MANAGER LIST">
           <div className="row mt-3">
               <ManagerComponent lists={props.lists} isLoading={props.isLoading} />
-              {/* <Pagination {...props.pagination} /> */}
+              {/* <Pagination {...props.pagination} /> component pagination ada perubahaan cara makenya, jadi tak comment*/}
           </div>
         </ContainerContent>
-      </Container>
-      <Footer />
     </div>
   )
 }

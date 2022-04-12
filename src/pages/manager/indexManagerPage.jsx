@@ -3,6 +3,7 @@ import NavbarComponent from "../../components/navbar/navbar.component";
 import Container from "../container";
 import { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
+import Footer from "../../components/footer/footer.component";
 
 const IndexManager = (props) => {
     const [nav, setNav] = useState("share-carrot");
@@ -21,6 +22,7 @@ const IndexManager = (props) => {
                 </div>
                 <Outlet/>
             </Container>
+            <Footer />
         </div>
     )
 }
