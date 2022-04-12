@@ -8,6 +8,7 @@ import Cookies from "universal-cookie";
 import useAuth from "../../../hooks/useAuth";
 import RouteConfig from "../../../config/Route";
 import RolesConfig from "../../../config/Roles";
+import encryptData  from "../../../config/config"
 import './login.page.css'
 
 const LoginPage = () => {
@@ -15,7 +16,7 @@ const LoginPage = () => {
     const [passwordInput, setPasswordInput] = useState("")
     const cookies = new Cookies()
 
-    const {setAuth} = useAuth()
+    // const {setAuth} = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
     // const from = location.state?.pathname || "/"
@@ -36,15 +37,19 @@ const LoginPage = () => {
             })
             .then((response) => {
                 console.log(response)
-                const roles = response.data.roles[0]
+                const roles = response?.data?.roles[0]
+                const name = response?.data?.name
+                const id = response?.data?.id[0]
                 const accessToken = response.data.accessToken
                 const user = userNameInput
                 const pwd = passwordInput
-                // cookies.set('access_token',accessToken,{path:'/'})
-                // cookies.set('role',response?.data?.roles[0],{path:'/'})
-                localStorage.setItem("role",roles)
-                localStorage.setItem("access_token",accessToken)
-                setAuth({user,pwd,roles,accessToken})
+                cookies.set('access_token',accessToken,{path:'/'})
+                cookies.set('role',encryptData(roles),{path:'/'})
+                cookies.set('name',encryptData(name),{path:'/'})
+                cookies.set('id',encryptData(id),{path:'/'})
+                // localStorage.setItem("role",roles)
+                // localStorage.setItem("access_token",accessToken)
+                // setAuth({user,pwd,roles,accessToken})
                 switch (roles) {
                     case RolesConfig.ROOT_ADMIN:
                         navigate(`${RouteConfig.ROOT_ADMIN}`,{replace:true})
