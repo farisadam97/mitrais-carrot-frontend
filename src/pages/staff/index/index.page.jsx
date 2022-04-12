@@ -3,7 +3,6 @@ import NavbarComponent from "../../../components/navbar/navbar.component";
 import Container from "../../container";
 import Footer from "../../../components/footer/footer.component"
 import { Outlet } from "react-router-dom";
-import PageTitle from "../../../components/text/pageTitle.component";
 
 const IndexStaff = (props) => {
 

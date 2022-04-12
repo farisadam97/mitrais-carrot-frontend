@@ -10,7 +10,6 @@ import LoginPage from "./pages/auth/login/login.page";
 import IndexStaff from "./pages/staff/index/index.page";
 import Unauthorized from "./pages/unauthorized";
 import RootAdminIndex from "./pages/rootAdmin/index/index.page";
-import CarrotSummary from "./pages/admin/carrot-summary";
 import BazaarAdminPage from "./pages/admin/bazaar";
 import BazaarClaimedPage from "./pages/admin/bazaarClaimed";
 import Missing from "./pages/missing";
@@ -30,7 +29,6 @@ import StaffGroup from "./components/admin/staffGroup";
 import StaffGroupDetail from "./components/admin/staffGroupDetail";
 import "./assets/css/custom.css";
 import InsertUpdateUser from "./pages/rootAdmin/insertUser/insert.user.page";
-import DashboardRootAdmin from "./pages/rootAdmin/dashboard/dashboard.page";
 import ManagerPage from "./pages/admin/manager.page";
 import CarrotStaffPage from "./pages/admin/carrot.staff.page";
 import HarvestPage from "./pages/rootAdmin/harvest.page";
@@ -51,22 +49,21 @@ function App() {
 
       <Route element={<RequireAuth allowedRoles={[RolesConfig.MANAGER]} />}>
       <Route path={RouteConfig.MANAGER} element={<IndexManager />}>
-        {/* <Route index element={<DashboardStaff/>}/> */}
-        <Route path="bazaar" element={<DashboardStaff />} />
+        <Route path="bazaar" element={<DashboardStaff/>}/>
+        <Route path="history-transaction" element={<HistoryTransaction />} />
         <Route path="reward/:id" element={<DetailsItem />} />
       </Route>
       </Route>
 
       <Route element={<RequireAuth allowedRoles={[RolesConfig.ADMIN]} />}>
       <Route path={RouteConfig.ADMIN} element={<IndexAdmin />}>
-        {/* <Route index element={<DashboardStaff/>}/> */}
-        <Route index element={<CarrotSummary />} />
+        <Route index element={<CarrotStaffPage />} />
         <Route path="bazaar-claimed" element={<BazaarClaimedPage />} />
         <Route path="bazaar" element={<BazaarAdminPage />} />
         <Route path="staff-group" element={<StaffGroup />} />
         <Route path="staff-group/:id" element={<StaffGroupDetail />} />
         <Route path="manager-list" element={<ManagerPage />} />
-        <Route path="carrot-summary" element={<CarrotStaffPage />} />
+        <Route path="insert-update" element={<InsertUpdateUser />} />
       </Route>
       </Route>
 
