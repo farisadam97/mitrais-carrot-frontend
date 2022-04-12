@@ -1,4 +1,49 @@
 /*@import url('https://fonts.googleapis.com/css?family=Muli:400,600,800');*/
+.btn-action-carrot {
+  margin: 2px;
+  width: 38px;
+}
+
+.error {
+  color: red;
+}
+
+/* for datatable processing message */
+.dataTables_wrapper .dataTables_processing {
+  color: #777;
+  width: 300px !important;
+  font-size: 1.2em;
+  background: white;
+  border: 1px solid #dee2e6;
+  font-weight: bold;
+  border-radius: 20px;
+}
+
+.wrap_carrot {
+  word-wrap: break-word;
+  word-break: break-all;
+  white-space: normal;
+}
+
+.help_icon {
+  font-size: 25px;
+  color: #888;
+}
+
+div.polaroid {
+  width: 80%;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-bottom: 25px;
+  border: 10px solid white;
+}
+
+div.polaroid>div.container {
+  text-align: center;
+  padding: 20px 20px 10px 20px;
+  font-weight: bold;
+}
+
 html {
   position: relative;
   min-height: 100%;
@@ -563,6 +608,9 @@ a:not([href]):not([tabindex]) {
 }
 
 .btn-info {
+  color: #fff;
+  background-color: #17a2b8;
+  border-color: #17a2b8;
   -webkit-box-shadow: -2px 6px 33px -8px rgba(23, 162, 184, 1);
   -moz-box-shadow: -2px 6px 33px -8px rgba(23, 162, 184, 1);
   box-shadow: -2px 6px 33px -8px rgba(23, 162, 184, 1);

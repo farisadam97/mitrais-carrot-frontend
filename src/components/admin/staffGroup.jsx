@@ -15,7 +15,7 @@ const StaffGroup = (props) => {
     const [groupDate, setGroupDate] = useState(null);
 
     useEffect(() => {
-        props.loadGroups();
+        props.loadGroups(1);
     },[show, showDelete])
 
     const handleClose = () => {
@@ -57,7 +57,7 @@ const StaffGroup = (props) => {
             props.updateGroup(groupId, groupName, groupDate, groupNote);
         }
         handleClose();
-        props.loadGroups();
+        props.loadGroups(1);
     }
 
     const showDeleteModal = id => {
@@ -68,7 +68,7 @@ const StaffGroup = (props) => {
     const deleteGroup = () => {
         props.deleteGroup(groupId);
         handleClose();
-        props.loadGroups();
+        props.loadGroups(1);
     }
 
     return ( 
@@ -105,11 +105,11 @@ const StaffGroup = (props) => {
                             );
                         })
                     ): (<tr>
-                        <td colSpan={3} className="text-center">Data Not Found</td>
+                        <td colSpan={4} className="text-center">Data Not Found</td>
                     </tr>)}
                 </tbody>
             </Table>
-            <Pagination {...props.pagination}/>
+            {props.pagination > 0 && <Pagination {...props} pagination={props.pagination} type={"group"}/>}
 
             {/* Modal Update/Add */}
             <Modal show={show} onHide={handleClose}>
@@ -172,12 +172,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return{
-        loadGroups: () => {
+        loadGroups: (pageNumber) => {
             return dispatch(GetGroupList({
                 url: `/user/group`,
                 method: 'POST',
                 data: {
-                    pageNumber: "0",
+                    pageNumber: (pageNumber - 1).toString(),
                     pageSize: "10",
                     sortBy: "group_id",
                     sortDir: "asc",

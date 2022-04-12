@@ -1,15 +1,15 @@
 import axios from "axios";
 import {
-  apiHistoryTrxRequestSucceeded,
-  apiHistoryTrxRequestFailed,
-  resetHistory,
-} from "../historyTransaction";
+  apiDonationHistoryRequestSucceeded,
+  apiDonationHistoryRequestFailed,
+  resetDonationHistory,
+} from "../donationHistory";
 
-const FetchSharedHistory = (store) => (next) => async (action) => {
+const FetchDonationHistory = (store) => (next) => async (action) => {
   const { url, method, data, onSuccess, onError } = action.payload;
 
   switch (action.type) {
-    case "GetSharedHistory":
+    case "GetDonationHistory":
       try {
         const response = await axios.request({
           baseURL: "http://localhost:2022/api/v1",
@@ -18,25 +18,29 @@ const FetchSharedHistory = (store) => (next) => async (action) => {
           data,
         });
         store.dispatch(
-          apiHistoryTrxRequestSucceeded({
+          apiDonationHistoryRequestSucceeded({
             lists: response.data.body.data,
             pagination: response.data.body.pagination,
           })
         );
       } catch (error) {
         store.dispatch(
-          apiHistoryTrxRequestFailed({
+          apiDonationHistoryRequestFailed({
             error: error.message,
           })
         );
       }
       break;
-    case "ResetSharedHistory":
-      store.dispatch(resetHistory({}));
+    case "ResetDonationHistory":
+      store.dispatch(
+        resetDonationHistory({
+          
+        })
+      );
       break;
     default:
       return next(action);
   }
 };
 
-export default FetchSharedHistory;
+export default FetchDonationHistory;

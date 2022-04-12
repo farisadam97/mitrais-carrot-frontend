@@ -1,18 +1,32 @@
 import React, { useState, useEffect } from "react";
 
-const Pagination = (props) => {
+const Pagination = ({type, pagination, ...props}) => {
   const [isOnlyOnePage, setOnlyOnePage] = useState(true);
+  const [isFirstPage, setFirstPage] = useState(true);
 
   useEffect(() => {
-    setOnlyOnePage(props.pageNumber + 1 === props.totalPage);
-  }, [props]);
+    setOnlyOnePage(pagination.pageNumber + 1 === pagination.totalPage);
+    setFirstPage(pagination.pageNumber === 0);
+  }, [pagination]);
 
-  if (props == undefined || props.totalElement === 0) {
+  if (pagination == undefined || pagination.totalData === 0) {
     return null;
   }
 
   const clickHandler = (pageNumber) => {
-    props.onPageChange(pageNumber);
+    if (type === "share") {
+      props.onPageChange(pageNumber);
+    } else if (type === "donation") {
+      props.onPageChangeDonation(pageNumber);
+    } else if (type === "bazaar") {
+      props.onPageChangeReward(pageNumber);
+    } else if (type === "userList") {
+      props.onPageChange(pageNumber);
+    } else if (type === "group"){
+      props.loadGroups(pageNumber);
+    } else if (type === "userListRole"){
+      props.getAllUser(pageNumber);
+    }
   };
 
   const activePagination = (index, isCurrentPage) => {
@@ -26,7 +40,7 @@ const Pagination = (props) => {
 
   const otherPagination = (index) => {
     return (
-      <a className="page-link" href="#">
+      <a className="page-link" href="#" onClick={() => clickHandler(index)}>
         {index}
       </a>
     );
@@ -35,12 +49,12 @@ const Pagination = (props) => {
   return (
     <nav aria-label="...">
       <ul className="pagination pagination-sm justify-content-center">
-        <li className="page-item disabled">
-          <a className="page-link">Previous</a>
+        <li className={`page-item ${isFirstPage ? "disabled" : ""}`}>
+          <a className="page-link" href="#" onClick={() => clickHandler(pagination.pageNumber)}>Previous</a>
         </li>
-        {[...Array(props.totalPage)].map((x, i) => {
+        {[...Array(pagination.totalPage)].map((x, i) => {
           const pageNumber = i + 1;
-          const isCurrentPage = props.pageNumber === i;
+          const isCurrentPage = pagination.pageNumber === i;
           return (
             <li
               id={x}
@@ -54,7 +68,7 @@ const Pagination = (props) => {
           );
         })}
         <li className={`page-item ${isOnlyOnePage ? "disabled" : ""}`}>
-          <a className="page-link" href="#">
+          <a className="page-link" href="#" onClick={() => clickHandler(pagination.pageNumber+2)}>
             Next
           </a>
         </li>

@@ -168,7 +168,7 @@ const StaffGroupDetail = (props) => {
                         </tr>)}
                     </tbody>
                 </Table>
-                <Pagination {...props.pagination}/>
+                { props.pagination > 0 && <Pagination {...props} pagination={props.pagination} type={"groupStaff"}/>}
 
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
