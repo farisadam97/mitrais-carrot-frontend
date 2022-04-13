@@ -37,24 +37,24 @@ function App() {
     <Routes>
       <Route path="/" element={<LoginPage />}></Route>
 
-      {/* <Route element={<RequireAuth allowedRoles={[RolesConfig.STAFF]} />}> */}
+      <Route element={<RequireAuth allowedRoles={[RolesConfig.STAFF]} />}>
       <Route path={RouteConfig.STAFF} element={<IndexStaff />}>
         <Route index element={<DashboardStaff />} />
         <Route path="reward/:id" element={<DetailsItem />} />
         <Route path="history-transaction" element={<HistoryTransaction />} />
         <Route path="recent-birthday" element={<RecentBirthday />} />
       </Route>
-      {/* </Route> */}
+      </Route>
 
-      {/* <Route element={<RequireAuth allowedRoles={[RolesConfig.MANAGER]} />}> */}
+      <Route element={<RequireAuth allowedRoles={[RolesConfig.MANAGER]} />}>
       <Route path={RouteConfig.MANAGER} element={<IndexManager />}>
         {/* <Route index element={<DashboardStaff/>}/> */}
         <Route path="bazaar" element={<DashboardStaff />} />
         <Route path="reward/:id" element={<DetailsItem />} />
       </Route>
-      {/* </Route> */}
+      </Route>
 
-      {/* <Route element={<RequireAuth allowedRoles={[RolesConfig.ADMIN]} />}> */}
+      <Route element={<RequireAuth allowedRoles={[RolesConfig.ADMIN]} />}>
       <Route path={RouteConfig.ADMIN} element={<IndexAdmin />}>
         {/* <Route index element={<DashboardStaff/>}/> */}
         <Route index element={<CarrotSummary />} />
@@ -63,15 +63,15 @@ function App() {
         <Route path="staff-group" element={<StaffGroup />} />
         <Route path="staff-group/:id" element={<StaffGroupDetail />} />
       </Route>
-      {/* </Route> */}
+      </Route>
 
-      {/* <Route element={<RequireAuth allowedRoles={[RolesConfig.ROOT_ADMIN]} />}> */}
+      <Route element={<RequireAuth allowedRoles={[RolesConfig.ROOT_ADMIN]} />}>
       <Route path={RouteConfig.ROOT_ADMIN} element={<RootAdminIndex />}>
         <Route path="settings" element={<Setting />} />
         <Route path="assign-role" element={<AssignRole />} />
         <Route path="insert-update" element={<InsertUpdateUser />} />
       </Route>
-      {/* </Route> */}
+      </Route>
 
       <Route path={RouteConfig.UNAUTHORIZED} element={<Unauthorized />}></Route>
       {/* catch all */}

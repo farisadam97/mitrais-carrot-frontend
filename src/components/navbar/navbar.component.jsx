@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import DefaultConfig from "../../config/config";
+import {DefaultConfig} from "../../config/config";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -18,14 +18,14 @@ const NavbarComponent = props =>{
     const cookies = new Cookies()
 
     const logout = async () => {
-        // cookies.remove('access_token')
-        // cookies.remove('role')
-        axios.post(`${DefaultConfig.base_api}/auth/signout`)
+        axios.post(`http://localhost:2022/api/auth/signout`)
         .then((response) => {
-            localStorage.removeItem('role')
-            localStorage.removeItem('access_token')
+            cookies.remove('access_token')
+            cookies.remove('role')
+            // localStorage.removeItem('role')
+            // localStorage.removeItem('access_token')
             setAuth({})
-            navigate('/login')
+            navigate('/')
         }).catch((error) => {
             console.log(error)
         })

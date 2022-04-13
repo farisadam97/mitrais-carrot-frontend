@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import DefaultConfig from '../../../config/config'
+import {DefaultConfig} from '../../../config/config'
 import { Modal,Button} from 'react-bootstrap'
+import Cookies from "universal-cookie";
 import LoadingModal from '../../modal/loading'
 
 const RewardTab = (props) => {
-    const url = `${DefaultConfig.base_api}`
+    const cookie = new Cookies()
+
+    const url = `${DefaultConfig.base_api}/rewardSort`
     const header = {
-        'Authorization' : `Bearer ${localStorage.getItem('access_token')}`
+        'Authorization' : `Bearer ${cookie.get("access_token")}`
     }
 
     const [show, setShow] = useState(false);
@@ -44,7 +47,7 @@ const RewardTab = (props) => {
 
     const getDataRewardHistory = () => {
         axios.get(
-            `${url}/rewardSort?category=reward&pageNo=0&pageSize=${amountRow}&sortBy=id&sortDir=asc`
+            `${url}?category=reward&pageNo=0&pageSize=${amountRow}&sortBy=id&sortDir=asc`,{headers: header}
         ).then(response => {
             setIsLoadingTable(false)
             setListHistoryReward(response?.data?.carrotTrx)
