@@ -3,12 +3,12 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Container from "../../container";
 import mitraisLogo from '../../../assets/img/mitrais-logo.png'
 import axios from "axios";
-import DefaultConfig from "../../../config/config";
+import {DefaultConfig} from "../../../config/config";
 import Cookies from "universal-cookie";
 import useAuth from "../../../hooks/useAuth";
 import RouteConfig from "../../../config/Route";
 import RolesConfig from "../../../config/Roles";
-import encryptData  from "../../../config/config"
+import {encryptData}  from "../../../config/config"
 import './login.page.css'
 
 const LoginPage = () => {
@@ -31,22 +31,22 @@ const LoginPage = () => {
     const submitHandle = (e) => {
         e.preventDefault()
         if(userNameInput !== "" && passwordInput !== ""){
-            axios.post(`${DefaultConfig.base_api}/auth/signin`,{
+            axios.post(`http://localhost:2022/api/auth/signin`,{
                 "username" : userNameInput,
                 "password" : passwordInput
             })
             .then((response) => {
                 console.log(response)
                 const roles = response?.data?.roles[0]
-                const name = response?.data?.name
-                const id = response?.data?.id[0]
+                // const name = response?.data?.name
+                const id = response?.data?.id
                 const accessToken = response.data.accessToken
                 const user = userNameInput
                 const pwd = passwordInput
                 cookies.set('access_token',accessToken,{path:'/'})
-                cookies.set('role',encryptData(roles),{path:'/'})
-                cookies.set('name',encryptData(name),{path:'/'})
-                cookies.set('id',encryptData(id),{path:'/'})
+                cookies.set('role',roles,{path:'/'})
+                // cookies.set('name',name,{path:'/'})
+                cookies.set('id',id,{path:'/'})
                 // localStorage.setItem("role",roles)
                 // localStorage.setItem("access_token",accessToken)
                 // setAuth({user,pwd,roles,accessToken})

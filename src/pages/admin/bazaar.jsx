@@ -6,13 +6,13 @@ import NavbarComponent from '../../components/navbar/navbar.component'
 import Container from '../container'
 import ContainerContent from '../../components/container/container.component'
 import Header from './header'
-import DefaultConfig from '../../config/config'
+import { DefaultConfig } from '../../config/config'
 import axios from 'axios'
 import {v4} from 'uuid'
 import PageTitle from '../../components/text/pageTitle.component'
 import LoadingModal from '../../components/modal/loading'
 
-import decryptData from '../../config/config'
+import {decryptData} from '../../config/config'
 
 const BazaarAdminPage = () => {
     const cookie = new Cookies()
@@ -53,7 +53,7 @@ const BazaarAdminPage = () => {
 
     const url = `${DefaultConfig.base_api}/reward`
     const header = {
-        'Authorization' : `Bearer ${localStorage.getItem('access_token')}`
+        'Authorization' : `Bearer ${cookie.get("access_token")}`
     }
 
     const getDataReward = () => {
@@ -66,6 +66,7 @@ const BazaarAdminPage = () => {
             "sort_by":"id",
             "sort_dir":"asc"
         }
+        console.log("data",url)
         
         axios.post(url,body,{headers: header})
             .then(response => {
@@ -204,7 +205,7 @@ const BazaarAdminPage = () => {
         e.preventDefault()
         if(window.confirm("Are you user delete this item?")){
             axios.delete(`${url}/${productId}`,{
-                heders:header
+                headers:header
             })
             .then((response) => {
                 alert("Item deleted")
@@ -456,7 +457,7 @@ const BazaarAdminPage = () => {
                     </div>
                     <div className="mb-3">
                         <label htmlFor="inputDate" className="form-label">Expire Date</label>
-                        <input id="inputDate" name="" type="date" className="form-control here" value={inputDate} onChange={expireDateHandle} required />
+                        <input id="inputDate" name="" type="date" className="form-control here" min={new Date().toISOString().split('T')[0]} value={inputDate} onChange={expireDateHandle} required />
                     </div>
                     
                 </form>

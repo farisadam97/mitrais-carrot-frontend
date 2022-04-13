@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import DefaultConfig from '../../../config/config'
+import {DefaultConfig} from '../../../config/config'
 import { Modal,Button} from 'react-bootstrap'
 import LoadingModal from '../../modal/loading'
+import Cookies from "universal-cookie";
+
 
 const SocfoundTab = (props) => {
-    const url = `${DefaultConfig.base_api}`
+    const cookie = new Cookies()
+
+    const url = `${DefaultConfig.base_api}/rewardSort`
     const header = {
-        'Authorization' : `Bearer ${localStorage.getItem('access_token')}`
+        'Authorization' : `Bearer ${cookie.get("access_token")}`
     }
     const [isLoadingTable,setIsLoadingTable] = useState(true)
     const [isLoading,setIsLoading] = useState(false)
@@ -18,7 +22,7 @@ const SocfoundTab = (props) => {
 
     const getDataSocfoundHistory = () => {
         axios.get(
-            `${url}/rewardSort?category=socfound&pageNo=0&pageSize=${amountRow}&sortBy=id&sortDir=asc`
+            `${url}?category=socfound&pageNo=0&pageSize=${amountRow}&sortBy=id&sortDir=asc`,{headers: header}
         ).then(response => {
             console.log(response)
             setIsLoadingTable(false)
