@@ -1,7 +1,6 @@
 import axios from "axios";
 import { baseURL } from "./BaseUrl";
-import { fetchFailed } from "../bazaarItem";
-import { fetchGroupSuccess, fetchGroupDetailSuccess, fetchGroupStaff } from "../userGroup";
+import { fetchGroupSuccess, fetchGroupDetailSuccess, fetchGroupStaff, fetchGroupFailed } from "../userGroup";
 
 const FetchGroup = store => next => async action => {
     const { url, method, data } = action.payload;
@@ -20,51 +19,48 @@ const FetchGroup = store => next => async action => {
                     pagination: response.data.body.pagination
                 }))
             } catch(error){
-                store.dispatch(fetchFailed({
+                store.dispatch(fetchGroupFailed({
                     error
                 }));
             }
             break;
         case "AddGroup":
             try{
-                const response = await axios.request({
+                await axios.request({
                     baseURL,
                     url,
                     method,
                     data,
                 });
-                // console.log(response);
             }catch(error){
-                store.dispatch(fetchFailed({
+                store.dispatch(fetchGroupFailed({
                     error
                 }));
             }
             break;
         case "UpdateGroup":
             try{
-                const response = await axios.request({
+                await axios.request({
                     baseURL,
                     url,
                     method,
                     data
                 });
-                // console.log(response);
             }catch(error){
-                store.dispatch(fetchFailed({
+                store.dispatch(fetchGroupFailed({
                     error
                 }));
             }
             break;
         case "DeleteGroup":
             try{
-                const response = await axios.request({
+                await axios.request({
                     baseURL,
                     url,
                     method,
                 });
-                // console.log(response);
             }catch(error){
-                store.dispatch(fetchFailed({
+                store.dispatch(fetchGroupFailed({
                     error
                 }));
             }
@@ -80,7 +76,7 @@ const FetchGroup = store => next => async action => {
                     groupDetails: response.data
                 }))
             }catch(error){
-                store.dispatch(fetchFailed({
+                store.dispatch(fetchGroupFailed({
                     error
                 }));
             }
@@ -98,7 +94,7 @@ const FetchGroup = store => next => async action => {
                     pagination: response.data.body.pagination,
                 }))
             }catch(error){
-                store.dispatch(fetchFailed({
+                store.dispatch(fetchGroupFailed({
                     error
                 }));
             }

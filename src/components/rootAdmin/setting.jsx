@@ -30,8 +30,7 @@ const Settings = (props) => {
 
     useEffect(() => {
         props.getSetting();
-        console.log('render')
-    },[])
+    },[]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const minimumInputHandle = e => {
         setMinimum(e.currentTarget.value)
