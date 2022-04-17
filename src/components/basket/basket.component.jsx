@@ -100,7 +100,7 @@ const Basket = (props) => {
 
     const url = "http://localhost:2022/api/v1/transaction/send-carrot";
     const payload = {
-      senderId: 7,
+      senderId: 24,
       receiverId: parseInt(getSelectedUser),
       message: getMessage,
       amount: parseInt(getAmount),
@@ -273,7 +273,7 @@ const mapDispatchToProps = (dispatch) => {
       return dispatch({
         type: "GetBasketHistory",
         payload: {
-          url: "/basket/7",
+          url: "/basket/24",
           method: "POST",
           data: {
             role: "5",

@@ -7,6 +7,7 @@ const GetUsersList = createAction("GetUsersList");
 const GetManagerList = createAction("GetManagerList");
 const GetCarrotStaff = createAction("GetCarrotStaff");
 const GetHarvest = createAction("GetHarvest")
+const GetAnnualCarrot = createAction("GetAnnualCarrot")
 
 export const apiRequest = [
   GetBazaarItem,
@@ -16,5 +17,6 @@ export const apiRequest = [
   GetStaffBasket,
   GetManagerList,
   GetCarrotStaff,
-  GetHarvest
+  GetHarvest,
+  GetAnnualCarrot
 ];

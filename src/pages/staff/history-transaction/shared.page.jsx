@@ -100,7 +100,7 @@ const mapDispatchToProps = (dispatch) => {
       return dispatch({
         type: "GetSharedHistory",
         payload: {
-          url: "/history/shared/7",
+          url: "/history/shared/24",
           method: "POST",
           data: {
             startDate: startDate,

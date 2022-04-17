@@ -43,7 +43,7 @@ const ManagerComponent = ({lists, isLoading}) => {
                     </tr>
                 ) : (
                     <tr>
-                    <td colSpan={6} className="text-center">
+                    <td colSpan={8} className="text-center">
                         Data tidak ditemukan
                     </td>
                     </tr>

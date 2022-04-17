@@ -32,6 +32,8 @@ import InsertUpdateUser from "./pages/rootAdmin/insertUser/insert.user.page";
 import ManagerPage from "./pages/admin/manager.page";
 import CarrotStaffPage from "./pages/admin/carrot.staff.page";
 import HarvestPage from "./pages/rootAdmin/harvest.page";
+import DashboardRootAdmin from "./components/rootAdmin/dasboard.component";
+import RootAdminDashboardPage from "./pages/rootAdmin/dashboard/dashboard.root.page";
 
 function App() {
   return (
@@ -64,11 +66,13 @@ function App() {
         <Route path="staff-group/:id" element={<StaffGroupDetail />} />
         <Route path="manager-list" element={<ManagerPage />} />
         <Route path="insert-update" element={<InsertUpdateUser />} />
+        <Route path="carrot-summary" element={<CarrotStaffPage />} />
       </Route>
       {/* </Route> */}
 
       {/* <Route element={<RequireAuth allowedRoles={[RolesConfig.ROOT_ADMIN]} />}> */}
       <Route path={RouteConfig.ROOT_ADMIN} element={<RootAdminIndex />}>
+        <Route path="dashboard" element={<RootAdminDashboardPage/>} />
         <Route path="settings" element={<Setting />} />
         <Route path="assign-role" element={<AssignRole />} />
         <Route path="insert-update" element={<InsertUpdateUser />} />

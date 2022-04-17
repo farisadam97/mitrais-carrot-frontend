@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import AuthContext from "../../hooks/AuthProvider";
-import Cookies from "universal-cookie";
+//import Cookies from "universal-cookie";
 import mitraisLogo from '../../assets/img/mitrais-logo.png'
 import  './navbar.component.css'
 
@@ -15,7 +15,7 @@ const NavbarComponent = props =>{
     const fontAwesomeBell = <FontAwesomeIcon icon={['fas','bell']} size='lg' />
     const {setAuth} = useContext(AuthContext)
     const navigate = useNavigate()
-    const cookies = new Cookies()
+    //const cookies = new Cookies()
 
     const logout = async () => {
         // cookies.remove('access_token')

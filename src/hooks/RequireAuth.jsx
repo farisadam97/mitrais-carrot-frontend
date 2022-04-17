@@ -1,12 +1,12 @@
 import { useLocation,Navigate,Outlet } from "react-router-dom";
-import Cookies from "universal-cookie";
+//import Cookies from "universal-cookie";
 import useAuth from "./useAuth";
 import RouteConfig from "../config/Route";
 
 const RequireAuth = ({allowedRoles}) => {
     const {auth} = useAuth()
     const location = useLocation()
-    const cookie = new Cookies()
+    //const cookie = new Cookies()
     const role = localStorage.getItem('role')
     const accessToken = JSON.stringify(localStorage.getItem('access_token'))
     return(

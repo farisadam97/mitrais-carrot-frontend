@@ -38,9 +38,9 @@ const SummaryCarrot = ({lists, isLoading}) => {
                 </thead>
                 <tbody id='table-admin-carrot-summary'>
                 {lists.length > 0 ? (
-                    lists.map((item) => (
+                    lists.map((item, index) => (
                     <tr key={item.id}>
-                        <td scope="row">{item.id}</td>
+                        <td scope="row">{index + 1}</td>
                         <td>{item.name}</td>
                         <td>{item.earnedAmount}</td>
                         <td>{item.sharedAmount}</td>
@@ -51,13 +51,13 @@ const SummaryCarrot = ({lists, isLoading}) => {
                     ))
                 ) : isLoading ? (
                     <tr>
-                    <td colSpan={6} className="text-center">
+                    <td colSpan={7} className="text-center">
                         Loading...
                     </td>
                     </tr>
                 ) : (
                     <tr>
-                    <td colSpan={6} className="text-center">
+                    <td colSpan={7} className="text-center">
                         Data tidak ditemukan
                     </td>
                     </tr>

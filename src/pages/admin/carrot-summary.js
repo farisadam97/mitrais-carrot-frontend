@@ -99,13 +99,13 @@ const CarrotSummary = () => {
                                 ))
                             ) : showLoading ? (
                                 <tr>
-                                <td colSpan={6} className="text-center">
+                                <td colSpan={7} className="text-center">
                                     Loading...
                                 </td>
                                 </tr>
                             ) : (
                                 <tr>
-                                <td colSpan={6} className="text-center">
+                                <td colSpan={7} className="text-center">
                                     Data tidak ditemukan
                                 </td>
                                 </tr>
