@@ -1,4 +1,6 @@
 import React from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons'
 
 const TableUser = ({lists, isLoading}) => {
     return (
@@ -97,7 +99,7 @@ const TableUser = ({lists, isLoading}) => {
                                             </td>
                                             <td className="text-center">
                                                 <button type="button" name="btn_delete" className="btn btn-outline-danger btn-sm" data-id="'+row.username+'">
-                                                    <span className="glyphicon glyphicon-trash"></span>
+                                                    <FontAwesomeIcon icon={faTrashCan} />
                                                 </button>
                                             </td>
                                         </tr>

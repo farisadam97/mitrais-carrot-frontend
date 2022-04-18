@@ -1,6 +1,8 @@
 import { faAlignCenter } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import React, { useState } from "react";
+import Cookies from "universal-cookie";
+
 const colStyle = {
     border: "1px dotted red",
     fontSize:"12px",
@@ -8,6 +10,7 @@ const colStyle = {
 };
 
 const FormTab = (props) => {
+    const cookie = new Cookies()
     const [getFile, setFile] = useState();
     const [isFilePicked, setIsFilePicked] = useState(false);
 
@@ -34,13 +37,16 @@ const FormTab = (props) => {
                 url: "/user/add-excel",
                 method: "POST",
                 data: formData,
+                headers: {
+                    'Authorization' : `Bearer ${cookie.get("access_token")}`
+                }
             }
         ).then(function (res) {
             console.log("res", res)
             if (res.status == 200) {
-                alert("The ! ");
+                alert("Insert/Update Success! ");
             } else if (res.status == 401) {
-                alert("Oops! ");
+                alert("Oops! Try Again!");
             }
         }).catch( function (e) {
            alert("Error submitting form!");

@@ -6,7 +6,7 @@ import {
 } from "../historyTransaction";
 
 const FetchSharedHistory = (store) => (next) => async (action) => {
-  const { url, method, data, onSuccess, onError } = action.payload;
+  const { url, method, data, headers, onSuccess, onError } = action.payload;
 
   switch (action.type) {
     case "GetSharedHistory":
@@ -16,6 +16,7 @@ const FetchSharedHistory = (store) => (next) => async (action) => {
           url,
           method,
           data,
+          headers,
         });
         store.dispatch(
           apiHistoryTrxRequestSucceeded({

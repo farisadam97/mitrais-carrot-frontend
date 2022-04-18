@@ -6,6 +6,7 @@ import Select from "react-select";
 import { connect } from "react-redux";
 import axios from "axios";
 import basketHistory from "../../store/basketHistory";
+import Cookies from "universal-cookie";
 
 const initialBasket = [
   {
@@ -38,6 +39,9 @@ const initialBasket = [
 ]
       
 const Basket = (props) => {
+  const cookies = new Cookies();
+  const [getToken, setToken] = useState(cookies.get('access_token'));
+  const [getId, setId] = useState(cookies.get('id'));
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingSubmit, setLoadingSubmit] = useState(false);
   const [show, setShow] = useState(false);
@@ -49,8 +53,8 @@ const Basket = (props) => {
   const [getCardBasket, setCardBasket] = useState(initialBasket);
 
   useEffect(() => {
-    props.loadUsers();
-    props.loadBasketHistory();
+    props.loadUsers(getToken);
+    props.loadBasketHistory(getId, getToken);
     setIsLoading(false);
   }, []);
 
@@ -100,7 +104,7 @@ const Basket = (props) => {
 
     const url = "http://localhost:2022/api/v1/transaction/send-carrot";
     const payload = {
-      senderId: 7,
+      senderId: getId,
       receiverId: parseInt(getSelectedUser),
       message: getMessage,
       amount: parseInt(getAmount),
@@ -108,15 +112,17 @@ const Basket = (props) => {
 
     try {
       axios.post(url, payload).then((res) => {
-        if (res.data.status == "INTERNAL_SERVER_ERROR") {
-          alert("Something is wrong! Please Try Again.")
-        }
-      })
         setLoadingSubmit(false);
         setSelectedUser("");
         setMessage("");
         setAmount("");
         handleModal();
+        if (res.data.status == "INTERNAL_SERVER_ERROR") {
+          alert("Something is wrong! Please Try Again.")
+        } else if (res.data.status === "OK") {
+          alert("Transaction Success!")
+        }
+      })
     } catch (e) {
       alert("error request:", e);
     }
@@ -253,7 +259,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadUsers: () => {
+    loadUsers: (token) => {
       return dispatch({
         type: "GetUsersList",
         payload: {
@@ -266,19 +272,28 @@ const mapDispatchToProps = (dispatch) => {
             sortBy: "name",
             sortDir: "asc",
           },
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+            Authorization: `Bearer ${token}`
+          }
         },
       });
     },
-    loadBasketHistory: () => {
+    loadBasketHistory: (id, token) => {
       return dispatch({
         type: "GetBasketHistory",
         payload: {
-          url: "/basket/7",
+          url: `/basket/user/${id}`,
           method: "POST",
           data: {
             role: "5",
             fields: "id, shared_amount, donate_amount, spent_amount, current_amount",
           },
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         },
       });
     },

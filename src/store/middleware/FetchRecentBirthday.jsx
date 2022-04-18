@@ -9,7 +9,7 @@ const FetchRecentBirthday = (store) => (next) => async (action) => {
 
   next(action);
 
-  const { url, method, data, onSuccess, onError } = action.payload;
+  const { url, method, data, headers, onSuccess, onError } = action.payload;
 
   try {
     const response = await axios.request({
@@ -17,10 +17,12 @@ const FetchRecentBirthday = (store) => (next) => async (action) => {
       url,
       method,
       data,
+      headers,
     });
     store.dispatch(
       apiRecentBirthdayRequestSucceeded({
         lists: response.data.body.data,
+        pagination: response.data.body.pagination,
       })
     );
   } catch (error) {
