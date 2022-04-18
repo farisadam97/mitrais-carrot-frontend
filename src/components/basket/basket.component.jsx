@@ -263,7 +263,7 @@ const mapDispatchToProps = (dispatch) => {
       return dispatch({
         type: "GetUsersList",
         payload: {
-          url: "/user",
+          url: "/user/get-data",
           method: "POST",
           data: {
             roleId: "5",
@@ -273,9 +273,6 @@ const mapDispatchToProps = (dispatch) => {
             sortDir: "asc",
           },
           headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "GET, POST, PUT",
-            "Access-Control-Allow-Headers": "Content-Type, Authorization",
             Authorization: `Bearer ${token}`
           }
         },
