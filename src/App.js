@@ -32,6 +32,7 @@ import InsertUpdateUser from "./pages/rootAdmin/insertUser/insert.user.page";
 import ManagerPage from "./pages/admin/manager.page";
 import CarrotStaffPage from "./pages/admin/carrot.staff.page";
 import HarvestPage from "./pages/rootAdmin/harvest.page";
+import Distribution from "./components/rootAdmin/distribution";
 
 function App() {
   return (
@@ -73,6 +74,7 @@ function App() {
         <Route path="assign-role" element={<AssignRole />} />
         <Route path="insert-update" element={<InsertUpdateUser />} />
         <Route path="harvest" element={<HarvestPage />} />
+        <Route path="distribution" element={<Distribution />} />
       </Route>
       </Route>
 

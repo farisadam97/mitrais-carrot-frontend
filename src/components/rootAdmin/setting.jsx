@@ -84,7 +84,9 @@ const Settings = (props) => {
 
     return (
         <ContainerContent title="CARROT SETTINGS">
-            <button className="btn btn-info text-white" onClick={handleShow}>Edit</button>
+            <div className="text-center mb-3">
+                <button className="btn btn-info text-white" onClick={handleShow}>Edit</button>
+            </div>
             <hr />
             <Table bordered hover striped>
                 <thead>

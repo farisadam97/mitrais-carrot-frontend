@@ -19,7 +19,7 @@ const RootTabs = () => {
                 <Link className={`nav-link ${nav === 'harvest'? 'active' : '' }`} to="harvest" onClick={() => setNav("harvest")}>HARVEST</Link>
             </div>
             <div className="col-md-auto nav-pills">
-                <Link className={`nav-link ${nav === 'distribution'? 'active' : '' }`} to="" onClick={() => setNav("distribution")}>DISTRIBUTION</Link>
+                <Link className={`nav-link ${nav === 'distribution'? 'active' : '' }`} to="distribution" onClick={() => setNav("distribution")}>DISTRIBUTION</Link>
             </div>
             <div className="col-md-auto nav-pills">
                 <Link className={`nav-link ${nav === 'settings'? 'active' : '' }`} to="settings" onClick={() => setNav("settings")}>SETTING</Link>

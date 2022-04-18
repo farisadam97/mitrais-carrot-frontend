@@ -8,8 +8,8 @@ const ContainerContent = props => {
                     <div className="col-md-12">
                         <h4 className="my-2 box-title">{props.title}</h4>
                     </div>
+                    {props.children}
                 </div>
-                {props.children}
             </div>
         </section>
     )
