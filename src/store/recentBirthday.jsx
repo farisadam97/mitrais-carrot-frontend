@@ -4,6 +4,7 @@ const initialState = {
   lists: [],
   error: null,
   isLoading: true,
+  pagination: null,
 };
 
 const slice = createSlice({
@@ -14,11 +15,13 @@ const slice = createSlice({
       recentBirthday.lists = action.payload.lists;
       recentBirthday.isLoading = false;
       recentBirthday.error = null;
+      recentBirthday.pagination = action.payload.pagination;
     },
     apiRecentBirthdayRequestFailed: (recentBirthday, action) => {
       recentBirthday.error = action.payload.error;
       recentBirthday.isLoading = false;
       recentBirthday.lists = [];
+      recentBirthday.pagination = null;
     },
   },
 });

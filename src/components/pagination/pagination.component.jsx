@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const Pagination = ({type, pagination, ...props}) => {
+const Pagination = ({token, type, pagination, ...props}) => {
   const [isOnlyOnePage, setOnlyOnePage] = useState(true);
   const [isFirstPage, setFirstPage] = useState(true);
 
@@ -15,17 +15,19 @@ const Pagination = ({type, pagination, ...props}) => {
 
   const clickHandler = (pageNumber) => {
     if (type === "share") {
-      props.onPageChange(pageNumber);
+      props.onPageChange(props.id, token, pageNumber);
     } else if (type === "donation") {
-      props.onPageChangeDonation(pageNumber);
+      props.onPageChangeDonation(props.id, token, pageNumber);
     } else if (type === "bazaar") {
-      props.onPageChangeReward(pageNumber);
+      props.onPageChangeReward(props.id, token, pageNumber);
     } else if (type === "userList") {
-      props.onPageChange(pageNumber);
+      props.onPageChange(token, pageNumber);
     } else if (type === "group"){
       props.loadGroups(pageNumber);
     } else if (type === "userListRole"){
       props.getAllUser(pageNumber);
+    } else if (type === "recentBirthday"){
+      props.onPageChangeRecentBirthday(token, pageNumber);
     }
   };
 

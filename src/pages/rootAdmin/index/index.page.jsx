@@ -9,6 +9,7 @@ import RootTabs from "../../../components/tab/rootAdmin.tab.component";
 const IndexRootAdmin = (props) => {
     const url = useLocation();
     // todo: add navbar for bazaar and social foundation
+
     return(
         <div className="">
             <NavbarComponent />

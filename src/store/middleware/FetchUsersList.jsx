@@ -9,13 +9,14 @@ const FetchUsersList = (store) => (next) => async (action) => {
 
   next(action);
 
-  const { url, method, data, onSuccess, onError } = action.payload;
+  const { url, method, headers, data, onSuccess, onError } = action.payload;
 
   try {
     const response = await axios.request({
       baseURL: "http://localhost:2022/api/v1",
       url,
       method,
+      headers,
       data,
     });
     store.dispatch(
