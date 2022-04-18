@@ -71,7 +71,6 @@ function App() {
       <Route element={<RequireAuth allowedRoles={[RolesConfig.ROOT_ADMIN]} />}>
         <Route path={RouteConfig.ROOT_ADMIN} element={<RootAdminIndex />}>
           <Route path="settings" element={<Setting />} />
-          <Route path="bazaar" element={<BazaarAdminPage />} />
           <Route path="assign-role" element={<AssignRole />} />
           <Route path="insert-update" element={<InsertUpdateUser />} />
           <Route path="harvest" element={<HarvestPage />} />

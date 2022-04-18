@@ -273,9 +273,6 @@ const mapDispatchToProps = (dispatch) => {
             sortDir: "asc",
           },
           headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "GET, POST, PUT",
-            "Access-Control-Allow-Headers": "Content-Type, Authorization",
             Authorization: `Bearer ${token}`
           }
         },
