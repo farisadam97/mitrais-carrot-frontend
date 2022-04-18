@@ -14,6 +14,7 @@ import './login.page.css'
 const LoginPage = () => {
     const [userNameInput, setUserNameInput] = useState("")
     const [passwordInput, setPasswordInput] = useState("")
+    const [isLoading,setIsLoading] = useState(false)
     const cookies = new Cookies()
 
     // const {setAuth} = useAuth()
@@ -30,6 +31,7 @@ const LoginPage = () => {
 
     const submitHandle = (e) => {
         e.preventDefault()
+        setIsLoading(true)
         if(userNameInput !== "" && passwordInput !== ""){
             axios.post(`http://localhost:2022/api/auth/signin`,{
                 "username" : userNameInput,
@@ -99,8 +101,13 @@ const LoginPage = () => {
                                     value={passwordInput}
                                     onChange={passwordNameHandle}
                                 />
-                                <a href="#" className="my-4 d-block btn btn-mitrais rounded-pill py-3" onClick={submitHandle}>
+                                <a href="#" className={`my-4 d-block btn btn-mitrais rounded-pill py-3 ${isLoading ? "disabled" : ""}`} onClick={submitHandle}>
+                                    <div className={`spinner-border text-light spinner-border-sm mr-3 ${!isLoading ? "d-none" : ""}`} role="status">
+                                        <span className="visually-hidden">Loading...</span>
+                                    </div>
+                                    <span className ="ms-3">
                                     Login
+                                    </span> 
                                 </a>
                             </form>
                         </div>  
