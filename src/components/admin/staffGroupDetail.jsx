@@ -6,6 +6,7 @@ import Select from 'react-select'
 import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
 import { GetGroupDetails, GetGroupStaff, GetUsersList } from "../../store/apiActions";
+import LoadingModal from "../modal/loading";
 import axios from "axios";
 import Pagination from "../pagination/pagination.component";
 
@@ -90,16 +91,14 @@ const StaffGroupDetail = (props) => {
         e.preventDefault();
         let payload = await getUserDetail(selectedUser);
         payload.groupId = id;
-        const response = await axios.put(url,payload);
-        // console.log(response);
+        await axios.patch(url, payload);
         handleClose();
     }
 
     const handleDelete = async () => {
         let payload = await getUserDetail(selectedUser);
-        payload.groupId = 0;
-        const response = await axios.put(url, payload);
-        // console.log(response);
+        payload.groupId = 1;
+        await axios.patch(url, payload);
         handleClose();
     }
 
@@ -164,8 +163,9 @@ const StaffGroupDetail = (props) => {
                                 )
                             })
                         ) : (<tr>
-                            <td colSpan={6} className="text-center">Data Not Found</td>
+                            <td colSpan={7} className="text-center">Data Not Found</td>
                         </tr>)}
+                        <LoadingModal isLoading={props.isLoading}/>
                     </tbody>
                 </Table>
                 { props.pagination > 0 && <Pagination {...props} pagination={props.pagination} type={"groupStaff"}/>}
@@ -223,6 +223,7 @@ const mapStateToProps = state => {
         groupStaff: state.group.groupStaff,
         usersList: state.user.lists,
         pagination: state.group.staffPagination,
+        isLoading: state.group.isLoading,
     }
 }
 
@@ -253,8 +254,7 @@ const mapDispatchToProps = dispatch => {
                 url: `/user`,
                 method: 'POST',
                 data: {
-                    role: "9",
-                    fields: "id, name",
+                    roleId: "10",
                     pageNumber: "0",
                     pageSize: "100",
                     sortBy: "name",

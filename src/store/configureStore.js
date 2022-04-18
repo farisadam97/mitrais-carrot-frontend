@@ -1,5 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import reducer from "./rootReducer";
+import FetchCarrotStaff from "./admin/middleware_admin/FetchCarrotStaff";
+import FetchManagerList from "./admin/middleware_admin/FetchManagerList";
 import FetchBazaarItem from "./middleware/FetchBazaarItem";
 import FetchTransaction from "./middleware/FetchTransaction";
 import FetchRecentBirthday from "./middleware/FetchRecentBirthday";
@@ -11,6 +13,7 @@ import FetchGroup from "./middleware/FetchGroup";
 import FetchBasketHistory from "./middleware/FetchBasketHistory";
 import FetchDonationHistory from "./middleware/FetchDonationHistory";
 import FetchRewardHistory from "./middleware/FetchRewardHistory";
+import FetchHarvest from "./rootadmin/middleware/FetchHarvest";
 
 const api = [
   FetchBazaarItem,
@@ -24,6 +27,9 @@ const api = [
   FetchUser,
   FetchSetting,
   FetchGroup,
+  FetchManagerList,
+  FetchCarrotStaff,
+  FetchHarvest
 ];
 
 export default function () {

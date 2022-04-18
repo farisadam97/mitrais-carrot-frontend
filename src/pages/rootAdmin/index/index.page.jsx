@@ -18,11 +18,8 @@ const IndexRootAdmin = (props) => {
                     <div className="col-md-6">
                         <PageTitle title="FARMER DASHBOARD" />
                     </div>
-                    {/* <div className="col-md-6 text-end">
-                        <a href="#" className="btn btn-success py-2 float-right"> Create Barn </a>
-                    </div> */}
                 </div>
-                <RootTabs url />
+                <RootTabs/>
                 <Outlet/>
             </Container>
             <Footer />

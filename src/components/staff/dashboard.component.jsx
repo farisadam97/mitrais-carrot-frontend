@@ -24,17 +24,16 @@ const Dashboard = (props) => {
 
     return (
         <div>
-            <PageTitle title="DASHBOARD"></PageTitle>
             <StaffSummary></StaffSummary>
-            <div className="row admin-tabs mb-4">
-                <div className="col-md-auto nav-pills">
-                    <a onClick={reward} className={"nav-link " + (category === "reward"? "active" : "")}>BAZAAR</a>
-                </div>
-                <div className="col-md-auto nav-pills">
-                    <a onClick={socFound} className={"nav-link " + (category === "socFound"? "active" : "")}>SOCIAL FOUNDATION</a>
-                </div>
-            </div>
             <ContainerContent title={category === "reward"? "BAZAAR": "SOCIAL FOUNDATION"}>
+                <div className="row admin-tabs mb-4">
+                    <div className="col-md-auto nav-pills">
+                        <a onClick={reward} className={"nav-link " + (category === "reward"? "active" : "")}>BAZAAR</a>
+                    </div>
+                    <div className="col-md-auto nav-pills">
+                        <a onClick={socFound} className={"nav-link " + (category === "socFound"? "active" : "")}>SOCIAL FOUNDATION</a>
+                    </div>
+                </div>
                 {(!props.items && !props.error) && <p>Loading...</p>}
                 {props.error && <p>{props.error}</p>}
                 {props.items && <BazaarItem items={props.items}/>}

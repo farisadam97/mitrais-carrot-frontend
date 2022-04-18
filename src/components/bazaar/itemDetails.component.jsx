@@ -20,7 +20,7 @@ const ItemDetails = (props) => {
 
     const handleClickBuy = () => {
         setTrxIsLoading(true);
-        props.exchangeItem(id, 25, props.detailItem[0].category); //<----here buyer id
+        props.exchangeItem(id, 1, props.detailItem[0].category); //<----here buyer id
         handleClose();
     }
 

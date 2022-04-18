@@ -17,7 +17,7 @@ const FetchTransaction = (store) => (next) => async (action) => {
           method,
           data,
         });
-        if (!response.data.payload.id) throw Error("Exchange Item Failed");
+        if (!response.data.payload) throw Error("Exchange Item Failed");
         store.dispatch(
           fetchTransactionSuccess({
             transaction: response.data.payload,

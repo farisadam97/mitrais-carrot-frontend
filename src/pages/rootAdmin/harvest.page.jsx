@@ -1,0 +1,70 @@
+import React from 'react'
+import HarvestComponent from '../../components/rootAdmin/harvest.component'
+import ContainerContent from '../../components/container/container.component'
+import Footer from '../../components/footer/footer.component'
+import { connect } from 'react-redux'
+import { useEffect } from 'react'
+
+const HarvestPage = props => {
+    useEffect(() => {
+        props.loadHarvest()
+        console.log(props)
+      }, [])
+  return (
+    <div>
+            <ContainerContent title="HARVEST PLAN">
+            <div className="col-md-12">
+                <HarvestComponent lists={props.lists} isLoading={props.isLoading} />
+                {/* <ManagerComponent lists={props.lists} isLoading={props.isLoading} /> */}
+                {/* <Pagination {...props.pagination} /> */}
+            </div>
+            </ContainerContent>
+    </div>
+  )
+}
+
+const mapStateToProps = (state) => {
+    return {
+      lists: state.harvestList.lists,
+      isLoading: state.harvestList.isLoading,
+      error: state.harvestList.error,
+      pagination: state.harvestList.pagination,
+    };
+  };
+  
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      loadHarvest: () => {
+        return dispatch({
+          type: "GetHarvest",
+          payload: {
+            url: "/carrot/annual",
+            method: "GET",
+            data: {
+              pageNumber: "0",
+              pageSize: "10",
+              sortBy: "id",
+              sortDir: "asc",
+            },
+          },
+        });
+      },
+      onPageChange: (pageNumber) => {
+        return dispatch({
+          type: "GetHarvest",
+          payload: {
+            url: "/carrot/annual",
+            method: "GET",
+            data: {
+              pageNumber: pageNumber - 1,
+              pageSize: "10",
+              sortBy: "id",
+              sortDir: "asc",
+            },
+          },
+        });
+      },
+    };
+  };
+  
+export default connect(mapStateToProps, mapDispatchToProps)(HarvestPage);
