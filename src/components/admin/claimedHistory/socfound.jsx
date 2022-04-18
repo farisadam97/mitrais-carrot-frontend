@@ -50,7 +50,6 @@ const SocfoundTab = (props) => {
                         <option value="25">25 rows</option>
                         <option value="50">50 rows</option>
                         <option value="100">100 rows</option>
-                        <option value="">All rows</option>
                     </select>
                     entries
                 </label>

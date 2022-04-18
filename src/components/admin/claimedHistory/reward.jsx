@@ -85,12 +85,13 @@ const RewardTab = (props) => {
     const updateStatusItem = () =>{
         setIsLoading(true)
         axios.put(
-            `${url}/rewardSort`,
+            `${url}`,
             {
                 "id":idHistoryApprove,
                 "approved": approveValue,
                 "message":message
-            }
+            },
+            {headers: header}
         ).then(response => {
             setIsLoading(false)
             setShow(false)

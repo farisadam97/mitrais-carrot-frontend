@@ -11,7 +11,6 @@ const RequireAuth = ({allowedRoles}) => {
     // const role =  decryptData(cookie.get("role"))
     const role =  cookie.get("role")
     const accessToken = cookie.get("access_token")
-    console.log("rqaARole",role)
     // const role = localStorage.getItem('role')
     // const accessToken = JSON.stringify(localStorage.getItem('access_token'))
     return(
