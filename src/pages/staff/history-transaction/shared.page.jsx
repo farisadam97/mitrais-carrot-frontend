@@ -46,7 +46,7 @@ const HistoryTransaction = (props) => {
         <><RewardHistoryItem lists={props.listReward} isLoading={props.isLoadingReward} />
         <Pagination token={getToken} pagination={props.paginationReward} type={"bazaar"} {...props}/></>)
     } else {
-      return <div style={{textAlign: "center"}}>Loading...</div>
+      return <div style={{ textAlign: "center" }}>Data Not Found</div>
     }
   }
 

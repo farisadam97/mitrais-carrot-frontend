@@ -11,6 +11,7 @@ import Pagination from "../../../components/pagination/pagination.component";
 
 const RecentBirthday = (props) => {
   const cookies = new Cookies();
+  const date = new Date();
   const [getToken, setToken] = useState(cookies.get('access_token'));
 
   useEffect(() => {
@@ -19,13 +20,13 @@ const RecentBirthday = (props) => {
   
   return (
     <div className="">
-          <HistoryTitle title="RECENT COLLEAGUE BIRTHDAY"/>
-            <ContainerContent>
-              <div className="row mt-3">
-              <RecentBirthdayItem lists={props.lists} isLoading={props.isLoading}/>
-              </div>  
-              {props.pagination && <Pagination token={getToken} pagination={props.pagination} type={"recentBirthday"} {...props}/>}
-            </ContainerContent>
+      <HistoryTitle title={`Colleagues' birthdays in ${date.toLocaleString('default', { month: 'long' })}`}/>
+      <ContainerContent>
+        <div className="row mt-3" style={{textAlign:"center"}}>
+        <RecentBirthdayItem lists={props.lists} isLoading={props.isLoading}/>
+        </div>  
+        {props.pagination && <Pagination token={getToken} pagination={props.pagination} type={"recentBirthday"} {...props}/>}
+      </ContainerContent>
     </div>
   )
 }

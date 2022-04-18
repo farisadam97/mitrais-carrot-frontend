@@ -38,39 +38,40 @@ function App() {
       <Route path="/" element={<LoginPage />}></Route>
 
       <Route element={<RequireAuth allowedRoles={[RolesConfig.STAFF]} />}>
-      <Route path={RouteConfig.STAFF} element={<IndexStaff />}>
-        <Route index element={<DashboardStaff />} />
-        <Route path="reward/:id" element={<DetailsItem />} />
-        <Route path="history-transaction" element={<HistoryTransaction />} />
-        <Route path="recent-birthday" element={<RecentBirthday />} />
-      </Route>
+        <Route path={RouteConfig.STAFF} element={<IndexStaff />}>
+          <Route index element={<DashboardStaff />} />
+          <Route path="reward/:id" element={<DetailsItem />} />
+          <Route path="history-transaction" element={<HistoryTransaction />} />
+          <Route path="recent-birthday" element={<RecentBirthday />} />
+        </Route>
       </Route>
 
       <Route element={<RequireAuth allowedRoles={[RolesConfig.MANAGER]} />}>
-      <Route path={RouteConfig.MANAGER} element={<IndexManager />}>
-        {/* <Route index element={<DashboardStaff/>}/> */}
-        <Route path="bazaar" element={<DashboardStaff />} />
-        <Route path="reward/:id" element={<DetailsItem />} />
-      </Route>
+        <Route path={RouteConfig.MANAGER} element={<IndexManager />}>
+          {/* <Route index element={<DashboardStaff/>}/> */}
+          <Route path="bazaar" element={<DashboardStaff />} />
+          <Route path="reward/:id" element={<DetailsItem />} />
+        </Route>
       </Route>
 
       <Route element={<RequireAuth allowedRoles={[RolesConfig.ADMIN]} />}>
-      <Route path={RouteConfig.ADMIN} element={<IndexAdmin />}>
-        {/* <Route index element={<DashboardStaff/>}/> */}
-        <Route index element={<CarrotSummary />} />
-        <Route path="bazaar-claimed" element={<BazaarClaimedPage />} />
-        <Route path="bazaar" element={<BazaarAdminPage />} />
-        <Route path="staff-group" element={<StaffGroup />} />
-        <Route path="staff-group/:id" element={<StaffGroupDetail />} />
-      </Route>
+        <Route path={RouteConfig.ADMIN} element={<IndexAdmin />}>
+          {/* <Route index element={<DashboardStaff/>}/> */}
+          <Route index element={<CarrotSummary />} />
+          <Route path="bazaar-claimed" element={<BazaarClaimedPage />} />
+          <Route path="bazaar" element={<BazaarAdminPage />} />
+          <Route path="staff-group" element={<StaffGroup />} />
+          <Route path="staff-group/:id" element={<StaffGroupDetail />} />
+          <Route path="insert-update" element={<InsertUpdateUser />} />
+        </Route>
       </Route>
 
       <Route element={<RequireAuth allowedRoles={[RolesConfig.ROOT_ADMIN]} />}>
-      <Route path={RouteConfig.ROOT_ADMIN} element={<RootAdminIndex />}>
-        <Route path="settings" element={<Setting />} />
-        <Route path="assign-role" element={<AssignRole />} />
-        <Route path="insert-update" element={<InsertUpdateUser />} />
-      </Route>
+        <Route path={RouteConfig.ROOT_ADMIN} element={<RootAdminIndex />}>
+          <Route path="settings" element={<Setting />} />
+          <Route path="assign-role" element={<AssignRole />} />
+          <Route path="insert-update" element={<InsertUpdateUser />} />
+        </Route>
       </Route>
 
       <Route path={RouteConfig.UNAUTHORIZED} element={<Unauthorized />}></Route>
