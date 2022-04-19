@@ -4,7 +4,7 @@ import { fetchSettingsSuccess, fetchUpdateSetting } from "../carrotSettings";
 import { fetchFailed } from "../bazaarItem";
 
 const FetchSetting = store => next => async action => {
-    const { url, method, data } = action.payload;
+    const { url, method, data, headers } = action.payload;
 
     switch(action.type){
         case "GetSettings":
@@ -13,6 +13,7 @@ const FetchSetting = store => next => async action => {
                     baseURL,
                     url,
                     method,
+                    headers,
                 })
                 store.dispatch(fetchSettingsSuccess({
                     annualCarrotMinimum: response.data.annualCarrotMinimum,
@@ -31,7 +32,8 @@ const FetchSetting = store => next => async action => {
                     baseURL,
                     url,
                     method,
-                    data
+                    data,
+                    headers,
                 })
                 store.dispatch(fetchUpdateSetting({
                     annualCarrotMinimum: response.data.annualCarrotMinimum,

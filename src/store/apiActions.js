@@ -19,6 +19,7 @@ const GetBasketHistory = createAction("GetBasketHistory");
 const GetDonationHistory = createAction("GetDonationHistory");
 const GetRewardHistory = createAction("GetRewardHistory");
 const GetAnnualBasket = createAction("GetAnnualBasket");
+const GetDistribution = createAction("GetDistribution");
 
 export {
   GetBazaarItem,
@@ -40,4 +41,5 @@ export {
   GetDonationHistory,
   GetRewardHistory,
   GetAnnualBasket,
+  GetDistribution,
 };

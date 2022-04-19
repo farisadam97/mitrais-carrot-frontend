@@ -15,12 +15,16 @@ const Dashboard = (props) => {
     }
 
     const socFound = () => {
-        setCategory("socFound");
+        setCategory("socfound");
     }
 
-    const loadItem = () => {
+    useEffect(() => {
         props.loadItem(category, token, props.user.office);
-    }
+    },[category])
+
+    // const loadItem = () => {
+    //     props.loadItem(category, token, props.user.office);
+    // }
 
     return (
         <div>
@@ -34,9 +38,9 @@ const Dashboard = (props) => {
                         <a onClick={socFound} className={"nav-link " + (category === "socFound"? "active" : "")}>SOCIAL FOUNDATION</a>
                     </div>
                 </div>
-                {!props.items && (<div className="text-center mb-3">
+                {/* {!props.items && (<div className="text-center mb-3">
                     <button className="btn btn-info text-white" onClick={loadItem}>Refresh</button>
-                </div>)}
+                </div>)} */}
                 {props.error && <p>{props.error}</p>}
                 {props.items && <BazaarItem items={props.items}/>}
             </ContainerContent>

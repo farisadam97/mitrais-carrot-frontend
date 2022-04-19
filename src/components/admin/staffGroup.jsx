@@ -6,8 +6,11 @@ import { GetGroupList, AddGroup, UpdateGroup, DeleteGroup } from "../../store/ap
 import LoadingModal from "../modal/loading";
 import { Link } from "react-router-dom";
 import Pagination from "../pagination/pagination.component";
+import Cookies from "universal-cookie";
 
 const StaffGroup = (props) => {
+    const cookies = new Cookies();
+    const token = cookies.get('access_token');
     const [show, setShow] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
 
@@ -20,7 +23,7 @@ const StaffGroup = (props) => {
     const [groupNoteValid, setGroupNoteValid] = useState(null);
 
     useEffect(() => {
-        props.loadGroups(1);
+        props.loadGroups(1, token);
     },[show, showDelete]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const handleClose = () => {
@@ -79,11 +82,11 @@ const StaffGroup = (props) => {
                 const mm = String(today.getMonth() + 1).padStart(2, '0');
                 const yyyy = today.getFullYear();
                 const todayDate = yyyy + '-' + mm + '-' + dd;
-                props.addGroup(groupName, groupNote, todayDate);
+                props.addGroup(groupName, groupNote, todayDate, token);
             } else if(groupId > 0){
-                props.updateGroup(groupId, groupName, groupDate, groupNote);
+                props.updateGroup(groupId, groupName, groupDate, groupNote, token);
             }
-            props.loadGroups(1).then(handleClose());
+            props.loadGroups(1, token).then(handleClose());
             // handleClose();
         }
     }
@@ -94,8 +97,8 @@ const StaffGroup = (props) => {
     }
 
     const deleteGroup = () => {
-        props.deleteGroup(groupId);
-        props.loadGroups(1).then(handleClose());
+        props.deleteGroup(groupId, token);
+        props.loadGroups(1, token).then(handleClose());
         // handleClose();
     }
 
@@ -138,7 +141,7 @@ const StaffGroup = (props) => {
                     <LoadingModal isLoading={props.isLoading}/>
                 </tbody>
             </Table>
-            {props.pagination > 0 && <Pagination {...props} pagination={props.pagination} type={"group"}/>}
+            {props.pagination && <Pagination {...props} pagination={props.pagination} type={"group"} token={token}/>}
 
             {/* Modal Update/Add */}
             <Modal show={show} onHide={handleClose}>
@@ -205,7 +208,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return{
-        loadGroups: (pageNumber) => {
+        loadGroups: (pageNumber, token) => {
             return dispatch(GetGroupList({
                 url: `/user/group`,
                 method: 'POST',
@@ -215,9 +218,12 @@ const mapDispatchToProps = dispatch => {
                     sortBy: "group_id",
                     sortDir: "asc",
                 },
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             }))
         },
-        addGroup: (groupName, groupNote, createDate) => {
+        addGroup: (groupName, groupNote, createDate, token) => {
             return dispatch(AddGroup({
                 url: `/user/add-group`,
                 method: 'POST',
@@ -225,10 +231,13 @@ const mapDispatchToProps = dispatch => {
                     groupName: groupName,
                     createdGroupDate: createDate,
                     note: groupNote,
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`
                 }
             }))
         },
-        updateGroup: (groupId, groupName, createDate, groupNote) => {
+        updateGroup: (groupId, groupName, createDate, groupNote, token) => {
             return dispatch(UpdateGroup({
                 url: `/user/group`,
                 method: 'PUT',
@@ -237,13 +246,19 @@ const mapDispatchToProps = dispatch => {
                     groupName,
                     note: groupNote,
                     createdGroupDate: createDate,
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`
                 }
             }))
         },
-        deleteGroup: (groupId) => {
+        deleteGroup: (groupId, token) => {
             return dispatch(DeleteGroup({
                 url: `/user/group/${groupId}`,
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             }))
         }
     }

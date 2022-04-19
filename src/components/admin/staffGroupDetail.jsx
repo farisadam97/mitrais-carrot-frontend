@@ -9,8 +9,11 @@ import { GetGroupDetails, GetGroupStaff, GetUsersList } from "../../store/apiAct
 import LoadingModal from "../modal/loading";
 import axios from "axios";
 import Pagination from "../pagination/pagination.component";
+import Cookies from "universal-cookie";
 
 const StaffGroupDetail = (props) => {
+    const cookies = new Cookies();
+    const token = cookies.get('access_token');
     const [show, setShow] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
     const { id } = useParams();
@@ -38,9 +41,9 @@ const StaffGroupDetail = (props) => {
     }
 
     useEffect(() => {
-        props.loadDetail(id);
-        props.loadGroupStaff(id);
-        props.loadUsersList();
+        props.loadDetail(id, token);
+        props.loadGroupStaff(id, token);
+        props.loadUsersList(token);
     },[selectedUser]);
 
     const convertJobFamily = (id) => {
@@ -90,15 +93,16 @@ const StaffGroupDetail = (props) => {
     const handleAdd = async (e) => {
         e.preventDefault();
         let payload = await getUserDetail(selectedUser);
+        console.log(payload);//todo request body update
         payload.groupId = id;
-        await axios.patch(url, payload);
+        await axios.put(url, payload);
         handleClose();
     }
 
     const handleDelete = async () => {
         let payload = await getUserDetail(selectedUser);
         payload.groupId = 1;
-        await axios.patch(url, payload);
+        await axios.put(url, payload);
         handleClose();
     }
 
@@ -168,7 +172,7 @@ const StaffGroupDetail = (props) => {
                         <LoadingModal isLoading={props.isLoading}/>
                     </tbody>
                 </Table>
-                { props.pagination > 0 && <Pagination {...props} pagination={props.pagination} type={"groupStaff"}/>}
+                { props.pagination && <Pagination {...props} pagination={props.pagination} type={"groupStaff"} token={token}/>}
 
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
@@ -229,13 +233,16 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return{
-        loadDetail: (groupId) => {
+        loadDetail: (groupId, token) => {
             return dispatch(GetGroupDetails({
                 url: `/user/group/${groupId}`,
                 method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             }))
         },
-        loadGroupStaff: (groupId) => {
+        loadGroupStaff: (groupId, token) => {
             return dispatch(GetGroupStaff({
                 url: `/user/group-member`,
                 method: 'POST',
@@ -246,12 +253,15 @@ const mapDispatchToProps = dispatch => {
                     pageSize: "10",
                     sortBy: "username",
                     sortDir: "asc",
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`
                 }
             }))
         },
-        loadUsersList: () => {
+        loadUsersList: (token) => {
             return dispatch(GetUsersList({
-                url: `/user`,
+                url: `/user/get-data`,
                 method: 'POST',
                 data: {
                     roleId: "10",
@@ -259,6 +269,9 @@ const mapDispatchToProps = dispatch => {
                     pageSize: "100",
                     sortBy: "name",
                     sortDir: "asc",
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`
                 }
             }))
         }

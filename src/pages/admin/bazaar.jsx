@@ -15,6 +15,7 @@ import LoadingModal from '../../components/modal/loading';
 import noImages from '../../assets/img/no-images.png'
 
 import {decryptData} from '../../config/config'
+import LoginPage from '../auth/login/login.page';
 
 const BazaarAdminPage = () => {
     const cookie = new Cookies()
@@ -241,12 +242,14 @@ const BazaarAdminPage = () => {
         console.log("edit",element.category)
         setSelectCategory(element.category.toLowerCase())
         setSelectLocation(element.location)
-        setInputCarrot(element.minCarrots)
+        setInputCarrot(element.rate)
         setInputStock(element.stock)
         setInputDate(element.expireDate)
         setItemImg(element.linkImg)
         setRenderImg(element.linkImg)
-
+        if(element.category.toLowerCase() === "socfound"){
+            setInputMinCarrot(element.minCarrots)
+        }
     }
 
     const toggleActive = (element) => {
@@ -292,13 +295,14 @@ const BazaarAdminPage = () => {
             axios.post(
                 `${DefaultConfig.base_api}/transaction/cash-out`,
                 {
-                    "id":dataDetailItem.id,
-                    "adminId":decryptData(cookie.get("id")),
-                    "amount":cashoutAmount
+                    "id":parseInt(dataDetailItem.id),
+                    "adminId":parseInt(cookie.get("id")),
+                    "amount":parseInt(cashoutAmount)
                 },
                 {headers:header}
             ).then(response => {
                 alert("Successfully Cashout Carrots!")
+                getDataReward()
                 setIsLoading(false)
                 setShowDetailSocfound(false)
                 setDataDetailItem({})
@@ -493,7 +497,7 @@ const BazaarAdminPage = () => {
                         </select>
                     </div> 
                     <div className="mb-3">
-                        <label htmlFor="inputCarrot" className="form-label">Carrot</label>
+                        <label htmlFor="inputCarrot" className="form-label">Carrot Price</label>
                         <input type="number" min={1} className="form-control" id="inputCarrot" aria-describedby="emailHelp" value={inputCarrot} onChange={carrotInputHandle} required />
                     </div>
                     <div className="mb-3">
@@ -552,18 +556,21 @@ const BazaarAdminPage = () => {
                     </div>
                     <div className={`mb-3 ${dataDetailItem?.category === "reward" ? "d-none" : ""}`}>
                         <label htmlFor="total-carrot" className="form-label">Total Carrots Collected</label>
-                        <input type="text" className="form-control" id="total-carrot" value={dataDetailItem?.totalCarrot} onChange={e=>{}} aria-describedby="emailHelp" disabled />
+                        <input type="text" className="form-control" id="total-carrot" value={dataDetailItem?.collectedCarrots} onChange={e=>{}} aria-describedby="emailHelp" disabled />
                     </div>
                     <div className={`mb-3 ${dataDetailItem?.category === "reward" ? "d-none" : ""}`}>
                         <label htmlFor="cashout-amount" className="form-label">Cashout Amount</label>
                         <input id="cashout-amount" min={0} type="number" className="form-control here" 
-                            value={cashoutAmount} onChange={inputCashoutHandle} disabled={(dataDetailItem?.totalCarrot > dataDetailItem?.minCarrots) ? false : true} />
-                        <div className={`invalid-feedback ${dataDetailItem?.totalCarrot < dataDetailItem?.minCarrots ? "d-block" : ""}`}>
+                            value={cashoutAmount} onChange={inputCashoutHandle} disabled={(parseInt(dataDetailItem?.collectedCarrots) > parseInt(dataDetailItem?.minCarrots)) ? false : true} />
+                            {
+                                console.log(typeof dataDetailItem?.collectedCarrots)
+                            }
+                        <div className={`invalid-feedback ${parseInt(dataDetailItem?.collectedCarrots) < parseInt(dataDetailItem?.minCarrots) ? "d-block" : ""}`}>
                             Collected carrot amount less than minimum carrots
                         </div>
                     </div>
                     <div className={`d-grid mb-3 ${dataDetailItem?.category === "reward" ? "d-none" : ""}`}>
-                        <Button variant="warning" size="lg" onClick={cashOutSocfound} disabled={cashOutSocfound>0? false:true}>
+                        <Button variant="warning" size="lg" onClick={cashOutSocfound} disabled={cashoutAmount>0? false:true}>
                             Cash Out Carrots
                         </Button>
 
