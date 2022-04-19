@@ -3,7 +3,7 @@ import { FetchAnnualCarrotSuccess, FetchAnnualCarrotFailed } from "../annualCarr
 import { baseURL } from "./BaseUrl";
 
 const FetchAnnualCarrot = store => next => async action => {
-    if (action.type !== "GetHarvest") return next(action);
+    if (action.type !== "GetAnnualCarrot") return next(action);
 
     next(action);
 

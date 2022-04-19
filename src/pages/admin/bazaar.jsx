@@ -11,7 +11,7 @@ import axios from 'axios'
 import {v4} from 'uuid'
 import PageTitle from '../../components/text/pageTitle.component'
 import AccordionHistoryUpdate from '../../components/admin/accordionHistoryUpdate';
-import LoadingModal from '../../components/modal/loading'
+import LoadingModal from '../../components/modal/loading';
 import noImages from '../../assets/img/no-images.png'
 
 import {decryptData} from '../../config/config'
@@ -228,8 +228,7 @@ const BazaarAdminPage = () => {
             .catch((error) => {
                 alert("Something wrong!")
             })
-        }
-        
+        }    
     }
 
     const editItemHandle = (e,element) => {

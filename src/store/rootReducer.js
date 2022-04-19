@@ -14,6 +14,7 @@ import carrotStaff from "./admin/carrotStaff";
 import harvestList from "./rootadmin/harvest";
 import annualCarrot from "./rootadmin/annualCarrot";
 import activeUser from "./activeUser";
+import annualBasket from "./rootadmin/annualBasket";
 
 export default combineReducers({
   bazaarItem: bazaarItemReducer,
@@ -31,4 +32,5 @@ export default combineReducers({
   harvestList : harvestList,
   annualCarrot : annualCarrot,
   activeUser: activeUser,
+  annualBasket: annualBasket,
 });

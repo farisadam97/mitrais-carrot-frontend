@@ -5,11 +5,11 @@ import AddNewButton from '../addNew.button.component';
 import { Modal, Button } from "react-bootstrap";
 import axios from 'axios';
 import * as date from "../../utils/date/date.util";
+import Cookies from 'universal-cookie';
 
 const HarvestComponent = ({lists, listsBasket, isLoading}) => {
     const handleModal = () => setShow(!show);
     const handleModalExtend = () => setShowExtend(!showExtend);
-    const handleModalAdd = () => setShowCarrot(!showCarrot);
     const [show, setShow] = useState(false);
     const [showExtend, setShowExtend] = useState(false);
     const [showCarrot, setShowCarrot] = useState(false);
@@ -21,6 +21,11 @@ const HarvestComponent = ({lists, listsBasket, isLoading}) => {
     const [getCreatedDate, setCreatedDate] = useState(date.GetCurrentDate("-"));
     const [getExpDate, setExpDate] = useState(date.GetCurrentDate("-"));
     const [getAnnualCarrot, setAnnualCarrot] = useState({});
+    const cookies = new Cookies();
+    const [getToken, setToken] = useState(cookies.get('access_token'));
+    const [getId, setId] = useState(cookies.get('id'));
+    const [getAnnualId, setAnnualId] = useState(cookies.get('id'));
+    const [editedId,setEditedId] = useState()
 
     const handleYears = (e) => {
         setYears(e.value);
@@ -46,7 +51,7 @@ const HarvestComponent = ({lists, listsBasket, isLoading}) => {
     
         const url = "http://localhost:2022/api/v1/carrot/annual";
         const payload = {
-          rootAdminId: 29,
+          rootAdminId: getId,
           amount: parseInt(getAmount),
           expireDate : getExpDate,
           
@@ -68,7 +73,14 @@ const HarvestComponent = ({lists, listsBasket, isLoading}) => {
         }
     }
 
-    const handleClickShareExtend = (e) => {
+    const editItemHandle = (e,item) => {
+      e.preventDefault();
+      setEditedId(item.id);
+      setExpDate(item.expireDate);
+      handleModalExtend();
+  }
+
+    const handleClickShareExtend = (e,getEditedId) => {
       e.preventDefault();
   
       // if (getYears === "") {
@@ -84,7 +96,7 @@ const HarvestComponent = ({lists, listsBasket, isLoading}) => {
   
       const url = "http://localhost:2022/api/v1/carrot/extend";
       const payload = {
-        id: "7",
+        id: getEditedId,
         expireDate : getExpDate,
         
       };
@@ -102,9 +114,9 @@ const HarvestComponent = ({lists, listsBasket, isLoading}) => {
         alert("error request:", e);
       }
   }
-    
-    
-  console.log(lists);
+      
+  console.log(lists, listsBasket);
+
   return (
     <div>
         <section>
@@ -121,15 +133,15 @@ const HarvestComponent = ({lists, listsBasket, isLoading}) => {
                         <th rowSpan={"2"} className="sorting_desc" tabIndex={"0"} aria-controls="myTable" colSpan={"1"} aria-sort="descending" aria-label="#: activate to sort column ascending" style={{width: "13px"}}>#</th>
                         <th rowSpan={"2"} className="sorting" tabIndex={"0"} aria-controls="myTable" colSpan={"1"} aria-label="Year: activate to sort column ascending" style={{width: "36px"}}>Year</th>
                         <th colSpan={"2"} className="text-center" rowSpan={"1"}>Barn</th>
-                        <th colSpan={"2"} className="text-center" rowSpan={"1"}>Expired At</th>
+                        <th colSpan={"2"} className="text-center" rowSpan={"1"}>Date Detail</th>
                         {/* <th rowSpan={"2"} className="text-center sorting" tabIndex={"0"} aria-controls="myTable" colSpan={"1"} aria-label="Active: activate to sort column ascending" style={{width: "49px"}}>Active</th> */}
                         <th rowSpan={"2"} className="text-center sorting_disabled" colSpan={"1"} aria-label="Action" style={{width: "120px"}}>Action</th>
                     </tr>
                     <tr role="row">
                         <th className="text-right sorting" tabIndex={"0"} aria-controls="myTable" rowSpan={"1"} colSpan={"1"} aria-label="Total: activate to sort column ascending" style={{width: "92px"}}>Total</th>
                         <th className="text-right sorting" tabIndex={"0"} aria-controls="myTable" rowSpan={"1"} colSpan={"1"} aria-label="Left: activate to sort column ascending" style={{width: "83px"}}>Left</th>
-                        <th className="text-center sorting" tabIndex={"0"} aria-controls="myTable" rowSpan={"1"} colSpan={"1"} aria-label="Share: activate to sort column ascending" style={{width: "46px"}}>Share</th>
-                        <th style={{borderRightWidth : "1px !important", width: "76px"}} className="text-center sorting" tabIndex={"0"} aria-controls="myTable" rowSpan={"1"} colSpan={"1"} aria-label="Exchange: activate to sort column ascending">Exchange</th>
+                        <th className="text-center sorting" tabIndex={"0"} aria-controls="myTable" rowSpan={"1"} colSpan={"1"} aria-label="Share: activate to sort column ascending" style={{width: "46px"}}>Created Date</th>
+                        <th style={{borderRightWidth : "1px !important", width: "76px"}} className="text-center sorting" tabIndex={"0"} aria-controls="myTable" rowSpan={"1"} colSpan={"1"} aria-label="Exchange: activate to sort column ascending">Expired Date</th>
                     </tr>
                 </thead>
                 <tbody id='table-harvest'>
@@ -138,13 +150,18 @@ const HarvestComponent = ({lists, listsBasket, isLoading}) => {
                             <tr key={parseInt(item.id)}>
                                 <td scope="row">{index + 1}</td>
                                 <td>{item.createdAt[0]}</td>
-                                <td>{item.earned_amount}</td> {/* total barn */}
+                                  {listsBasket?.length > 0 ? (
+                                    listsBasket.map((item)=>(
+                                      <td>{item.earned_amount}</td>
+                                    ))
+                                  ):isLoading}
+                                <td>{item.earned_amount}</td>
                                 <td>{item.current_amount}</td> {/* left barn */}
-                                <td>{item.createdAt[0] + "-" + item.createdAt[1] + "-" + item.createdAt[2]}</td> {/* share barn */}
-                                <td>{item.expireDate[0] + "-" + item.expireDate[1] + "-" + item.expireDate[2]}</td> {/* exchange barn */}
+                                <td>{item.createdAt}</td> {/* share barn */}
+                                <td>{item.expireDate}</td> {/* exchange barn */}
                                 {/* <td>{item.active}</td> active barn */}
                                 <td className="text-center">
-                                    <button type="button" className="btn btn-warning btn-block" onClick={handleModalExtend} data-modal="modal2" data-toggle="modal2" data-target="#myModal2" data-action="create" value="key">
+                                    <button type="button" className="btn btn-warning btn-block" onClick={(e) => {editItemHandle(e,item)}} data-modal="modal2" data-toggle="modal2" data-target="#myModal2" data-action="create" value="key">
                                         <i className="fa fa-calendar"></i> Extend
                                     </button>
                                     {/* <button type="button" className="btn btn-outline-primary btn-block" onClick={handleModalAdd} data-modal="modal3" data-toggle="modal3" data-target="#myModal3" data-action="create">

@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import AuthContext from "../../hooks/AuthProvider";
-//import Cookies from "universal-cookie";
+import Cookies from "universal-cookie";
 import mitraisLogo from '../../assets/img/mitrais-logo.png'
 import  './navbar.component.css'
 

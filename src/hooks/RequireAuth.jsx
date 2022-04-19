@@ -1,5 +1,5 @@
 import { useLocation,Navigate,Outlet } from "react-router-dom";
-//import Cookies from "universal-cookie";
+import Cookies from "universal-cookie";
 import useAuth from "./useAuth";
 import RouteConfig from "../config/Route";
 import {decryptData} from "../config/config"
