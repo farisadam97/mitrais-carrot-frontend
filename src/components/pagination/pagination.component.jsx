@@ -23,11 +23,13 @@ const Pagination = ({token, type, pagination, ...props}) => {
     } else if (type === "userList") {
       props.onPageChange(token, pageNumber);
     } else if (type === "group"){
-      props.loadGroups(pageNumber);
+      props.loadGroups(pageNumber, token);
     } else if (type === "userListRole"){
       props.getAllUser(pageNumber);
     } else if (type === "recentBirthday"){
       props.onPageChangeRecentBirthday(token, pageNumber);
+    } else if (type === "dist"){
+      props.getHistoryDist(props.id, token, pageNumber);
     }
   };
 

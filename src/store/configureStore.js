@@ -14,6 +14,7 @@ import FetchBasketHistory from "./middleware/FetchBasketHistory";
 import FetchDonationHistory from "./middleware/FetchDonationHistory";
 import FetchRewardHistory from "./middleware/FetchRewardHistory";
 import FetchHarvest from "./rootadmin/middleware/FetchHarvest";
+import FetchDistribution from "./middleware/FetchDistribution";
 
 const api = [
   FetchBazaarItem,
@@ -29,7 +30,8 @@ const api = [
   FetchGroup,
   FetchManagerList,
   FetchCarrotStaff,
-  FetchHarvest
+  FetchHarvest,
+  FetchDistribution,
 ];
 
 export default function () {

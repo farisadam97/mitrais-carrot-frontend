@@ -39,7 +39,7 @@ const FetchUser = store => next => async action => {
                 });
                 store.dispatch(
                     apiBasketRequestSuccess({
-                        basketAmount: response.data.body.data[0].currentAmount,
+                        basket: response.data.body.data[0],
                     })
                 )
             }catch(error){

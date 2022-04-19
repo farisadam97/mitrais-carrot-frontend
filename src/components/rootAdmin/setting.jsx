@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
-import { Table, Modal,Button } from "react-bootstrap";
+import { Table, Modal, Button } from "react-bootstrap";
 import ContainerContent from "../container/container.component";
 import { GetSettings, UpdateSettings } from "../../store/apiActions";
 import { connect } from "react-redux";
+import Cookies from "universal-cookie";
 
 const Settings = (props) => {
+    const cookies = new Cookies();
+    const token = cookies.get('access_token');
     const [show, setShow] = useState(false);
 
     const handleClose = () => {
@@ -29,7 +32,7 @@ const Settings = (props) => {
     const [initialCarrotValidation, setInitialCarrotValidation] = useState(null);
 
     useEffect(() => {
-        props.getSetting();
+        props.getSetting(token);
     },[]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const minimumInputHandle = e => {
@@ -52,7 +55,7 @@ const Settings = (props) => {
             setMinimumValidation("Please enter annual carrot left minimum");
         }else if(minimum < 0) {
             formIsValid = false;
-            setMinimumValidation("Annual carrot lef minimum can't be negative value");
+            setMinimumValidation("Annual carrot left minimum can't be negative value");
         }
 
         if(birthdayShare === "" || birthdayShare === "0") {
@@ -75,9 +78,8 @@ const Settings = (props) => {
     }
 
     const updateSetting = () => {
-
         if(handleValidation()){
-            props.updateSetting(parseInt(minimum), parseInt(birthdayShare), parseInt(initialCarrot));
+            props.updateSetting(parseInt(minimum), parseInt(birthdayShare), parseInt(initialCarrot), token);
             handleClose();
         }
     }
@@ -159,13 +161,16 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return{
-        getSetting: () => {
+        getSetting: (token) => {
             return dispatch(GetSettings({
                 url: 'carrot/setting',
-                method: 'GET'
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             }))
         },
-        updateSetting: (annualCarrotMinimum, carrotBirthDayShare, initialCarrot) => {
+        updateSetting: (annualCarrotMinimum, carrotBirthDayShare, initialCarrot, token) => {
             return dispatch(UpdateSettings({
                 url: 'carrot/setting',
                 method: 'PUT',
@@ -173,6 +178,9 @@ const mapDispatchToProps = dispatch => {
                     carrotBirthDayShare,
                     annualCarrotMinimum,
                     initialCarrot,
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`
                 }
             }))
         }
