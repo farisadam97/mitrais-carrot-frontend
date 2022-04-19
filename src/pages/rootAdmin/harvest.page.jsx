@@ -6,6 +6,8 @@ import { connect } from 'react-redux'
 import { useEffect } from 'react'
 
 const HarvestPage = props => {
+  const [getUsers, setUsers] = useState([]);
+  const [getBasket, setBasket] = useState([]);
     useEffect(() => {
         props.loadHarvest()
         props.loadBasket()
