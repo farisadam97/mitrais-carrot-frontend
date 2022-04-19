@@ -38,7 +38,7 @@ const StaffSummary = props => {
                             <img src={carrotPict} alt="" className="img-fluid rounded-circle" />
                         </div>
                         <div className="col-md-8 my-auto">
-                            <h4 className="text-white">You've earned {props.basketAmount} carrots!</h4>
+                            <h4 className="text-white">You've earned {props.basket.currentAmount} carrots!</h4>
                             <a className="badge badge-white" data-toggle="modal" data-target="#exampleModal">
                                 Share carrot!
                             </a>
@@ -66,7 +66,7 @@ const mapStateToProps = state => {
         user: state.activeUser.data,
         error: state.activeUser.error,
         isLoading: state.activeUser.isLoading,
-        basketAmount: state.activeUser.basketAmount,
+        basket: state.activeUser.basket,
     }
 }
 

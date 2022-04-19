@@ -3,7 +3,7 @@ import { baseURL } from "./BaseUrl";
 import { fetchGroupSuccess, fetchGroupDetailSuccess, fetchGroupStaff, fetchGroupFailed } from "../userGroup";
 
 const FetchGroup = store => next => async action => {
-    const { url, method, data } = action.payload;
+    const { url, method, data, headers } = action.payload;
 
     switch(action.type){
         case "GetGroupList":
@@ -13,6 +13,7 @@ const FetchGroup = store => next => async action => {
                     url,
                     method,
                     data,
+                    headers
                 });
                 store.dispatch(fetchGroupSuccess({
                     groups: response.data.body.data,
@@ -31,6 +32,7 @@ const FetchGroup = store => next => async action => {
                     url,
                     method,
                     data,
+                    headers
                 });
             }catch(error){
                 store.dispatch(fetchGroupFailed({
@@ -44,7 +46,8 @@ const FetchGroup = store => next => async action => {
                     baseURL,
                     url,
                     method,
-                    data
+                    data,
+                    headers
                 });
             }catch(error){
                 store.dispatch(fetchGroupFailed({
@@ -58,6 +61,7 @@ const FetchGroup = store => next => async action => {
                     baseURL,
                     url,
                     method,
+                    headers
                 });
             }catch(error){
                 store.dispatch(fetchGroupFailed({
@@ -71,6 +75,7 @@ const FetchGroup = store => next => async action => {
                     baseURL,
                     url,
                     method,
+                    headers,
                 })
                 store.dispatch(fetchGroupDetailSuccess({
                     groupDetails: response.data
@@ -87,7 +92,8 @@ const FetchGroup = store => next => async action => {
                     baseURL,
                     url,
                     method,
-                    data
+                    data,
+                    headers
                 })
                 store.dispatch(fetchGroupStaff({
                     groupStaff: response.data.body.data,

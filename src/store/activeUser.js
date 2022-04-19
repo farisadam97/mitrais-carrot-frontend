@@ -4,7 +4,7 @@ const initialState = {
     data: null,
     error: null,
     isLoading: true,
-    basketAmount: 0,
+    basket: {},
 };
 
 const slice = createSlice({
@@ -21,7 +21,7 @@ const slice = createSlice({
             state.isLoading = false;
         },
         apiBasketRequestSuccess: (state = initialState, action) => {
-            state.basketAmount = action.payload.basketAmount;
+            state.basket = action.payload.basket;
             state.isLoading = false;
             state.error = null;
         },
