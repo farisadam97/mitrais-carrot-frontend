@@ -86,8 +86,6 @@ const AccordionHistoryUpdate = (props) => {
                                             <td >
                                                 <ul>
                                                     {      
-                                                            // console.log(element.snapshotItem)
-                                                        // console.log(JSON.parse(element.snapshotItem))
                                                         JSON.parse(element.snapshotItem).map(arrItem => {
                                                             return <li key={Math.random() *Math.random()}>{arrItem}</li>
                                                         })
