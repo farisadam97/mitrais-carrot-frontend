@@ -103,7 +103,7 @@ const RewardTab = (props) => {
 
     return (
         <div className="">
-            <div className="dataTables_length" id="staff-table_length">
+            {/* <div className="dataTables_length" id="staff-table_length">
                 <label>Show
                     <select name="staff-table_length" aria-controls="staff-table" className="form-control-sm mx-3" value={amountRow} onChange={changeAmountRow} style={{borderColor: "#ced4da"}}>
                         <option value="10">10 rows</option>
@@ -114,7 +114,7 @@ const RewardTab = (props) => {
                     </select>
                     entries
                 </label>
-            </div>
+            </div> */}
             <table id='staff-carrot' className='table table-striped table-bordered table-hover mt-3 dataTable no-footer' style={{width: "100%"}} role='grid'>
                 <thead>
                     <tr role="row " className='text-center'>

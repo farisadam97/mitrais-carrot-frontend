@@ -15,7 +15,7 @@ const Dashboard = (props) => {
     }
 
     const socFound = () => {
-        setCategory("socFound");
+        setCategory("socfound");
     }
 
     useEffect(() => {
