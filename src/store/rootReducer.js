@@ -12,6 +12,7 @@ import rewardHistoryReducer from "./rewardHistory";
 import managerList from "./admin/managerList";
 import carrotStaff from "./admin/carrotStaff";
 import harvestList from "./rootadmin/harvest";
+import activeUser from "./activeUser";
 
 export default combineReducers({
   bazaarItem: bazaarItemReducer,
@@ -27,4 +28,5 @@ export default combineReducers({
   managerList: managerList,
   carrotStaff : carrotStaff,
   harvestList : harvestList,
+  activeUser: activeUser,
 });

@@ -6,6 +6,7 @@ const GetSharedHistory = createAction("GetSharedHistory");
 const GetRecentBirthday = createAction("GetRecentBirthday");
 const GetUsersList = createAction("GetUsersList");
 const GetUser = createAction("GetUser");
+const GetBasket = createAction("GetBasket");
 const GetSettings = createAction("GetSettings");
 const UpdateSettings = createAction("UpdateSettings");
 const GetGroupList = createAction("GetGroupList");
@@ -25,6 +26,7 @@ export {
   GetItemDetails,
   GetUsersList,
   GetUser,
+  GetBasket,
   GetSettings,
   UpdateSettings,
   GetGroupList,

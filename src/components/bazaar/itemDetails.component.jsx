@@ -3,40 +3,47 @@ import { connect } from "react-redux";
 import { useEffect, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import HistoryTitle from "../text/historyTitle.component";
+import Cookies from "universal-cookie";
+import LoadingModal from "../modal/loading";
 
 const ItemDetails = (props) => {
+    const cookie = new Cookies();
+    const token = cookie.get('access_token');
+    const buyerId = cookie.get('id');
     const { id } = useParams();
     const [show, setShow] = useState(false);
     const [trxIsLoading, setTrxIsLoading] = useState(false);
-
-    //to do: add proper loading, add proper message modal, change buyerId
+    const [isSufficient, setIsSufficient] = useState(true);
 
     useEffect(() => {
-        props.loadItemDetail(id);
-    },[])
-
+        setTrxIsLoading(false);
+        props.loadItemDetail(id, token);
+    },[props.transactionId])
+    
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
+    const handleShow = () => {
+        if(!isSufficientFunc()){
+            setIsSufficient(isSufficientFunc());
+            return
+        }
+        setShow(true);
+    }
+    
     const handleClickBuy = () => {
         setTrxIsLoading(true);
-        props.exchangeItem(id, 1, props.detailItem[0].category); //<----here buyer id
+        props.exchangeItem(id, buyerId, props.detailItem[0].category, token);
         handleClose();
     }
 
-    useEffect(() => {
-        setTrxIsLoading(false);
-    },[props])
-
-    useEffect(() => {
-        setTrxIsLoading(false);
-        props.loadItemDetail(id);
-    },[props.transactionId])
+    const isSufficientFunc = () => {
+        if(props.basketAmount < props.detailItem[0].rate) return false;
+        else return true;
+    }
 
     return (
         <div>
             <HistoryTitle title="Bazaar"/>
-            {trxIsLoading && <p>transfer loading...</p>}
+            <LoadingModal isLoading = {trxIsLoading}/>
             {(!props.detailItem && !props.error) && <p>Loading...</p>}
             {props.error && <p>{props.error}</p>}
             {props.detailItem && (
@@ -55,8 +62,8 @@ const ItemDetails = (props) => {
                                 <h4><strong className="carrot-orange">{props.detailItem[0].rate} Carrots</strong></h4>
                                 <p>{props.detailItem[0].description}</p>
                                 <p className={props.detailItem[0].stock <= 5? "text-danger" : "text-success"}>{props.detailItem[0].category === "reward"? "Current stock" : "Total donation"}: {props.detailItem[0].stock}</p>
-                                <p className="btn btn-carrot radius-5" onClick={handleShow} data-toggle="modal" data-target="#exampleModal">Exchange</p>
-                                {/* <p className="mt-2"><small className="text-danger">You don't have enough carrots to buy this item.</small></p> */}
+                                <button className="btn btn-carrot radius-5" onClick={handleShow} data-toggle="modal" data-target="#exampleModal">Exchange</button>
+                                {!isSufficient && <p className="mt-2"><small className="text-danger">You don't have enough carrots to buy this item.</small></p>}
                             </div>
                         </div>
                     
@@ -89,12 +96,13 @@ const mapStateToProps = state => {
         transactionId: state.transaction.transactionId,
         transactionStatus: state.transaction.status,
         spentCarrot: state.transaction.spentCarrot,
+        basketAmount: state.activeUser.basketAmount,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return{
-        loadItemDetail: (id) => {
+        loadItemDetail: (id, token) => {
             return dispatch({
                 type: 'GetItemDetails',
                 payload: {
@@ -102,11 +110,14 @@ const mapDispatchToProps = dispatch => {
                     method: 'POST',
                     data: {
                         fields: 'name, description, id, rate, stock, category'
+                    },
+                    headers: {
+                        Authorization: `Bearer ${token}`
                     }
                 }
             })
         },
-        exchangeItem: (id, buyerId, category) => {
+        exchangeItem: (id, buyerId, category, token) => {
             return dispatch({
                 type: 'exchangeReward',
                 payload: {
@@ -117,6 +128,9 @@ const mapDispatchToProps = dispatch => {
                         buyerId: parseInt(buyerId),
                         itemId: parseInt(id),
                         amount: 1,
+                    },
+                    headers: {
+                        Authorization: `Bearer ${token}`
                     }
                 }
             })
