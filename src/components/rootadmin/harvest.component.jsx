@@ -80,7 +80,7 @@ const HarvestComponent = ({lists, listsBasket, isLoading}) => {
       handleModalExtend();
   }
 
-    const handleClickShareExtend = (e,key) => {
+    const handleClickShareExtend = (e,item) => {
       e.preventDefault();
   
       // if (getYears === "") {
@@ -96,7 +96,7 @@ const HarvestComponent = ({lists, listsBasket, isLoading}) => {
   
       const url = "http://localhost:2022/api/v1/carrot/extend";
       const payload = {
-        id: key,
+        id: "",
         expireDate : getExpDate,
         
       };
