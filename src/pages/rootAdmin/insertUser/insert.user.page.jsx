@@ -8,14 +8,16 @@ import FormTab from "../../../components/tab/form.tab.component";
 import TableUser from "../../../components/user/table.user.component";
 import Pagination from "../../../components/pagination/pagination.component";
 import { connect } from "react-redux";
-import { useLocation } from "react-router-dom"
+import { useLocation } from "react-router-dom";
+import Cookies from "universal-cookie";
 
 const InsertUpdateUser = (props) => {
   // const url = useLocation();
-
+  const cookies = new Cookies();
+  const [getToken, setToken] = useState(cookies.get('access_token'));
+  
   useEffect(() => {
-    props.loadUsers();
-
+    props.loadUsers(getToken);
   }, []);
 
   return(
@@ -27,9 +29,9 @@ const InsertUpdateUser = (props) => {
                   </div> */}
               </div>
               <ContainerContent title={"INSERT/UPDATE STAFF"} >
-                  <FormTab />
+              <FormTab />
                   <TableUser lists={props.lists} isLoading={props.isLoading} />
-                  {props.pagination && <Pagination {...props} pagination={props.pagination} type="userList" />}
+                  {props.pagination && <Pagination token={getToken} pagination={props.pagination} type="userList" {...props}/>}
               </ContainerContent>
           </Container>
       </div>
@@ -47,11 +49,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadUsers: () => {
+    loadUsers: (token) => {
       return dispatch({
         type: "GetUsersList",
         payload: {
-          url: "/user",
+          url: "/user/get-data",
           method: "POST",
           data: {
             roleId: "0",
@@ -60,14 +62,17 @@ const mapDispatchToProps = (dispatch) => {
             sortBy: "id",
             sortDir: "desc",
           },
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         },
       });
     },
-    onPageChange: (pageNumber) => {
+    onPageChange: (token, pageNumber) => {
       return dispatch({
         type: "GetUsersList",
         payload: {
-          url: "/user",
+          url: "/user/get-data",
           method: "POST",
           data: {
             roleId: "0",
@@ -76,6 +81,9 @@ const mapDispatchToProps = (dispatch) => {
             sortBy: "id",
             sortDir: "desc",
           },
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         },
       });
     },

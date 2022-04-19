@@ -1,6 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons'
+import Cookies from "universal-cookie";
+import { DefaultConfig } from '../../config/config'
+import axios from 'axios'
 
-const TableUser = ({lists, isLoading}) => {
+const TableUser = ({ lists, isLoading }) => {
+    const cookies = new Cookies();
+    const [getToken, setToken] = useState(cookies.get('access_token'));
+    
+    const deleteUser = (e,userId) => {
+        e.preventDefault()
+        if(window.confirm("Are you user delete this item?")){
+            axios.delete(`${DefaultConfig.base_api}/user`,{
+                data: {
+                    id: userId
+                },
+                headers: {
+                    Authorization: `Bearer ${getToken}`
+                }
+            })
+            .then((response) => {
+                alert("Item deleted")
+            })
+            .catch((error) => {
+                alert("Something wrong!")
+            })
+        }
+    }
+    
     return (
         <div>
             <div className="row">
@@ -96,8 +124,8 @@ const TableUser = ({lists, isLoading}) => {
                                                 </table>
                                             </td>
                                             <td className="text-center">
-                                                <button type="button" name="btn_delete" className="btn btn-outline-danger btn-sm" data-id="'+row.username+'">
-                                                    <span className="glyphicon glyphicon-trash"></span>
+                                                <button type="button" name="btn_delete" className="btn btn-outline-danger btn-sm" data-id="'+row.username+'" onClick={(e) => {deleteUser(e,item.id)}}>
+                                                    <FontAwesomeIcon icon={faTrashCan} />
                                                 </button>
                                             </td>
                                         </tr>

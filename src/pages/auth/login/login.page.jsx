@@ -3,19 +3,21 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Container from "../../container";
 import mitraisLogo from '../../../assets/img/mitrais-logo.png'
 import axios from "axios";
-import DefaultConfig from "../../../config/config";
+import {DefaultConfig} from "../../../config/config";
 import Cookies from "universal-cookie";
 import useAuth from "../../../hooks/useAuth";
 import RouteConfig from "../../../config/Route";
 import RolesConfig from "../../../config/Roles";
+import {encryptData}  from "../../../config/config"
 import './login.page.css'
 
 const LoginPage = () => {
     const [userNameInput, setUserNameInput] = useState("")
     const [passwordInput, setPasswordInput] = useState("")
+    const [isLoading,setIsLoading] = useState(false)
     const cookies = new Cookies()
 
-    const {setAuth} = useAuth()
+    // const {setAuth} = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
     // const from = location.state?.pathname || "/"
@@ -29,22 +31,27 @@ const LoginPage = () => {
 
     const submitHandle = (e) => {
         e.preventDefault()
+        setIsLoading(true)
         if(userNameInput !== "" && passwordInput !== ""){
-            axios.post(`${DefaultConfig.base_api}/auth/signin`,{
+            axios.post(`http://localhost:2022/api/auth/signin`,{
                 "username" : userNameInput,
                 "password" : passwordInput
             })
             .then((response) => {
                 console.log(response)
-                const roles = response.data.roles[0]
+                const roles = response?.data?.roles[0]
+                // const name = response?.data?.name
+                const id = response?.data?.id
                 const accessToken = response.data.accessToken
                 const user = userNameInput
                 const pwd = passwordInput
                 cookies.set('access_token',accessToken,{path:'/'})
-                cookies.set('role',response?.data?.roles[0],{path:'/'})
-                localStorage.setItem("role",roles)
-                localStorage.setItem("access_token",accessToken)
-                setAuth({user,pwd,roles,accessToken})
+                cookies.set('role',roles,{path:'/'})
+                // cookies.set('name',name,{path:'/'})
+                cookies.set('id',id,{path:'/'})
+                // localStorage.setItem("role",roles)
+                // localStorage.setItem("access_token",accessToken)
+                // setAuth({user,pwd,roles,accessToken})
                 switch (roles) {
                     case RolesConfig.ROOT_ADMIN:
                         navigate(`${RouteConfig.ROOT_ADMIN}`,{replace:true})
@@ -94,8 +101,13 @@ const LoginPage = () => {
                                     value={passwordInput}
                                     onChange={passwordNameHandle}
                                 />
-                                <a href="#" className="my-4 d-block btn btn-mitrais rounded-pill py-3" onClick={submitHandle}>
+                                <a href="#" className={`my-4 d-block btn btn-mitrais rounded-pill py-3 ${isLoading ? "disabled" : ""}`} onClick={submitHandle}>
+                                    <div className={`spinner-border text-light spinner-border-sm mr-3 ${!isLoading ? "d-none" : ""}`} role="status">
+                                        <span className="visually-hidden">Loading...</span>
+                                    </div>
+                                    <span className ="ms-3">
                                     Login
+                                    </span> 
                                 </a>
                             </form>
                         </div>  

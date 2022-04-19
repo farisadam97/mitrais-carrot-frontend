@@ -13,6 +13,7 @@ import managerList from "./admin/managerList";
 import carrotStaff from "./admin/carrotStaff";
 import harvestList from "./rootadmin/harvest";
 import annualCarrot from "./rootadmin/annualCarrot";
+import activeUser from "./activeUser";
 
 export default combineReducers({
   bazaarItem: bazaarItemReducer,
@@ -29,4 +30,5 @@ export default combineReducers({
   carrotStaff : carrotStaff,
   harvestList : harvestList,
   annualCarrot : annualCarrot,
+  activeUser: activeUser,
 });

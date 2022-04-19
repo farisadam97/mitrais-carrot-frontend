@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import * as date from "../../utils/date/date.util";
 import configureStore from "../../store/configureStore";
+import Cookies from "universal-cookie"
 
 const store = configureStore();
 
 const FilterComponent = (props) => {
+  const cookies = new Cookies();
+  const [getToken, setToken] = useState(cookies.get('access_token'));
+  const [getId, setId] = useState(cookies.get('id'));
   const [getType, setType] = useState("share");
   const [getStartDate, setStartDate] = useState(date.GetLastMonthDate("-"));
   const [getEndDate, setEndDate] = useState(date.GetCurrentDate("-"));
@@ -24,17 +28,17 @@ const FilterComponent = (props) => {
       props.resetRewardHistories();
       props.resetDonationHistories();
       props.resetHistories();
-      props.loadHistories(getStartDate, getEndDate);
+      props.loadHistories(getId, getToken, getStartDate, getEndDate);
     } else if (getType == "donation") {
       props.resetHistories();
       props.resetRewardHistories();
       props.resetDonationHistories();
-      props.loadDonationHistory(getStartDate, getEndDate);
+      props.loadDonationHistory(getId, getToken, getStartDate, getEndDate);
     } else if (getType == "bazaar") {
       props.resetDonationHistories();
       props.resetHistories();
       props.resetRewardHistories();
-      props.loadRewardHistory(getStartDate, getEndDate);
+      props.loadRewardHistory(getId, getToken, getStartDate, getEndDate);
     }
   };
 

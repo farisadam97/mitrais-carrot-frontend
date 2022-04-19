@@ -35,31 +35,32 @@ import HarvestPage from "./pages/rootAdmin/harvest.page";
 import DashboardRootAdmin from "./components/rootAdmin/dasboard.component";
 import RootAdminDashboardPage from "./pages/rootAdmin/dashboard/dashboard.root.page";
 import ShareCarrotPage from "./pages/manager/share.carrot.page";
+import Distribution from "./components/rootAdmin/distribution";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<LoginPage />}></Route>
 
-      {/* <Route element={<RequireAuth allowedRoles={[RolesConfig.STAFF]} />}> */}
-      <Route path={RouteConfig.STAFF} element={<IndexStaff />}>
-        <Route index element={<DashboardStaff />} />
-        <Route path="reward/:id" element={<DetailsItem />} />
-        <Route path="history-transaction" element={<HistoryTransaction />} />
-        <Route path="recent-birthday" element={<RecentBirthday />} />
+      <Route element={<RequireAuth allowedRoles={[RolesConfig.STAFF]} />}>
+        <Route path={RouteConfig.STAFF} element={<IndexStaff />}>
+          <Route index element={<DashboardStaff />} />
+          <Route path="reward/:id" element={<DetailsItem />} />
+          <Route path="history-transaction" element={<HistoryTransaction />} />
+          <Route path="recent-birthday" element={<RecentBirthday />} />
+        </Route>
       </Route>
-      {/* </Route> */}
 
-      {/* <Route element={<RequireAuth allowedRoles={[RolesConfig.MANAGER]} />}> */}
-      <Route path={RouteConfig.MANAGER} element={<IndexManager />}>
-        <Route path="bazaar" element={<DashboardStaff/>}/>
-        <Route path="history-transaction" element={<HistoryTransaction />} />
-        <Route path="share-carrot" element={<ShareCarrotPage />} />
-        <Route path="reward/:id" element={<DetailsItem />} />
+      <Route element={<RequireAuth allowedRoles={[RolesConfig.MANAGER]} />}>
+        <Route path={RouteConfig.MANAGER} element={<IndexManager />}>
+          <Route path="bazaar" element={<DashboardStaff/>}/>
+          <Route path="history-transaction" element={<HistoryTransaction />} />
+          <Route path="share-carrot" element={<ShareCarrotPage />} />
+          <Route path="reward/:id" element={<DetailsItem />} />
+        </Route>
       </Route>
-      {/* </Route> */}
 
-      {/* <Route element={<RequireAuth allowedRoles={[RolesConfig.ADMIN]} />}> */}
+      <Route element={<RequireAuth allowedRoles={[RolesConfig.ADMIN]} />}>
       <Route path={RouteConfig.ADMIN} element={<IndexAdmin />}>
         <Route index element={<CarrotStaffPage />} />
         <Route path="bazaar-claimed" element={<BazaarClaimedPage />} />
@@ -69,18 +70,19 @@ function App() {
         <Route path="manager-list" element={<ManagerPage />} />
         <Route path="insert-update" element={<InsertUpdateUser />} />
         <Route path="carrot-summary" element={<CarrotStaffPage />} />
+        </Route>
       </Route>
-      {/* </Route> */}
 
-      {/* <Route element={<RequireAuth allowedRoles={[RolesConfig.ROOT_ADMIN]} />}> */}
+      <Route element={<RequireAuth allowedRoles={[RolesConfig.ROOT_ADMIN]} />}>
       <Route path={RouteConfig.ROOT_ADMIN} element={<RootAdminIndex />}>
         <Route path="dashboard" element={<RootAdminDashboardPage/>} />
         <Route path="settings" element={<Setting />} />
         <Route path="assign-role" element={<AssignRole />} />
         <Route path="insert-update" element={<InsertUpdateUser />} />
         <Route path="harvest" element={<HarvestPage />} />
+        <Route path="distribution" element={<Distribution />} />
+        </Route>
       </Route>
-      {/* </Route> */}
 
       <Route path={RouteConfig.UNAUTHORIZED} element={<Unauthorized />}></Route>
       {/* catch all */}

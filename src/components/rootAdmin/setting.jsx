@@ -7,19 +7,30 @@ import { connect } from "react-redux";
 const Settings = (props) => {
     const [show, setShow] = useState(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleClose = () => {
+        setShow(false);
+        setMinimumValidation(null);
+        setBirthdayShareValidation(null);
+        setInitialCarrotValidation(null);
+    };
+    const handleShow = () => {
+        setMinimum(props.annualCarrotMinimum);
+        setBirthdayShare(props.carrotBirthDayShare);
+        setInitialCarrot(props.initialCarrot);
+        setShow(true);
+    }
 
     const [minimum, setMinimum] = useState(null);
     const [birthdayShare, setBirthdayShare] = useState(null);
     const [initialCarrot, setInitialCarrot] = useState(null);
 
+    const [minimumValidation, setMinimumValidation] = useState(null);
+    const [birthdayShareValidation, setBirthdayShareValidation] = useState(null);
+    const [initialCarrotValidation, setInitialCarrotValidation] = useState(null);
+
     useEffect(() => {
-        props.getSetting()
-        setMinimum(props.annualCarrotMinimum);
-        setBirthdayShare(props.carrotBirthDayShare);
-        setInitialCarrot(props.initialCarrot);
-    },[props.annualCarrotMinimum, props.carrotBirthDayShare, props.initialCarrot])
+        props.getSetting();
+    },[]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const minimumInputHandle = e => {
         setMinimum(e.currentTarget.value)
@@ -33,14 +44,49 @@ const Settings = (props) => {
         setInitialCarrot(e.currentTarget.value)
     }
 
+    const handleValidation = () => {
+        let formIsValid = true;
+
+        if(minimum === "" || minimum === "0") {
+            formIsValid = false;
+            setMinimumValidation("Please enter annual carrot left minimum");
+        }else if(minimum < 0) {
+            formIsValid = false;
+            setMinimumValidation("Annual carrot lef minimum can't be negative value");
+        }
+
+        if(birthdayShare === "" || birthdayShare === "0") {
+            formIsValid = false;
+            setBirthdayShareValidation("Please enter carrot birthday share");
+        }else if(birthdayShare < 0) {
+            formIsValid = false;
+            setBirthdayShareValidation("Carrot birthday share can't be negative value");
+        }
+
+        if(initialCarrot === "" || initialCarrot === "0") {
+            formIsValid = false;
+            setInitialCarrotValidation("Please enter initial carrot");
+        }else if(initialCarrot < 0) {
+            formIsValid = false;
+            setInitialCarrotValidation("Initial carrot can't be negative value");
+        }
+
+        return formIsValid;
+    }
+
     const updateSetting = () => {
-        props.updateSetting(parseInt(minimum), parseInt(birthdayShare), parseInt(initialCarrot));
-        handleClose();
+
+        if(handleValidation()){
+            props.updateSetting(parseInt(minimum), parseInt(birthdayShare), parseInt(initialCarrot));
+            handleClose();
+        }
     }
 
     return (
         <ContainerContent title="CARROT SETTINGS">
-            <button className="btn btn-info text-white" onClick={handleShow}>Edit</button>
+            <div className="text-center mb-3">
+                <button className="btn btn-info text-white" onClick={handleShow}>Edit</button>
+            </div>
             <hr />
             <Table bordered hover striped>
                 <thead>
@@ -73,27 +119,31 @@ const Settings = (props) => {
                 <Modal.Header closeButton>
                     <Modal.Title>Add Reward</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
                     <form>
-                        <div className="mb-3">
-                            <label htmlFor="inputName" className="form-label">Annual Carrot Left Minimum</label>
-                            <input type="number" className="form-control" value={minimum} onChange={minimumInputHandle}></input>
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor="inputDescription" className="form-label">Carrot Birthday Share</label>
-                            <input type="number" className="form-control" value={birthdayShare} onChange={birthdayInputHandle}></input>
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor="selectCategory" className="form-label">Initial Carrot</label>
-                            <input type="number" className="form-control" value={initialCarrot} onChange={initialInputHandle}></input>
-                        </div>
+                        <Modal.Body>
+                                <div className="mb-3">
+                                    <label htmlFor="inputName" className="form-label">Annual Carrot Left Minimum</label>
+                                    <input type="number" className={`form-control ${minimumValidation ? 'is-invalid' : ''}`} value={minimum} onChange={minimumInputHandle} required></input>
+                                    <div className="invalid-feedback">{minimumValidation}</div>
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="inputDescription" className="form-label">Carrot Birthday Share</label>
+                                    <input type="number" className={`form-control ${birthdayShareValidation ? 'is-invalid' : ''}`} value={birthdayShare} onChange={birthdayInputHandle} required></input>
+                                    <div className="invalid-feedback">{birthdayShareValidation}</div>
+
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="selectCategory" className="form-label">Initial Carrot</label>
+                                    <input type="number" className={`form-control ${initialCarrotValidation ? 'is-invalid' : ''}`} value={initialCarrot} onChange={initialInputHandle} required></input>
+                                    <div className="invalid-feedback">{initialCarrotValidation}</div>
+                                </div>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="primary" onClick={updateSetting}>
+                                Save Settings
+                            </Button>
+                        </Modal.Footer>
                     </form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="primary" onClick={updateSetting}>
-                        Save Settings
-                    </Button>
-                </Modal.Footer>
             </Modal>
         </ContainerContent>
     );

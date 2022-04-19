@@ -1,31 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const RootTabs = () => {
     const [nav, setNav] = useState("dashboard");
+    const url = useLocation()
 
     return (
         <div className="row admin-tabs mb-4">
             <div className="col-md-auto nav-pills">
-                <Link className={`nav-link ${nav === 'dashboard'? 'active' : '' }`} to="" onClick={() => setNav("dashboard")}>DASHBOARD</Link>
+                <Link className={`nav-link ${url.pathname === "/rootadmin" ? 'active' : '' }`} to="">DASHBOARD</Link>
             </div>
             <div className="col-md-auto nav-pills">
-                <Link className={`nav-link ${nav === 'bazaar'? 'active' : '' }`} to="" onClick={() => setNav("bazaar")}>BAZAAR</Link>
+                <Link className={`nav-link ${url.pathname.includes("/bazaar") ? 'active' : '' }`} to="bazaar">BAZAAR</Link>
             </div>
             <div className="col-md-auto nav-pills">
-                <Link className={`nav-link ${nav === 'assign-role'? 'active' : '' }`} to="assign-role" onClick={() => setNav("assign-role")}>ASSIGN ROLE</Link>
+                <Link className={`nav-link ${url.pathname.includes("/assign-role")? 'active' : '' }`} to="assign-role">ASSIGN ROLE</Link>
             </div>
             <div className="col-md-auto nav-pills">
-                <Link className={`nav-link ${nav === 'harvest'? 'active' : '' }`} to="harvest" onClick={() => setNav("harvest")}>HARVEST</Link>
+                <Link className={`nav-link ${url.pathname.includes("/harvest") ? 'active' : '' }`} to="harvest">HARVEST</Link>
             </div>
             <div className="col-md-auto nav-pills">
-                <Link className={`nav-link ${nav === 'distribution'? 'active' : '' }`} to="" onClick={() => setNav("distribution")}>DISTRIBUTION</Link>
+                <Link className={`nav-link ${url.pathname.includes("/distribution")? 'active' : '' }`} to="distribution">DISTRIBUTION</Link>
             </div>
             <div className="col-md-auto nav-pills">
-                <Link className={`nav-link ${nav === 'settings'? 'active' : '' }`} to="settings" onClick={() => setNav("settings")}>SETTING</Link>
+                <Link className={`nav-link ${url.pathname.includes("/settings") ? 'active' : '' }`} to="settings">SETTING</Link>
             </div>
             <div className="col-md-auto nav-pills">
-                <Link className={`nav-link ${nav === 'insert-update'? 'active' : '' }`} to="insert-update" onClick={() => setNav("insert-update")}>INSERT/UPDATE STAFF</Link>
+                <Link className={`nav-link ${url.pathname.includes("/insert-update") ? 'active' : '' }`} to="insert-update">INSERT/UPDATE STAFF</Link>
             </div>
         </div>
     )

@@ -1,6 +1,7 @@
 import React from 'react'
 import HarvestComponent from '../../components/rootAdmin/harvest.component'
 import ContainerContent from '../../components/container/container.component'
+import Footer from '../../components/footer/footer.component'
 import { connect } from 'react-redux'
 import { useEffect } from 'react'
 

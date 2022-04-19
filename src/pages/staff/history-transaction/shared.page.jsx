@@ -11,13 +11,17 @@ import Pagination from "../../../components/pagination/pagination.component";
 import * as date from "../../../utils/date/date.util";
 import DonationHistoryItem from "../../../components/history/donation.component";
 import RewardHistoryItem from "../../../components/history/reward.component";
+import Cookies from "universal-cookie";
 
 const HistoryTransaction = (props) => {
+  const cookies = new Cookies();
+  const [getToken, setToken] = useState(cookies.get('access_token'));
+  const [getId, setId] = useState(cookies.get('id'));
   const [getStartDate, setStartDate] = useState(date.GetLastMonthDate("-"));
   const [getEndDate, setEndDate] = useState(date.GetCurrentDate("-"));
 
   useEffect(() => {
-    props.loadHistories(getStartDate, getEndDate);
+    props.loadHistories(getId, getToken, getStartDate, getEndDate);
   }, []);
 
   useEffect(() => {
@@ -30,19 +34,19 @@ const HistoryTransaction = (props) => {
     if (props.lists.length > 0) {
       return (
         <><HistoryItem lists={props.lists} isLoading={props.isLoading} />
-          <Pagination {...props} pagination={props.pagination} type={"share"}/></>
+          <Pagination token={getToken} pagination={props.pagination} type={"share"} {...props}/></>
       )
     } else if (props.listDonation.length > 0) {
       return (
         <><DonationHistoryItem lists={props.listDonation} isLoading={props.isLoadingDonation} />
-          <Pagination {...props} pagination={props.paginationDonation} type={"donation"} /></>
+          <Pagination token={getToken} pagination={props.paginationDonation} type={"donation"} {...props}/></>
       )
     } else if (props.listReward.length > 0) {
       return (
         <><RewardHistoryItem lists={props.listReward} isLoading={props.isLoadingReward} />
-        <Pagination {...props} pagination={props.paginationReward} type={"bazaar"} /></>)
+        <Pagination token={getToken} pagination={props.paginationReward} type={"bazaar"} {...props}/></>)
     } else {
-      return <div style={{textAlign: "center"}}>Loading...</div>
+      return <div style={{ textAlign: "center" }}>Data Not Found</div>
     }
   }
 
@@ -90,7 +94,7 @@ const mapDispatchToProps = (dispatch) => {
     resetRewardHistories: () => {
       return dispatch({type: "ResetRewardHistory", payload:{}})
     },
-    loadHistories: (startDate, endDate) => {
+    loadHistories: (id, token, startDate, endDate) => {
       if (startDate === "") {
         startDate = date.GetLastMonthDate("-");
       }
@@ -100,7 +104,7 @@ const mapDispatchToProps = (dispatch) => {
       return dispatch({
         type: "GetSharedHistory",
         payload: {
-          url: "/history/shared/24",
+          url: `/history/shared/${id}`,
           method: "POST",
           data: {
             startDate: startDate,
@@ -112,10 +116,13 @@ const mapDispatchToProps = (dispatch) => {
             sortBy: "shared_at",
             sortDir: "desc",
           },
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         },
       });
     },
-    loadDonationHistory: (startDate, endDate) => {
+    loadDonationHistory: (id, token, startDate, endDate) => {
       if (startDate === "") {
         startDate = date.GetLastMonthDate("-");
       }
@@ -125,10 +132,10 @@ const mapDispatchToProps = (dispatch) => {
       return dispatch({
         type: "GetDonationHistory",
         payload: {
-        url: "/rewardSort/history/25",
+        url: `/rewardSort/history/${id}`,
         method: "POST",
         data: {
-          buyer_id: 25,
+          buyer_id: id,
           category: "socFound",
           startDate: startDate,
           endDate: endDate,
@@ -136,11 +143,14 @@ const mapDispatchToProps = (dispatch) => {
           pageSize: "1",
           sortBy: "trx_date",
           sortDir: "desc",
-        },
+          },
+        headers: {
+            Authorization: `Bearer ${token}`
+          }
         },
       });
     },
-    onPageChangeDonation: (pageNumber, startDate, endDate) => {
+    onPageChangeDonation: (id, token, pageNumber, startDate, endDate) => {
       if (startDate === undefined) {
         startDate = date.GetLastMonthDate("-");
       }
@@ -150,10 +160,10 @@ const mapDispatchToProps = (dispatch) => {
       return dispatch({
         type: "GetDonationHistory",
         payload: {
-          url: "/rewardSort/history/25",
+          url: `/rewardSort/history/${id}`,
           method: "POST",
           data: {
-            buyer_id: 25,
+            buyer_id: id,
             category: "socFound",
             startDate: startDate,
             endDate: endDate,
@@ -162,10 +172,13 @@ const mapDispatchToProps = (dispatch) => {
             sortBy: "trx_date",
             sortDir: "desc",
           },
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         },
       });
     },
-    loadRewardHistory: (startDate, endDate) => {
+    loadRewardHistory: (id, token, startDate, endDate) => {
       if (startDate === "") {
         startDate = date.GetLastMonthDate("-");
       }
@@ -175,10 +188,10 @@ const mapDispatchToProps = (dispatch) => {
       return dispatch({
         type: "GetRewardHistory",
         payload: {
-        url: "/rewardSort/history/25",
+        url: `/rewardSort/history/${id}`,
         method: "POST",
         data: {
-          buyer_id: 25,
+          buyer_id: id,
           category: "reward",
           startDate: startDate,
           endDate: endDate,
@@ -186,11 +199,14 @@ const mapDispatchToProps = (dispatch) => {
           pageSize: "1",
           sortBy: "trx_date",
           sortDir: "desc",
-        },
+          },
+        headers: {
+            Authorization: `Bearer ${token}`
+          }
         },
       });
     },
-    onPageChangeReward: (pageNumber, startDate, endDate) => {
+    onPageChangeReward: (id, token, pageNumber, startDate, endDate) => {
       if (startDate === undefined) {
         startDate = date.GetLastMonthDate("-");
       }
@@ -200,10 +216,10 @@ const mapDispatchToProps = (dispatch) => {
       return dispatch({
         type: "GetRewardHistory",
         payload: {
-          url: "/rewardSort/history/25",
+          url: `/rewardSort/history/${id}`,
           method: "POST",
           data: {
-            buyer_id: 25,
+            buyer_id: id,
             category: "reward",
             startDate: startDate,
             endDate: endDate,
@@ -212,10 +228,13 @@ const mapDispatchToProps = (dispatch) => {
             sortBy: "trx_date",
             sortDir: "desc",
           },
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         },
       });
     },
-    onPageChange: (pageNumber, startDate, endDate) => {
+    onPageChange: (id, token, pageNumber, startDate, endDate) => {
       if (startDate === undefined) {
         startDate = date.GetLastMonthDate("-");
       }
@@ -225,7 +244,7 @@ const mapDispatchToProps = (dispatch) => {
       return dispatch({
         type: "GetSharedHistory",
         payload: {
-          url: "/history/shared/7",
+          url: `/history/shared/${id}`,
           method: "POST",
           data: {
             startDate: startDate,
@@ -237,6 +256,9 @@ const mapDispatchToProps = (dispatch) => {
             sortBy: "shared_at",
             sortDir: "desc",
           },
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         },
       });
     },

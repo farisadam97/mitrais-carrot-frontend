@@ -1,4 +1,5 @@
 import React from 'react'
+import Cookies from "universal-cookie";
 import NavbarComponent from '../../components/navbar/navbar.component'
 import Container from '../container'
 import ContainerContent from '../../components/container/container.component'
@@ -21,6 +22,10 @@ const BazaarClaimedPage = () => {
         } else {
             return "Singapore"
         }
+    }
+    const cookie = new Cookies()
+    const header = {
+        'Authorization' : `Bearer ${cookie.get("access_token")}`
     }
 
     const formatDate = (date) => {
@@ -49,11 +54,11 @@ const BazaarClaimedPage = () => {
                         <Tab.Content>
                             <Tab.Pane eventKey={"reward"}>
                                 <div className="my-4"></div>
-                                <RewardTab formatDate={formatDate} returnOffice={returnOffice}/>
+                                <RewardTab formatDate={formatDate} returnOffice={returnOffice} header={header} />
                             </Tab.Pane>
                             <Tab.Pane eventKey={"socfound"}>
                                 <div className="my-4"></div>
-                                <SocfoundTab formatDate={formatDate} returnOffice={returnOffice}/>
+                                <SocfoundTab formatDate={formatDate} returnOffice={returnOffice} header={header}/>
                             </Tab.Pane>
                             
                         </Tab.Content>

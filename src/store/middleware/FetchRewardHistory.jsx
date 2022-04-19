@@ -6,7 +6,7 @@ import {
 } from "../rewardHistory";
 
 const FetchRewardHistory = (store) => (next) => async (action) => {
-  const { url, method, data, onSuccess, onError } = action.payload;
+  const { url, method, data, headers, onSuccess, onError } = action.payload;
 
   switch (action.type) {
     case "GetRewardHistory":
@@ -16,6 +16,7 @@ const FetchRewardHistory = (store) => (next) => async (action) => {
           url,
           method,
           data,
+          headers,
         });
         store.dispatch(
           apiRewardHistoryRequestSucceeded({

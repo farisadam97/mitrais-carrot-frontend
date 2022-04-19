@@ -3,20 +3,25 @@ import ContainerContent from "../container/container.component";
 import { Table, Modal, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import { GetGroupList, AddGroup, UpdateGroup, DeleteGroup } from "../../store/apiActions";
+import LoadingModal from "../modal/loading";
 import { Link } from "react-router-dom";
 import Pagination from "../pagination/pagination.component";
 
 const StaffGroup = (props) => {
     const [show, setShow] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
+
     const [groupName, setGroupName] = useState("");
     const [groupNote, setGroupNote] = useState("");
     const [groupId, setGroupId] = useState(null);
     const [groupDate, setGroupDate] = useState(null);
 
+    const [groupNameValid, setGroupNameValid] = useState(null);
+    const [groupNoteValid, setGroupNoteValid] = useState(null);
+
     useEffect(() => {
         props.loadGroups(1);
-    },[show, showDelete])
+    },[show, showDelete]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const handleClose = () => {
         setShow(false);
@@ -25,6 +30,8 @@ const StaffGroup = (props) => {
         setGroupNote("");
         setGroupDate(null);
         setGroupId(null);
+        setGroupNameValid(null);
+        setGroupNoteValid(null);
     }
 
     const handleShow = () => setShow(true);
@@ -45,19 +52,40 @@ const StaffGroup = (props) => {
         setGroupNote(e.currentTarget.value);
     }
 
-    const saveGroup = () => {
-        if(groupId === null){
-            const today = new Date();
-            const dd = String(today.getDate()).padStart(2, '0');
-            const mm = String(today.getMonth() + 1).padStart(2, '0');
-            const yyyy = today.getFullYear();
-            const todayDate = yyyy + '-' + mm + '-' + dd;
-            props.addGroup(groupName, groupNote, todayDate);
-        } else if(groupId > 0){
-            props.updateGroup(groupId, groupName, groupDate, groupNote);
+    const handleValidation = () => {
+        let isValid = true;
+
+        if(groupName === ""){
+            isValid = false;
+            setGroupNameValid("Please enter the group name");
+        } else if(groupName.length > 255){
+            isValid = false;
+            setGroupNameValid("Group name can't be more than 255 characters");
         }
-        handleClose();
-        props.loadGroups(1);
+
+        if(groupNote.length > 255){
+            isValid = false;
+            setGroupNoteValid("Group note can't be more than 255 characters");
+        }
+
+        return isValid;
+    }
+
+    const saveGroup = () => {
+        if(handleValidation()){
+            if(groupId === null){
+                const today = new Date();
+                const dd = String(today.getDate()).padStart(2, '0');
+                const mm = String(today.getMonth() + 1).padStart(2, '0');
+                const yyyy = today.getFullYear();
+                const todayDate = yyyy + '-' + mm + '-' + dd;
+                props.addGroup(groupName, groupNote, todayDate);
+            } else if(groupId > 0){
+                props.updateGroup(groupId, groupName, groupDate, groupNote);
+            }
+            props.loadGroups(1).then(handleClose());
+            // handleClose();
+        }
     }
 
     const showDeleteModal = id => {
@@ -67,8 +95,8 @@ const StaffGroup = (props) => {
 
     const deleteGroup = () => {
         props.deleteGroup(groupId);
-        handleClose();
-        props.loadGroups(1);
+        props.loadGroups(1).then(handleClose());
+        // handleClose();
     }
 
     return ( 
@@ -105,8 +133,9 @@ const StaffGroup = (props) => {
                             );
                         })
                     ): (<tr>
-                        <td colSpan={4} className="text-center">Data Not Found</td>
+                        <td colSpan={4} className="text-center">{props.error ? props.error : 'Data not found'}</td>
                     </tr>)}
+                    <LoadingModal isLoading={props.isLoading}/>
                 </tbody>
             </Table>
             {props.pagination > 0 && <Pagination {...props} pagination={props.pagination} type={"group"}/>}
@@ -114,17 +143,19 @@ const StaffGroup = (props) => {
             {/* Modal Update/Add */}
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Add New Staff Group</Modal.Title>
+                    <Modal.Title>{groupId ? "Edit" : "Add New"} Staff Group</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <form>
                         <div className="mb-3">
                             <label htmlFor="inputName" className="form-label">Group Name</label>
-                            <input type="text" className="form-control" value={groupName} onChange={groupNameInputHandle}></input>
+                            <input type="text" className={`form-control ${groupNameValid ? 'is-invalid' : ''}`} value={groupName} onChange={groupNameInputHandle}/>
+                            <div className="invalid-feedback">{groupNameValid}</div>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="inputDescription" className="form-label">Group Note</label>
-                            <input type="text" className="form-control" value={groupNote} onChange={groupNoteInputHandle}></input>
+                            <input type="text" className={`form-control ${groupNoteValid ? 'is-invalid' : ''}`} value={groupNote} onChange={groupNoteInputHandle}/>
+                            <div className="invalid-feedback">{groupNoteValid}</div>
                         </div>
                     </form>
                 </Modal.Body>
@@ -165,6 +196,8 @@ const StaffGroup = (props) => {
 
 const mapStateToProps = state => {
     return {
+        isLoading: state.group.isLoading,
+        error: state.group.error,
         groups: state.group.groups,
         pagination: state.group.groupsPagination
     }

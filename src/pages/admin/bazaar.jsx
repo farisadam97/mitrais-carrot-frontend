@@ -1,19 +1,26 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 import { Modal, Button} from 'react-bootstrap'
+import Cookies from "universal-cookie";
 import NavbarComponent from '../../components/navbar/navbar.component'
 import Container from '../container'
 import ContainerContent from '../../components/container/container.component'
 import Header from './header'
-import DefaultConfig from '../../config/config'
+import { DefaultConfig } from '../../config/config'
 import axios from 'axios'
 import {v4} from 'uuid'
 import PageTitle from '../../components/text/pageTitle.component'
+import AccordionHistoryUpdate from '../../components/admin/accordionHistoryUpdate';
 import LoadingModal from '../../components/modal/loading'
+import noImages from '../../assets/img/no-images.png'
+
+import {decryptData} from '../../config/config'
 
 const BazaarAdminPage = () => {
+    const cookie = new Cookies()
     const [itemsBazaar,setItemsBazaar] = useState()
     const [isLoading,setIsLoading] = useState(false)
+    const [isLoadingTable,setIsLoadingTable] = useState(true)
 
     const [filterCategory, setFilterCategory] =  useState('')
     const [filterLocation,setFilterLocation] = useState('')
@@ -26,10 +33,15 @@ const BazaarAdminPage = () => {
     const [inputStock,setInputStock] = useState(1)
     const [inputMinCarrot,setInputMinCarrot] = useState(0)
     const [inputDate,setInputDate] = useState()
+    const [itemImg,setItemImg] = useState("")
+    const [renderImg,setRenderImg] = useState("")
     const [editedId,setEditedId] = useState()
     
     const [isEdit,setIsEdit] = useState(false)
     const [show, setShow] = useState(false);
+    const [showDetailSocfound,setShowDetailSocfound] = useState(false)
+    const [dataDetailItem,setDataDetailItem] = useState()
+    const [cashoutAmount,setCashoutAmount] = useState(0)
     const handleClose = () => setShow(false);
     const handleShow = () => {
         setIsEdit(false)
@@ -42,23 +54,28 @@ const BazaarAdminPage = () => {
         setInputCarrot(1)
         setInputStock(1)
         setInputDate()
+        setItemImg("")
+        setRenderImg("")
     };
 
     const url = `${DefaultConfig.base_api}/reward`
     const header = {
-        'Authorization' : `Bearer ${localStorage.getItem('access_token')}`
+        'Authorization' : `Bearer ${cookie.get("access_token")}`
     }
 
     const getDataReward = () => {
         const body = {
             "category":filterCategory,
             "location":filterLocation,
-            "fields":"id,category,name,description,rate,stock,carrot_price,expire_date,is_active,location",
+            "fields":"id,category,name,description,rate,stock,expire_date,is_active,location,min_carrots,collected_carrots,link_img",
             "page_number":"0",
             "page_size":"10",
             "sort_by":"id",
             "sort_dir":"asc"
         }
+        console.log("data",url)
+
+        setIsLoadingTable(true)
         
         axios.post(url,body,{headers: header})
             .then(response => {
@@ -72,6 +89,8 @@ const BazaarAdminPage = () => {
                 setInputStock(1)
                 setInputMinCarrot(0)
                 setInputDate("")
+
+                setIsLoadingTable(false)
             })
             .catch((error) => {
                 console.log(error)
@@ -101,6 +120,9 @@ const BazaarAdminPage = () => {
 
     const selectCategoryHandle = (e) => {
         setSelectCategory(e.currentTarget.value)
+        if(e.currentTarget.value === "socfound") {
+            setInputStock(0)
+        }
     }
 
     const selectLocationHandle = (e) => {
@@ -132,6 +154,7 @@ const BazaarAdminPage = () => {
             {
                 "category":selectCategory,
                 "description":inputDesc,
+                "linkImg":itemImg,
                 "name":inputName,
                 "stock":inputStock,
                 "rate":inputCarrot,
@@ -156,11 +179,13 @@ const BazaarAdminPage = () => {
             `${url}`,
             {
                 "id": editedId,
-                "idUser": 6,
+                "idUser": cookie.get("id"),
                 "name": inputName,
                 "description": inputDesc,
+                "linkImg":itemImg,
                 "stock": inputStock,
                 "rate": inputCarrot,
+                "minimumCarrots":inputMinCarrot,
                 "expireDate": inputDate,
                 "category": selectCategory,
                 "label": "",
@@ -194,7 +219,7 @@ const BazaarAdminPage = () => {
         e.preventDefault()
         if(window.confirm("Are you user delete this item?")){
             axios.delete(`${url}/${productId}`,{
-                heders:header
+                headers:header
             })
             .then((response) => {
                 alert("Item deleted")
@@ -214,11 +239,14 @@ const BazaarAdminPage = () => {
         setEditedId(element.id)
         setInputName(element.name)
         setInputDesc(element.description)
-        setSelectCategory(element.category)
+        console.log("edit",element.category)
+        setSelectCategory(element.category.toLowerCase())
         setSelectLocation(element.location)
-        setInputCarrot(element.rate)
+        setInputCarrot(element.minCarrots)
         setInputStock(element.stock)
         setInputDate(element.expireDate)
+        setItemImg(element.linkImg)
+        setRenderImg(element.linkImg)
 
     }
 
@@ -242,6 +270,53 @@ const BazaarAdminPage = () => {
         }).catch(error => {
             console.log(error)
         })
+    }
+
+    const detailItemBazaar = (e,element) => {
+        e.preventDefault()
+        setShowDetailSocfound(true)
+        setDataDetailItem(element)
+    }
+
+    const handleCloseDetailSocfound = () => {
+        setShowDetailSocfound(false)
+        setDataDetailItem()
+    }
+
+    const inputCashoutHandle = e => {
+        setCashoutAmount(e.currentTarget.value)
+    }
+
+    const cashOutSocfound = () => {
+        if(window.confirm(`Do you want to cashout ${cashoutAmount} carrots? from ${dataDetailItem.name}`)){
+            setIsLoading(true)
+            axios.post(
+                `${DefaultConfig.base_api}/transaction/cash-out`,
+                {
+                    "id":dataDetailItem.id,
+                    "adminId":decryptData(cookie.get("id")),
+                    "amount":cashoutAmount
+                },
+                {headers:header}
+            ).then(response => {
+                alert("Successfully Cashout Carrots!")
+                setIsLoading(false)
+                setShowDetailSocfound(false)
+                setDataDetailItem({})
+                setCashoutAmount(0)
+            }).catch(error => {
+                console.log(error)
+            })
+        }
+        
+    }
+
+    const inputImg = e => {
+        setItemImg(e.currentTarget.value)
+    }
+
+    const checkImage = () => {
+        setRenderImg(itemImg)
     }
 
     return (
@@ -286,21 +361,22 @@ const BazaarAdminPage = () => {
                         </div>
                         <div className="row">
                             <div className="col-12">
-                                <table className="table">
+                                <table id='bazzar-item' className='table table-striped table-bordered table-hover mt-3 dataTable no-footer' style={{width: "100%"}} role='grid'>
                                     <thead>
-                                        <tr>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Category</th>
-                                            <th scope="col">Location</th>
-                                            <th scope="col">Stock</th>
-                                            <th scope="col">Price</th>
-                                            <th scope="col">Expiry Date</th>
-                                            <th scope="col">Active</th>
-                                            <th scope="col">Action</th>
+                                        <tr role="row " className='text-center'>
+                                            <th scope="col" className="sorting_desc"  aria-controls="staff-table" colSpan={"1"} aria-sort="descending" aria-label="#: activate to sort column ascending" >Name</th>
+                                            <th scope="col" className="sorting" aria-controls="staff-table" colSpan={"1"} style={{width: "10%"}}>Category</th>
+                                            <th scope="col" className="sorting" aria-controls="staff-table" colSpan={"1"} style={{width: "10%"}}>Location</th>
+                                            <th scope="col" className="sorting" aria-controls="staff-table" colSpan={"1"} style={{width: "4%"}}>Stock</th>
+                                            <th scope="col" className="sorting" aria-controls="staff-table" colSpan={"1"} style={{width: "4%"}}>Price</th>
+                                            <th scope="col" className="sorting" aria-controls="staff-table" colSpan={"1"} style={{width: "15%"}}>Expire Date</th>
+                                            <th scope="col" className="sorting" aria-controls="staff-table" colSpan={"1"} style={{width: "5%"}}>Active</th>
+                                            <th scope="col" className="sorting" aria-controls="staff-table" colSpan={"1"} style={{width: "10%"}}>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        {   
+                                    <tbody id='table-admin-carrot-summary'>
+                                    { itemsBazaar?.data.length > 0 ? 
+                                        (
                                             itemsBazaar?.data.map((element) => 
                                                 (
                                                     <tr key={v4()}>
@@ -326,10 +402,15 @@ const BazaarAdminPage = () => {
                                                         <td key={v4()}>
                                                             <div className="w-100">
                                                                 <div className="">
-                                                                    <a href="#" onClick={(e) => {editItemHandle(e,element)}} className='mr-3'>Edit</a>
+                                                                    <a href="#"  onClick={(e) => {editItemHandle(e,element)}} className='mr-3 btn btn-outline-success d-block p-1 mb-2'>Edit</a>
                                                                 </div>
                                                                 <div className="">
-                                                                    <a href="#" onClick={(e) => {deleteRewardHandle(e,element.id)}}>Delete</a>
+                                                                    <a href="#" className='btn btn-outline-danger d-block p-1 mb-2' onClick={(e) => {deleteRewardHandle(e,element.id)}}>Delete</a>
+                                                                </div>
+                                                                <div className="">
+                                                                    {
+                                                                        <a href="#" className='btn btn-outline-info d-block p-1' onClick={(e) => {detailItemBazaar(e,element)}}>Detail</a> 
+                                                                    }
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -337,7 +418,20 @@ const BazaarAdminPage = () => {
                                                     // console.log(element)
                                                 )
                                             )
-                                        }
+                                        ) : isLoadingTable ? (
+                                            <tr>
+                                            <td colSpan={8} className="text-center">
+                                                Loading...
+                                            </td>
+                                            </tr>
+                                        ) : (
+                                            <tr>
+                                            <td colSpan={8} className="text-center">
+                                                No data
+                                            </td>
+                                            </tr>
+                                        )
+                                    }
                                     </tbody>
                                 </table>
                             </div>
@@ -346,6 +440,7 @@ const BazaarAdminPage = () => {
 
             {/* </Container> */}
 
+            {/* Modal add/edit item */}
             <Modal show={show} onHide={handleClose} backdrop="static">
                 <Modal.Header closeButton>
                     <Modal.Title>
@@ -356,6 +451,22 @@ const BazaarAdminPage = () => {
                 </Modal.Header>
                 <Modal.Body>
                 <form>
+                    <div className="mb-3 text-center">
+                        <img 
+                            src={renderImg !== ""? renderImg : noImages}
+                            alt=""
+                            style={{
+                                objectFit:"contain",
+                                height:"200px"
+                            }} />
+                    </div>
+                    <div className="">
+                        <label htmlFor="inputName" className="form-label">Picture Link</label>
+                    </div>
+                    <div className="input-group mb-3">
+                        <input type="text" className="form-control" placeholder="Picture link" aria-label="Picture link" value={itemImg} onChange={inputImg} aria-describedby="" />
+                        <button className="btn btn-outline-secondary" type="button" id="" onClick={checkImage}>Check Image</button>
+                    </div>
                     <div className="mb-3">
                         <label htmlFor="inputName" className="form-label">Name</label>
                         <input type="text" className="form-control" id="inputName" aria-describedby="emailHelp" value={inputName} onChange={nameInputHandle} required />
@@ -364,6 +475,7 @@ const BazaarAdminPage = () => {
                         <label htmlFor="inputDescription" className="form-label">Description</label>
                         <textarea rows={2} className="form-control" id="inputDescription" aria-describedby="emailHelp" value={inputDesc} onChange={descInputHandle} required />
                     </div>
+                    
                     <div className="mb-3">
                         <label htmlFor="selectCategory" className="form-label">Category</label>
                         <select id='selectCategory' className="form-select" aria-label="Default select example" value={selectCategory} onChange={selectCategoryHandle} required >
@@ -387,15 +499,15 @@ const BazaarAdminPage = () => {
                     </div>
                     <div className="mb-3">
                         <label htmlFor="inputStock" className="form-label">Stock</label>
-                        <input type="number" min={0} className="form-control" id="inputStock" aria-describedby="emailHelp" value={inputStock} onChange={stockInputHandle} required />
+                        <input type="number" min={0} className="form-control" id="inputStock" aria-describedby="emailHelp" value={inputStock} onChange={stockInputHandle} disabled={selectCategory === "socfound" ? true : false} required />
                     </div>
                     <div className={`mb-3 ${selectCategory === "socfound" ? "d-block" : "d-none"}`}>
-                        <label htmlFor="inputMinimumCarrot" className="form-label">Minimum Carrots</label>
+                        <label htmlFor="inputMinimumCarrot" className="form-label">Minimum Carrots Collected</label>
                         <input type="number" min={0} className="form-control" id="inputMinimumCarrot" aria-describedby="emailHelp" value={selectCategory === "socfound" ? inputMinCarrot : 0} onChange={minCarrotInputHandle} required />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="inputDate" className="form-label">Expire Date</label>
-                        <input id="inputDate" name="" type="date" className="form-control here" value={inputDate} onChange={expireDateHandle} required />
+                        <input id="inputDate" name="" type="date" className="form-control here" min={new Date().toISOString().split('T')[0]} value={inputDate} onChange={expireDateHandle} required />
                     </div>
                     
                 </form>
@@ -409,6 +521,58 @@ const BazaarAdminPage = () => {
                 </Modal.Footer>
             </Modal>
 
+            {/* Modal detail Socfound */}
+            <Modal show={showDetailSocfound} onHide={handleCloseDetailSocfound} size="xl" scrollable={true} >
+                <Modal.Header closeButton>
+                    <Modal.Title>
+                        Detail {dataDetailItem?.category === "reward" ? "Item Reward" : "Social Foundation"}
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                <form className='was-validated'>
+                    <div className="mb-3 text-center">
+                        <img 
+                            src={dataDetailItem?.linkImg !== ""? dataDetailItem?.linkImg : noImages}
+                            alt=""
+                            style={{
+                                objectFit:"contain",
+                                height:"200px"
+                            }} />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="inputName" className="form-label">Name</label>
+                        <input type="text" className="form-control" id="name-socfound" value={dataDetailItem?.name} onChange={e=>{}} aria-describedby="emailHelp" disabled />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="inputDescription" className="form-label">Description</label>
+                        <textarea rows={4} className="form-control" id="desc-socfound" value={dataDetailItem?.description} onChange={e=>{}} aria-describedby="emailHelp"  disabled/>
+                    </div>
+                    <div className={`mb-3 ${dataDetailItem?.category === "reward" ? "d-none" : ""}`}>
+                        <label htmlFor="min-carrot" className="form-label">Minimum Carrots Collected</label>
+                        <input type="text" className="form-control" id="min-carrot" value={dataDetailItem?.minCarrots} onChange={e=>{}} aria-describedby="emailHelp" disabled />
+                    </div>
+                    <div className={`mb-3 ${dataDetailItem?.category === "reward" ? "d-none" : ""}`}>
+                        <label htmlFor="total-carrot" className="form-label">Total Carrots Collected</label>
+                        <input type="text" className="form-control" id="total-carrot" value={dataDetailItem?.totalCarrot} onChange={e=>{}} aria-describedby="emailHelp" disabled />
+                    </div>
+                    <div className={`mb-3 ${dataDetailItem?.category === "reward" ? "d-none" : ""}`}>
+                        <label htmlFor="cashout-amount" className="form-label">Cashout Amount</label>
+                        <input id="cashout-amount" min={0} type="number" className="form-control here" 
+                            value={cashoutAmount} onChange={inputCashoutHandle} disabled={(dataDetailItem?.totalCarrot > dataDetailItem?.minCarrots) ? false : true} />
+                        <div className={`invalid-feedback ${dataDetailItem?.totalCarrot < dataDetailItem?.minCarrots ? "d-block" : ""}`}>
+                            Collected carrot amount less than minimum carrots
+                        </div>
+                    </div>
+                    <div className={`d-grid mb-3 ${dataDetailItem?.category === "reward" ? "d-none" : ""}`}>
+                        <Button variant="warning" size="lg" onClick={cashOutSocfound} disabled={cashOutSocfound>0? false:true}>
+                            Cash Out Carrots
+                        </Button>
+
+                    </div>
+                    <AccordionHistoryUpdate dataId={dataDetailItem?.id} v4={v4()} header={header} apiUrl={url}/>
+                </form>
+                </Modal.Body>
+            </Modal>
             <LoadingModal isLoading={isLoading}></LoadingModal>
         </div>
     )
