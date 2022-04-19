@@ -8,10 +8,12 @@ import Cookies from "universal-cookie";
 import useAuth from "../../../hooks/useAuth";
 import RouteConfig from "../../../config/Route";
 import RolesConfig from "../../../config/Roles";
-import {encryptData}  from "../../../config/config"
+import {encryptData}  from "../../../config/config";
+import { connect } from "react-redux";
+import { GetUser, GetBasket } from "../../../store/apiActions";
 import './login.page.css'
 
-const LoginPage = () => {
+const LoginPage = (props) => {
     const [userNameInput, setUserNameInput] = useState("")
     const [passwordInput, setPasswordInput] = useState("")
     const [isLoading,setIsLoading] = useState(false)
@@ -49,22 +51,30 @@ const LoginPage = () => {
                 cookies.set('role',roles,{path:'/'})
                 // cookies.set('name',name,{path:'/'})
                 cookies.set('id',id,{path:'/'})
+                props.getUser(id, accessToken);
+                props.getBasket(id, accessToken);
                 // localStorage.setItem("role",roles)
                 // localStorage.setItem("access_token",accessToken)
                 // setAuth({user,pwd,roles,accessToken})
-                switch (roles) {
-                    case RolesConfig.ROOT_ADMIN:
-                        navigate(`${RouteConfig.ROOT_ADMIN}`,{replace:true})
-                        break;
-                    case RolesConfig.STAFF:
-                        navigate(`${RouteConfig.STAFF}`,{replace:true})
-                        break;
-                    case RolesConfig.ADMIN:
-                        navigate(`${RouteConfig.ADMIN}`,{replace:true})
-                        break
-                    default:
-                        break;
-                }
+                setTimeout(() => {
+                    switch (roles) {
+                        case RolesConfig.ROOT_ADMIN:
+                            navigate(`${RouteConfig.ROOT_ADMIN}`,{replace:true})
+                            break;
+                        case RolesConfig.STAFF:
+                            navigate(`${RouteConfig.STAFF}`,{replace:true})
+                            break;
+                        case RolesConfig.ADMIN:
+                            navigate(`${RouteConfig.ADMIN}`,{replace:true})
+                            break;
+                        case RolesConfig.MANAGER:
+                            navigate(`${RouteConfig.MANAGER}`,{replace:true})
+                            break;
+                        default:
+                            break;
+                    }
+                    
+                }, 2000);
             }).catch((error) => {
                 if(error?.response?.status === 401){
                     alert("Username or Password is wrong")
@@ -118,4 +128,42 @@ const LoginPage = () => {
     )
 }
 
-export default LoginPage;
+const mapStateToProps = state => {
+    return {
+        user: state.activeUser.data,
+        error: state.activeUser.error,
+        isLoading: state.activeUser.isLoading,
+        basket: state.activeUser.basket,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return{
+        getUser: (id, token) => {
+            return dispatch(GetUser({
+                url: `user/${id}`,
+                method: 'POST',
+                data: {
+                    fields: "name, basket_id, username, email, position, office"
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }));
+        },
+        getBasket: (id, token) => {
+            return dispatch(GetBasket({
+                url: `basket/user/${id}`,
+                method: 'POST',
+                data: {
+                    fields: "current_amount"
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }));
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

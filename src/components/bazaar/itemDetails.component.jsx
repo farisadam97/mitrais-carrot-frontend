@@ -63,7 +63,7 @@ const ItemDetails = (props) => {
                                 <p>{props.detailItem[0].description}</p>
                                 <p className={props.detailItem[0].stock <= 5? "text-danger" : "text-success"}>{props.detailItem[0].category === "reward"? "Current stock" : "Total donation"}: {props.detailItem[0].stock}</p>
                                 <button className="btn btn-carrot radius-5" onClick={handleShow} data-toggle="modal" data-target="#exampleModal">Exchange</button>
-                                {!isSufficient && <p className="mt-2"><small className="text-danger">You don't have enough carrots to buy this item.</small></p>}
+                                {!isSufficient && <p className="mt-2"><small className="text-danger">You don't have enough carrots to exchange this item.</small></p>}
                             </div>
                         </div>
                     
