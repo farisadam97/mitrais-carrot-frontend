@@ -15,7 +15,7 @@ const InsertUpdateUser = (props) => {
   // const url = useLocation();
   const cookies = new Cookies();
   const [getToken, setToken] = useState(cookies.get('access_token'));
-
+  
   useEffect(() => {
     props.loadUsers(getToken);
   }, []);
