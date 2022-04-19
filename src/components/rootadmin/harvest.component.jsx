@@ -6,7 +6,7 @@ import { Modal, Button } from "react-bootstrap";
 import axios from 'axios';
 import * as date from "../../utils/date/date.util";
 
-const HarvestComponent = ({lists, isLoading}) => {
+const HarvestComponent = ({lists, listsBasket, isLoading}) => {
     const handleModal = () => setShow(!show);
     const handleModalExtend = () => setShowExtend(!showExtend);
     const handleModalAdd = () => setShowCarrot(!showCarrot);
@@ -63,8 +63,6 @@ const HarvestComponent = ({lists, isLoading}) => {
             setExpDate("");
             setAmount("");
             handleModal();
-            handleModalExtend();
-            handleModalAdd();
         } catch (e) {
           alert("error request:", e);
         }
@@ -86,7 +84,7 @@ const HarvestComponent = ({lists, isLoading}) => {
   
       const url = "http://localhost:2022/api/v1/carrot/extend";
       const payload = {
-        id: 5,
+        id: "7",
         expireDate : getExpDate,
         
       };
@@ -98,55 +96,12 @@ const HarvestComponent = ({lists, isLoading}) => {
           }
         })
           setLoadingSubmit(false);
-          setCreatedDate("");
           setExpDate("");
-          setAmount("");
-          handleModal();
           handleModalExtend();
-          handleModalAdd();
       } catch (e) {
         alert("error request:", e);
       }
   }
-
-  const handleClickShareAdd = (e) => {
-    e.preventDefault();
-
-    // if (getYears === "") {
-    //   alert("Please input a year");
-    //   return;
-    // } else 
-    if (getAmount < 0) {
-      alert("Amount cannot be negative");
-      return;
-    }
-
-    setLoadingSubmit(true);
-
-    const url = "http://localhost:2022/api/v1/carrot/annual/stok";
-    const payload = {
-      id: 5,
-      expireDate : getExpDate,
-      
-    };
-
-    try {
-      axios.put(url, payload).then((res) => {
-        if (res.data.status == "INTERNAL_SERVER_ERROR") {
-          alert("Something is wrong! Please Try Again.")
-        }
-      })
-        setLoadingSubmit(false);
-        setCreatedDate("");
-        setExpDate("");
-        setAmount("");
-        handleModal();
-        handleModalExtend();
-        handleModalAdd();
-    } catch (e) {
-      alert("error request:", e);
-    }
-}
     
     
   console.log(lists);
@@ -167,7 +122,7 @@ const HarvestComponent = ({lists, isLoading}) => {
                         <th rowSpan={"2"} className="sorting" tabIndex={"0"} aria-controls="myTable" colSpan={"1"} aria-label="Year: activate to sort column ascending" style={{width: "36px"}}>Year</th>
                         <th colSpan={"2"} className="text-center" rowSpan={"1"}>Barn</th>
                         <th colSpan={"2"} className="text-center" rowSpan={"1"}>Expired At</th>
-                        <th rowSpan={"2"} className="text-center sorting" tabIndex={"0"} aria-controls="myTable" colSpan={"1"} aria-label="Active: activate to sort column ascending" style={{width: "49px"}}>Active</th>
+                        {/* <th rowSpan={"2"} className="text-center sorting" tabIndex={"0"} aria-controls="myTable" colSpan={"1"} aria-label="Active: activate to sort column ascending" style={{width: "49px"}}>Active</th> */}
                         <th rowSpan={"2"} className="text-center sorting_disabled" colSpan={"1"} aria-label="Action" style={{width: "120px"}}>Action</th>
                     </tr>
                     <tr role="row">
@@ -187,14 +142,14 @@ const HarvestComponent = ({lists, isLoading}) => {
                                 <td>{item.current_amount}</td> {/* left barn */}
                                 <td>{item.createdAt[0] + "-" + item.createdAt[1] + "-" + item.createdAt[2]}</td> {/* share barn */}
                                 <td>{item.expireDate[0] + "-" + item.expireDate[1] + "-" + item.expireDate[2]}</td> {/* exchange barn */}
-                                <td>{item.active}</td> {/* active barn */}
+                                {/* <td>{item.active}</td> active barn */}
                                 <td className="text-center">
-                                    <button type="button" className="btn btn-warning btn-block" onClick={handleModalExtend} data-modal="modal2" data-toggle="modal2" data-target="#myModal2" data-action="create">
+                                    <button type="button" className="btn btn-warning btn-block" onClick={handleModalExtend} data-modal="modal2" data-toggle="modal2" data-target="#myModal2" data-action="create" value="key">
                                         <i className="fa fa-calendar"></i> Extend
                                     </button>
-                                    <button type="button" className="btn btn-outline-primary btn-block" onClick={handleModalAdd} data-modal="modal3" data-toggle="modal3" data-target="#myModal3" data-action="create">
+                                    {/* <button type="button" className="btn btn-outline-primary btn-block" onClick={handleModalAdd} data-modal="modal3" data-toggle="modal3" data-target="#myModal3" data-action="create">
                                         <i className="fa fa-plus"></i> Add more
-                                    </button>
+                                    </button> */}
                                 </td>
                             </tr>
                         ))
@@ -304,38 +259,6 @@ const HarvestComponent = ({lists, isLoading}) => {
             form="send-carrot-form"
             className="btn btn-carrot radius-5"
             onClick={handleClickShareExtend}
-            disabled = {isLoadingSubmit}
-          >
-            {isLoadingSubmit ? 'Loading...' : 'Save'}
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      <Modal show={showCarrot} onHide={handleModalAdd}>
-        <Modal.Header closeButton>
-          <Modal.Title>Annual Carrot</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <form id="send-carrot-form">
-            <div className="form-group">
-              <label for="annualcarrot_amount">Carrot Amount</label>
-              <input id="annualcarrot_amount" name="annualcarrot_amount" type="number" className="form-control here" min="1" max={getAnnualCarrot.currentAmount} value={getAmount} onChange={handleInputAmount} required></input>
-              <small id="annualcarrot_amount_help" className="form-text text-muted" style={{display:"none"}} value={getAmount}  onChange={handleInputAmount} isLoading={isLoading} required>
-                          How many carrots do you want to add ?
-              </small>
-              {getAmount <= 0 ? <div>The minimum amount is 1</div> : null}
-            </div>
-          </form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleModalAdd}>
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            form="send-carrot-form"
-            className="btn btn-carrot radius-5"
-            onClick={handleClickShareAdd}
             disabled = {isLoadingSubmit}
           >
             {isLoadingSubmit ? 'Loading...' : 'Save'}

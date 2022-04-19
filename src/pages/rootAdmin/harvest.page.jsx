@@ -1,33 +1,21 @@
 import React from 'react'
 import HarvestComponent from '../../components/rootAdmin/harvest.component'
 import ContainerContent from '../../components/container/container.component'
-import Footer from '../../components/footer/footer.component'
 import { connect } from 'react-redux'
 import { useEffect } from 'react'
 
 const HarvestPage = props => {
-  const [getUsers, setUsers] = useState([]);
-  const [getBasket, setBasket] = useState([]);
     useEffect(() => {
         props.loadHarvest()
         props.loadBasket()
         console.log(props)
       }, [])
-    
-      useEffect(() => {
-        props.lists.map((user) =>
-          setUsers((e) => [...e, { value: user.id, label: user.name }])
-        );
-        props.basket.map((basketHistory) => {
-          setBasket(basketHistory);
-        });
-      }, [props]);
 
   return (
     <div>
             <ContainerContent title="HARVEST PLAN">
             <div className="col-md-12">
-                <HarvestComponent lists={props.lists}  isLoading={props.isLoading} />
+                <HarvestComponent lists={props.lists} listsBasket={props.listsBasket}  isLoading={props.isLoading} />
                 {/* <ManagerComponent lists={props.lists} isLoading={props.isLoading} /> */}
                 {/* <Pagination {...props.pagination} /> */}
             </div>
