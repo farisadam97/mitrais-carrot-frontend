@@ -4,7 +4,7 @@ const HistoryItem = ({ lists, isLoading }) => {
   return (
     <div className="row d-flex align-content-end">
       <div className="col-md-12 p-0">
-        <table className="table table-hover mt-3">
+        <table className="table table-hover mt-3" style={{textAlign:"center"}}>
           <thead>
             <tr>
               <th scope="col">No.</th>
