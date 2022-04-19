@@ -4,6 +4,7 @@ const initialState = {
     items: null,
     error: null,
     detailItem: null,
+    isLoading: true,
 }
 
 const slice = createSlice({
@@ -13,13 +14,15 @@ const slice = createSlice({
         fetchBazaarItemSuccess: (state = initialState, action) => {
             state.items = action.payload.items;
             state.error = null;
+            state.isLoading = false;
         },
         fetchDetailItemSuccess: (state = initialState, action) => {
             state.detailItem = action.payload.detailItem;
             state.error = null;
+            state.isLoading = false;
         },
         fetchFailed: (state, action) => {
-            state.items = [];
+            state.isLoading = false;
             state.error = action.payload.error;
         }
     }

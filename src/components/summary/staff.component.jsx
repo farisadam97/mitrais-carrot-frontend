@@ -3,13 +3,18 @@ import { Link } from "react-router-dom";
 import profilPict from "../../assets/img/user.jpg";
 import carrotPict from "../../assets/img/mc-icon-carrot.png";
 import historyPict from "../../assets/img/mc-icon-transaction.png";
-import { GetUser } from "../../store/apiActions";
+import { GetUser, GetBasket } from "../../store/apiActions";
 import { connect } from "react-redux";
+import Cookies from "universal-cookie";
 
 const StaffSummary = props => {
+    const cookies = new Cookies();
+    const token = cookies.get('access_token');
+    const id = cookies.get('id');
+
     useEffect(() => {
-        props.getUser(1);
-        console.log(props.getUser(1))
+        props.getUser(id, token);
+        props.getBasket(id, token);
     },[]);
 
     return(
@@ -21,7 +26,7 @@ const StaffSummary = props => {
                             <img src={profilPict} alt="" className="img-fluid rounded-circle" />
                         </div>
                         <div className="col-md-8 my-auto">
-                            <h4 className="mb-0 text-white">Henokh Santoso</h4>
+                            {props.user && <h4 className="mb-0 text-white">{props.user.name}</h4>}
                             <p className="text-white">Mitrais Employee</p>
                             {/* <!-- <a href="edit-profile.html" className="badge badge-white">Edit Profile</a> --> */}
                         </div>
@@ -33,7 +38,7 @@ const StaffSummary = props => {
                             <img src={carrotPict} alt="" className="img-fluid rounded-circle" />
                         </div>
                         <div className="col-md-8 my-auto">
-                            <h4 className="text-white">You've earned 560 carrots!</h4> {/*to do add dynamic value to get user carrot*/}
+                            <h4 className="text-white">You've earned {props.basketAmount} carrots!</h4>
                             <a className="badge badge-white" data-toggle="modal" data-target="#exampleModal">
                                 Share carrot!
                             </a>
@@ -58,20 +63,38 @@ const StaffSummary = props => {
 
 const mapStateToProps = state => {
     return {
-
+        user: state.activeUser.data,
+        error: state.activeUser.error,
+        isLoading: state.activeUser.isLoading,
+        basketAmount: state.activeUser.basketAmount,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return{
-        getUser: (id) => {
+        getUser: (id, token) => {
             return dispatch(GetUser({
                 url: `user/${id}`,
                 method: 'POST',
                 data: {
-                    fields: "name, basket_id, username, email, position"
+                    fields: "name, basket_id, username, email, position, office"
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`
                 }
-            }))
+            }));
+        },
+        getBasket: (id, token) => {
+            return dispatch(GetBasket({
+                url: `basket/user/${id}`,
+                method: 'POST',
+                data: {
+                    fields: "current_amount"
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }));
         }
     }
 }

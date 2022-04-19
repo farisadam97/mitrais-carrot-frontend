@@ -3,12 +3,12 @@ import ContainerContent from "../container/container.component";
 import BazaarItem from "../bazaar/item.component"
 import StaffSummary from "../summary/staff.component";
 import { connect } from "react-redux";
-import PageTitle from "../text/pageTitle.component";
+import Cookies from "universal-cookie";
 
 const Dashboard = (props) => {
+    const cookies = new Cookies();
+    const token = cookies.get('access_token');
     const [category, setCategory] = useState("reward");
-
-    //todo: change location 
 
     const reward = () => {
         setCategory("reward");
@@ -18,9 +18,9 @@ const Dashboard = (props) => {
         setCategory("socFound");
     }
 
-    useEffect(() => {
-        props.loadItem(category);
-    },[category])
+    const loadItem = () => {
+        props.loadItem(category, token, props.user.office);
+    }
 
     return (
         <div>
@@ -34,7 +34,9 @@ const Dashboard = (props) => {
                         <a onClick={socFound} className={"nav-link " + (category === "socFound"? "active" : "")}>SOCIAL FOUNDATION</a>
                     </div>
                 </div>
-                {(!props.items && !props.error) && <p>Loading...</p>}
+                {!props.items && (<div className="text-center mb-3">
+                    <button className="btn btn-info text-white" onClick={loadItem}>Refresh</button>
+                </div>)}
                 {props.error && <p>{props.error}</p>}
                 {props.items && <BazaarItem items={props.items}/>}
             </ContainerContent>
@@ -45,13 +47,15 @@ const Dashboard = (props) => {
 const mapStateToProps = state => {
     return {
         items: state.bazaarItem.items,
-        error: state.bazaarItem.error
+        error: state.bazaarItem.error,
+        user: state.activeUser.data,
+        isLoading: state.bazaarItem.isLoading,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        loadItem: (category) => {
+        loadItem: (category, token, location) => {
             return dispatch({
                 type: 'GetBazaarItem',
                 payload: {
@@ -59,12 +63,15 @@ const mapDispatchToProps = dispatch => {
                     method: 'POST',
                     data:{
                         category: category,
-                        location: "2",//<--- here change to dynamic value
+                        location: location,
                         fields: "name, description, id, rate, stock",
                         page_number: "0",
                         page_size: "10",
                         sort_by: "name",
                         sort_dir: "asc"
+                    },
+                    headers: {
+                        Authorization: `Bearer ${token}`
                     }
                 }
             })

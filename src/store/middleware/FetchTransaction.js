@@ -4,10 +4,10 @@ import { fetchTransactionSuccess } from "../transaction";
 import { baseURL } from "./BaseUrl";
 
 const FetchTransaction = (store) => (next) => async (action) => {
-  if (action.type != "exchangeReward") {
+  if (action.type !== "exchangeReward") {
     return next(action);
   }
-  const { url, method, data, onSuccess, onError } = action.payload;
+  const { url, method, data, headers } = action.payload;
   switch (action.type) {
     case "exchangeReward":
       try {
@@ -16,6 +16,7 @@ const FetchTransaction = (store) => (next) => async (action) => {
           url,
           method,
           data,
+          headers,
         });
         if (!response.data.payload) throw Error("Exchange Item Failed");
         store.dispatch(

@@ -7,10 +7,7 @@ import {
 import { baseURL } from "./BaseUrl";
 
 const FetchBazaarItem = (store) => (next) => async (action) => {
-  if (action.type != "GetBazaarItem" && action.type != "GetItemDetails") {
-    return next(action);
-  }
-  const { url, method, data, onSuccess, onError } = action.payload;
+  const { url, method, data, headers} = action.payload;
 
   switch (action.type) {
     case "GetBazaarItem":
@@ -20,6 +17,7 @@ const FetchBazaarItem = (store) => (next) => async (action) => {
           url,
           method,
           data,
+          headers
         });
         store.dispatch(
           fetchBazaarItemSuccess({
@@ -41,6 +39,7 @@ const FetchBazaarItem = (store) => (next) => async (action) => {
           url,
           method,
           data,
+          headers
         });
         store.dispatch(
           fetchDetailItemSuccess({
