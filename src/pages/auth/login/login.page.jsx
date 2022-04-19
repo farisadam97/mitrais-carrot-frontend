@@ -4,7 +4,7 @@ import Container from "../../container";
 import mitraisLogo from '../../../assets/img/mitrais-logo.png'
 import axios from "axios";
 import DefaultConfig from "../../../config/config";
-//import Cookies from "universal-cookie";
+import Cookies from "universal-cookie";
 import useAuth from "../../../hooks/useAuth";
 import RouteConfig from "../../../config/Route";
 import RolesConfig from "../../../config/Roles";
@@ -13,7 +13,7 @@ import './login.page.css'
 const LoginPage = () => {
     const [userNameInput, setUserNameInput] = useState("")
     const [passwordInput, setPasswordInput] = useState("")
-    //const cookies = new Cookies()
+    const cookies = new Cookies()
 
     const {setAuth} = useAuth()
     const navigate = useNavigate()
@@ -40,8 +40,8 @@ const LoginPage = () => {
                 const accessToken = response.data.accessToken
                 const user = userNameInput
                 const pwd = passwordInput
-                // cookies.set('access_token',accessToken,{path:'/'})
-                // cookies.set('role',response?.data?.roles[0],{path:'/'})
+                cookies.set('access_token',accessToken,{path:'/'})
+                cookies.set('role',response?.data?.roles[0],{path:'/'})
                 localStorage.setItem("role",roles)
                 localStorage.setItem("access_token",accessToken)
                 setAuth({user,pwd,roles,accessToken})

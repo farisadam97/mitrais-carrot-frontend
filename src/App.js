@@ -34,6 +34,7 @@ import CarrotStaffPage from "./pages/admin/carrot.staff.page";
 import HarvestPage from "./pages/rootAdmin/harvest.page";
 import DashboardRootAdmin from "./components/rootAdmin/dasboard.component";
 import RootAdminDashboardPage from "./pages/rootAdmin/dashboard/dashboard.root.page";
+import ShareCarrotPage from "./pages/manager/share.carrot.page";
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
       <Route path={RouteConfig.MANAGER} element={<IndexManager />}>
         <Route path="bazaar" element={<DashboardStaff/>}/>
         <Route path="history-transaction" element={<HistoryTransaction />} />
+        <Route path="share-carrot" element={<ShareCarrotPage />} />
         <Route path="reward/:id" element={<DetailsItem />} />
       </Route>
       {/* </Route> */}

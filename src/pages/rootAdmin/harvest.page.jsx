@@ -8,6 +8,7 @@ import { useEffect } from 'react'
 const HarvestPage = props => {
     useEffect(() => {
         props.loadHarvest()
+        props.loadBasket()
         console.log(props)
       }, [])
   return (
@@ -60,6 +61,19 @@ const mapStateToProps = (state) => {
               pageSize: "10",
               sortBy: "id",
               sortDir: "asc",
+            },
+          },
+        });
+      },
+      loadBasket: () => {
+        return dispatch({
+          type: "GetBasketHistory",
+          payload: {
+            url: "/basket/user/29",
+            method: "POST",
+            data: {
+              role: "1",
+              fields: "id, shared_amount, donate_amount, spent_amount, current_amount",
             },
           },
         });

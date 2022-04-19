@@ -49,13 +49,17 @@ const DashboardRootAdmin = ({ lists, isLoading }) => {
                 <tbody id='rootadmin-dashboard-staff-birthday'>
                 {lists.length > 0 ? (
                     lists.map(item => (
-                        <tr key={item.id}>
-                        <td scope="row">{item.birthdayDate}</td>
-                        <td>{item.name}</td>
-                        <td>{item.position}</td>
-                        <td>{item.office}</td>
-                        <td>{item.email}</td>
+                        // <tr key={item.id}>
+                        //     <td scope="row">{item.birthdayDate}</td>
+                        //     <td>{item.name}</td>
+                        //     <td>{item.position}</td>
+                        //     <td>{item.office}</td>
+                        //     <td>{item.email}</td>
+                        // </tr>
+                        <tr style="width:70%">Total number of staff<sup>*</sup>
+                            <td style="width:30%" id="birthday-total_staff" class="text-right">{item.pageSize}</td>
                         </tr>
+                        
                     ))
                     ) : isLoading ? (
                         <tr>

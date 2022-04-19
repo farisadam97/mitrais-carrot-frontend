@@ -39,7 +39,7 @@ const mapStateToProps = (state) => {
         return dispatch({
           type: "GetManagerList",
           payload: {
-            url: "/user/data",
+            url: "/user",
             method: "POST",
             data: {
               role : "4",
@@ -57,7 +57,7 @@ const mapStateToProps = (state) => {
         return dispatch({
           type: "GetManagerList",
           payload: {
-            url: "/user/data",
+            url: "/user",
             method: "POST",
             data: {
               role : "4",
