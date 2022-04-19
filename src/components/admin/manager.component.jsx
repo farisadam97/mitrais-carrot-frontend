@@ -23,12 +23,12 @@ const ManagerComponent = ({lists, isLoading}) => {
                 </thead>
                 <tbody id="table-admin-list-manager">
                 {lists.length > 0 ? (
-                    lists.map((item) => (
+                    lists.map((item, index) => (
                     <tr key={item.id}>
-                        <td scope="row">{item.id}</td>
+                        <td scope="row">{index + 1}</td>
                         <td>{item.name}</td>
-                        <td>{item.position}</td>
                         <td>{item.grades}</td>
+                        <td>{item.position}</td>
                         <td>{item.office}</td>
                         <td>{item.email}</td>
                         <td>{item.status}</td>

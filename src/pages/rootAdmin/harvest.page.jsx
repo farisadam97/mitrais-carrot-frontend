@@ -11,11 +11,21 @@ const HarvestPage = props => {
         props.loadBasket()
         console.log(props)
       }, [])
+    
+      useEffect(() => {
+        props.lists.map((user) =>
+          setUsers((e) => [...e, { value: user.id, label: user.name }])
+        );
+        props.basket.map((basketHistory) => {
+          setBasket(basketHistory);
+        });
+      }, [props]);
+
   return (
     <div>
             <ContainerContent title="HARVEST PLAN">
             <div className="col-md-12">
-                <HarvestComponent lists={props.lists} isLoading={props.isLoading} />
+                <HarvestComponent lists={props.lists}  isLoading={props.isLoading} />
                 {/* <ManagerComponent lists={props.lists} isLoading={props.isLoading} /> */}
                 {/* <Pagination {...props.pagination} /> */}
             </div>
@@ -69,10 +79,9 @@ const mapStateToProps = (state) => {
         return dispatch({
           type: "GetBasketHistory",
           payload: {
-            url: "/basket/user/29",
+            url: "/basket/user/81",
             method: "POST",
             data: {
-              role: "1",
               fields: "id, shared_amount, donate_amount, spent_amount, current_amount",
             },
           },

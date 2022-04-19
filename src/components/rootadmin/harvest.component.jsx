@@ -8,9 +8,11 @@ import * as date from "../../utils/date/date.util";
 
 const HarvestComponent = ({lists, isLoading}) => {
     const handleModal = () => setShow(!show);
-    const handleModalExtend = () => setShow(!show);
-    const handleModalAdd = () => setShow(!show);
+    const handleModalExtend = () => setShowExtend(!showExtend);
+    const handleModalAdd = () => setShowCarrot(!showCarrot);
     const [show, setShow] = useState(false);
+    const [showExtend, setShowExtend] = useState(false);
+    const [showCarrot, setShowCarrot] = useState(false);
     const [isLoadingSubmit, setLoadingSubmit] = useState(false);
     const [getYears, setYears] = useState("");
     const [getAmount, setAmount] = useState(1);
@@ -106,6 +108,45 @@ const HarvestComponent = ({lists, isLoading}) => {
         alert("error request:", e);
       }
   }
+
+  const handleClickShareAdd = (e) => {
+    e.preventDefault();
+
+    // if (getYears === "") {
+    //   alert("Please input a year");
+    //   return;
+    // } else 
+    if (getAmount < 0) {
+      alert("Amount cannot be negative");
+      return;
+    }
+
+    setLoadingSubmit(true);
+
+    const url = "http://localhost:2022/api/v1/carrot/annual/stok";
+    const payload = {
+      id: 5,
+      expireDate : getExpDate,
+      
+    };
+
+    try {
+      axios.put(url, payload).then((res) => {
+        if (res.data.status == "INTERNAL_SERVER_ERROR") {
+          alert("Something is wrong! Please Try Again.")
+        }
+      })
+        setLoadingSubmit(false);
+        setCreatedDate("");
+        setExpDate("");
+        setAmount("");
+        handleModal();
+        handleModalExtend();
+        handleModalAdd();
+    } catch (e) {
+      alert("error request:", e);
+    }
+}
     
     
   console.log(lists);
@@ -141,11 +182,11 @@ const HarvestComponent = ({lists, isLoading}) => {
                         lists.map((item, index) => (
                             <tr key={parseInt(item.id)}>
                                 <td scope="row">{index + 1}</td>
-                                <td>{item.createdAt}</td>
+                                <td>{item.createdAt[0]}</td>
                                 <td>{item.earned_amount}</td> {/* total barn */}
                                 <td>{item.current_amount}</td> {/* left barn */}
-                                <td>{item.createdAt}</td> {/* share barn */}
-                                <td>{item.expireDate}</td> {/* exchange barn */}
+                                <td>{item.createdAt[0] + "-" + item.createdAt[1] + "-" + item.createdAt[2]}</td> {/* share barn */}
+                                <td>{item.expireDate[0] + "-" + item.expireDate[1] + "-" + item.expireDate[2]}</td> {/* exchange barn */}
                                 <td>{item.active}</td> {/* active barn */}
                                 <td className="text-center">
                                     <button type="button" className="btn btn-warning btn-block" onClick={handleModalExtend} data-modal="modal2" data-toggle="modal2" data-target="#myModal2" data-action="create">
@@ -232,7 +273,7 @@ const HarvestComponent = ({lists, isLoading}) => {
         </Modal.Footer>
       </Modal>
 
-      <Modal id="modal2" show={show} onHide={handleModalExtend}>
+      <Modal id="modal2" show={showExtend} onHide={handleModalExtend}>
         <Modal.Header closeButton>
           <Modal.Title>Extend Date</Modal.Title>
         </Modal.Header>
@@ -265,12 +306,12 @@ const HarvestComponent = ({lists, isLoading}) => {
             onClick={handleClickShareExtend}
             disabled = {isLoadingSubmit}
           >
-            {isLoadingSubmit ? 'Loading...' : 'Send Carrot'}
+            {isLoadingSubmit ? 'Loading...' : 'Save'}
           </Button>
         </Modal.Footer>
       </Modal>
 
-      {/* <Modal show={show} onHide={handleModalAdd}>
+      <Modal show={showCarrot} onHide={handleModalAdd}>
         <Modal.Header closeButton>
           <Modal.Title>Annual Carrot</Modal.Title>
         </Modal.Header>
@@ -294,13 +335,13 @@ const HarvestComponent = ({lists, isLoading}) => {
             type="submit"
             form="send-carrot-form"
             className="btn btn-carrot radius-5"
-            onClick={handleClickShare}
+            onClick={handleClickShareAdd}
             disabled = {isLoadingSubmit}
           >
-            {isLoadingSubmit ? 'Loading...' : 'Send Carrot'}
+            {isLoadingSubmit ? 'Loading...' : 'Save'}
           </Button>
         </Modal.Footer>
-      </Modal> */}
+      </Modal>
     </div>
   )
 }
