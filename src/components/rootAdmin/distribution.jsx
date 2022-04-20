@@ -155,7 +155,7 @@ const Distribution = (props) => {
                         </tr>)}
                     </tbody>
                 </Table>
-                {props.pagination && <Pagination token={token} pagination={props.getHistoryDist} type={"dist"} {...props} id={id}/>}
+                {props.pagination && <Pagination token={token} data={props.getHistoryDist} type="dist" {...props}/>}
             </div>
             <LoadingModal isLoading={props.isLoadingDist}/>
             <LoadingModal isLoading={loadingShare}/>

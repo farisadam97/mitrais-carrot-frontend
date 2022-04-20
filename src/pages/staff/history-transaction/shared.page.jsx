@@ -19,36 +19,76 @@ const HistoryTransaction = (props) => {
   const [getId, setId] = useState(cookies.get('id'));
   const [getStartDate, setStartDate] = useState(date.GetLastMonthDate("-"));
   const [getEndDate, setEndDate] = useState(date.GetCurrentDate("-"));
+  const [getSharedList, setSharedList] = useState([]);
+  const [getBazaarList, setBazaarList] = useState([]);
+  const [getDonateList, setDonateList] = useState([]);
+  const [getSharedPagination, setSharedPagination] = useState({});
+  const [getBazaarPagination, setBazaarPagination] = useState({});
+  const [getDonatePagination, setDonatePagination] = useState({});
 
   useEffect(() => {
     props.loadHistories(getId, getToken, getStartDate, getEndDate);
   }, []);
 
   useEffect(() => {
-    if (props.error) {
-      alert(props.error, "please try again!");
+    if (props.errorShared) {
+      alert(props.errorShared, "please try again!");
+    } else {
+      setSharedList(props.listShared);
+      setSharedPagination(props.paginationShared);
     }
-  }, [props]);
+  }, [props.errorShared, props.listShared, props.paginationShared]);
+
+  useEffect(() => {
+    if (props.errorDonation) {
+      alert(props.errorDonation, "please try again!");
+    } else {
+      setDonateList(props.listDonation);
+      setDonatePagination(props.paginationDonation);
+    }
+  }, [props.errorDonation, props.listDonation, props.paginationDonation]);
+
+  useEffect(() => {
+    if (props.errorReward) {
+      alert(props.errorReward, "please try again!");
+    } else {
+      setBazaarList(props.listReward);
+      setBazaarPagination(props.paginationReward);
+    }
+  }, [props.errorReward, props.listReward, props.paginationReward]);
 
   const printTable = () => {
-    if (props.lists.length > 0) {
+    if(getSharedList.length > 0) {
       return (
-        <><HistoryItem lists={props.lists} isLoading={props.isLoading} />
-          <Pagination token={getToken} pagination={props.pagination} type={"share"} {...props}/></>
-      )
-    } else if (props.listDonation.length > 0) {
+        <HistoryItem
+          items={getSharedList}
+          pagination={getSharedPagination}
+          isLoading={props.isLoadingShared}
+          {...props}
+        />
+      );
+    } else if (getDonateList.length > 0) { 
       return (
-        <><DonationHistoryItem lists={props.listDonation} isLoading={props.isLoadingDonation} />
-          <Pagination token={getToken} pagination={props.paginationDonation} type={"donation"} {...props}/></>
-      )
-    } else if (props.listReward.length > 0) {
+        <DonationHistoryItem
+          items={getDonateList}
+          pagination={getDonatePagination}
+          isLoading={props.isLoadingDonation}
+          {...props}
+        />
+      );
+    } else if (getBazaarList.length > 0) {
       return (
-        <><RewardHistoryItem lists={props.listReward} isLoading={props.isLoadingReward} />
-        <Pagination token={getToken} pagination={props.paginationReward} type={"bazaar"} {...props}/></>)
+        <RewardHistoryItem
+          items={getBazaarList}
+          pagination={getBazaarPagination}
+          isLoading={props.isLoadingReward}
+          {...props}
+        />
+      );
     } else {
       return <div style={{ textAlign: "center" }}>Data Not Found</div>
     }
-  }
+  };
 
   return (
     <div>
@@ -68,10 +108,10 @@ const HistoryTransaction = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    lists: state.history.lists,
-    isLoading: state.history.isLoading,
-    error: state.history.error,
-    pagination: state.history.pagination,
+    listShared: state.history.lists,
+    isLoadingShared: state.history.isLoading,
+    errorShared: state.history.error,
+    paginationShared: state.history.pagination,
     listDonation: state.donationHistory.lists,
     isLoadingDonation: state.donationHistory.isLoading,
     errorDonation: state.donationHistory.error,
@@ -112,7 +152,7 @@ const mapDispatchToProps = (dispatch) => {
             fields:
               "id, sender_name, receiver_name, shared_at, amount_shared, message",
             pageNumber: "0",
-            pageSize: "10",
+            pageSize: "1",
             sortBy: "shared_at",
             sortDir: "desc",
           },
@@ -252,7 +292,7 @@ const mapDispatchToProps = (dispatch) => {
             fields:
               "id, sender_name, receiver_name, shared_at, amount_shared, message",
             pageNumber: pageNumber - 1,
-            pageSize: "10",
+            pageSize: "1",
             sortBy: "shared_at",
             sortDir: "desc",
           },

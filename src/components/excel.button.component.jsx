@@ -4,7 +4,7 @@ const ExcelButton = () => {
   return (
     <div>
         <div className="dt-buttons">
-            <button className="dt-button buttons-excel buttons-html5 btn btn-info" tabindex="0" aria-controls="staff-table" type="button">
+            <button className="dt-button buttons-excel buttons-html5 btn btn-info" tabIndex="0" aria-controls="staff-table" type="button">
                 <span><i className="fa fa-download"></i>
                     Excel
                 </span>

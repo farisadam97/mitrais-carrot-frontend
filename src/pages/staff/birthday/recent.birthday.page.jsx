@@ -25,7 +25,7 @@ const RecentBirthday = (props) => {
         <div className="row mt-3" style={{textAlign:"center"}}>
         <RecentBirthdayItem lists={props.lists} isLoading={props.isLoading}/>
         </div>  
-        {props.pagination && <Pagination token={getToken} pagination={props.pagination} type={"recentBirthday"} {...props}/>}
+        {props.pagination && <Pagination data={props.pagination} type="recentBirthday" {...props} />}
       </ContainerContent>
     </div>
   )
@@ -51,7 +51,7 @@ const mapDispatchToProps = dispatch => {
           data:{
               fields: "id, name, position, office, email, birthday_date",
               pageNumber: "0",
-              pageSize: "10",
+              pageSize: "1",
               sortBy: "birthday_date",
               sortDir: "asc"
           },
@@ -70,7 +70,7 @@ const mapDispatchToProps = dispatch => {
           data:{
               fields: "id, name, position, office, email, birthday_date",
               pageNumber: pageNumber - 1,
-              pageSize: "10",
+              pageSize: "1",
               sortBy: "birthday_date",
               sortDir: "asc"
           },

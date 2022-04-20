@@ -39,9 +39,9 @@ const StaffSummary = props => {
                         </div>
                         <div className="col-md-8 my-auto">
                             <h4 className="text-white">You've earned {props.basket.currentAmount} carrots!</h4>
-                            <a className="badge badge-white" data-toggle="modal" data-target="#exampleModal">
+                            {/* <a className="badge badge-white" data-toggle="modal" data-target="#exampleModal">
                                 Share carrot!
-                            </a>
+                            </a> */}
                         </div>
                     </div>
                 </div>

@@ -172,7 +172,7 @@ const StaffGroupDetail = (props) => {
                         <LoadingModal isLoading={props.isLoading}/>
                     </tbody>
                 </Table>
-                { props.pagination && <Pagination {...props} pagination={props.pagination} type={"groupStaff"} token={token}/>}
+                { props.pagination && <Pagination {...props} data={props.pagination} type="groupStaff" />}
 
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>

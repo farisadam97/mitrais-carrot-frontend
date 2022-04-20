@@ -63,7 +63,7 @@ const AssignRole = (props) => {
                     {props.isLoading && (<tr><td colSpan={5} className="text-center">Loading...</td></tr>)}
                 </tbody>
             </Table>
-            {props.pagination > 0 && <Pagination {...props} pagination={props.pagination} type={"userListRole"}/>}         
+            {props.pagination > 0 && <Pagination {...props} data={props.pagination} type="userListRole"/>}       
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>

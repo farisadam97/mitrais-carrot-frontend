@@ -24,16 +24,16 @@ const SummaryCarrot = ({lists, isLoading}) => {
             <table id='staff-carrot' className='table table-striped table-bordered table-hover mt-3 dataTable no-footer' style={{width: "100%"}} role='grid'>
                 <thead>
                     <tr role="row">
-                        <th scope="col" rowSpan={"2"} className="sorting_desc" tabindex="0" aria-controls="staff-table" colSpan={"1"} aria-sort="descending" aria-label="#: activate to sort column ascending" style={{width: "32px"}}>#</th>
-                        <th scope="col" rowSpan={"2"} className="sorting" tabindex="0" aria-controls="staff-table" colSpan={"1"} aria-label="Name: activate to sort column ascending" style={{width: "143px"}}>Name</th>
+                        <th scope="col" rowSpan={"2"} className="sorting_desc" tabIndex="0" aria-controls="staff-table" colSpan={"1"} aria-sort="descending" aria-label="#: activate to sort column ascending" style={{width: "32px"}}>#</th>
+                        <th scope="col" rowSpan={"2"} className="sorting" tabIndex="0" aria-controls="staff-table" colSpan={"1"} aria-label="Name: activate to sort column ascending" style={{width: "143px"}}>Name</th>
                         <th scope="col" colSpan={"4"} className="text-center" rowSpan={"1"}>Carrot</th>
                     </tr>
                     <tr role="row">
-                        <th scope="col" className="text-center" tabindex="0" aria-controls="staff-table" rowSpan={"1"} colSpan={"1"} style={{width: "134px"}}>Earned (+)</th>
-                        <th scope="col" className="text-center" tabindex="0" aria-controls="staff-table" rowSpan={"1"} colSpan={"1"} style={{width: "128px"}}>Shared (-)</th>
-                        <th scope="col" className="text-center" tabindex="0" aria-controls="staff-table" rowSpan={"1"} colSpan={"1"} style={{width: "126px"}}>Bazaar (-)</th>
-                        <th scope="col" className="text-center" tabindex="0" aria-controls="staff-table" rowSpan={"1"} colSpan={"1"} style={{width: "126px"}}>Donation (-)</th>
-                        <th scope="col" className="text-center" tabindex="0" aria-controls="staff-table" rowSpan={"1"} colSpan={"1"} style={{width: "128px"}}>Balance</th>
+                        <th scope="col" className="text-center" tabIndex="0" aria-controls="staff-table" rowSpan={"1"} colSpan={"1"} style={{width: "134px"}}>Earned (+)</th>
+                        <th scope="col" className="text-center" tabIndex="0" aria-controls="staff-table" rowSpan={"1"} colSpan={"1"} style={{width: "128px"}}>Shared (-)</th>
+                        <th scope="col" className="text-center" tabIndex="0" aria-controls="staff-table" rowSpan={"1"} colSpan={"1"} style={{width: "126px"}}>Bazaar (-)</th>
+                        <th scope="col" className="text-center" tabIndex="0" aria-controls="staff-table" rowSpan={"1"} colSpan={"1"} style={{width: "126px"}}>Donation (-)</th>
+                        <th scope="col" className="text-center" tabIndex="0" aria-controls="staff-table" rowSpan={"1"} colSpan={"1"} style={{width: "128px"}}>Balance</th>
                     </tr>
                 </thead>
                 <tbody id='table-admin-carrot-summary'>
