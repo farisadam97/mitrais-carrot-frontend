@@ -33,6 +33,7 @@ import ManagerPage from "./pages/admin/manager.page";
 import CarrotStaffPage from "./pages/admin/carrot.staff.page";
 import HarvestPage from "./pages/rootAdmin/harvest.page";
 import Distribution from "./components/rootAdmin/distribution";
+import ShareCarrotPage from "./pages/manager/share.carrot.page";
 
 function App() {
   return (
@@ -50,8 +51,9 @@ function App() {
 
       <Route element={<RequireAuth allowedRoles={[RolesConfig.MANAGER]} />}>
         <Route path={RouteConfig.MANAGER} element={<IndexManager />}>
+          <Route index element={<ShareCarrotPage />} />
           <Route path="bazaar" element={<DashboardStaff />} />
-          <Route path="history-transaction" element={<HistoryTransaction />} />
+          {/* <Route path="share-carrot" element={<ShareCarrotPage />} /> */}
           <Route path="reward/:id" element={<DetailsItem />} />
         </Route>
       </Route>

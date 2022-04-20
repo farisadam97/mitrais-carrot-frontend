@@ -141,7 +141,7 @@ const StaffGroup = (props) => {
                     <LoadingModal isLoading={props.isLoading}/>
                 </tbody>
             </Table>
-            {props.pagination && <Pagination {...props} pagination={props.pagination} type={"group"} token={token}/>}
+            {props.pagination && <Pagination {...props} data={props.pagination} type="group" />}
 
             {/* Modal Update/Add */}
             <Modal show={show} onHide={handleClose}>

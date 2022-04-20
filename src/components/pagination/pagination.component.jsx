@@ -1,39 +1,49 @@
 import React, { useState, useEffect } from "react";
+import Cookies from "universal-cookie";
 
-const Pagination = ({token, type, pagination, ...props}) => {
+const Pagination = (props) => {
+  const cookies = new Cookies();
+  const [getId, setId] = useState(cookies.get("id"));
+  const [getToken, setToken] = useState(cookies.get("access_token"));
+
   const [isOnlyOnePage, setOnlyOnePage] = useState(true);
   const [isFirstPage, setFirstPage] = useState(true);
+  const [getPagination, setPagination] = useState();
 
   useEffect(() => {
-    setOnlyOnePage(pagination.pageNumber + 1 === pagination.totalPage);
-    setFirstPage(pagination.pageNumber === 0);
-  }, [pagination]);
+    if (props.data) {
+      setPagination(props.data);
+    }
+  }, [props.data]);
 
-  if (pagination == undefined || pagination.totalData === 0) {
-    return null;
-  }
+  useEffect(() => {
+    if (getPagination) {
+      setOnlyOnePage(getPagination.pageNumber + 1 === getPagination.totalPage);
+      setFirstPage(getPagination.pageNumber === 0);
+    }
+  }, [getPagination]);
 
   const clickHandler = (pageNumber) => {
-    if (type === "share") {
-      props.onPageChange(props.id, token, pageNumber);
-    } else if (type === "donation") {
-      props.onPageChangeDonation(props.id, token, pageNumber);
-    } else if (type === "bazaar") {
-      props.onPageChangeReward(props.id, token, pageNumber);
-    } else if (type === "userList") {
-      props.onPageChange(token, pageNumber);
-    } else if (type === "group"){
-      props.loadGroups(pageNumber, token);
-    } else if (type === "userListRole"){
+    if (props.type === "share") {
+      props.onPageChange(getId, getToken, pageNumber);
+    } else if (props.type === "donation") {
+      props.onPageChangeDonation(getId, getToken, pageNumber);
+    } else if (props.type === "bazaar") {
+      props.onPageChangeReward(getId, getToken, pageNumber);
+    } else if (props.type === "userList") {
+      props.onPageChange(getToken, pageNumber);
+    } else if (props.type === "group") {
+      props.loadGroups(pageNumber, getToken);
+    } else if (props.type === "userListRole") {
       props.getAllUser(pageNumber);
-    } else if (type === "recentBirthday"){
-      props.onPageChangeRecentBirthday(token, pageNumber);
-    } else if (type === "dist"){
-      props.getHistoryDist(props.id, token, pageNumber);
+    } else if (props.type === "recentBirthday") {
+      props.onPageChangeRecentBirthday(getToken, pageNumber);
+    } else if (props.type === "dist") {
+      props.getHistoryDist(getId, getToken, pageNumber);
     }
   };
 
-  const activePagination = (index, isCurrentPage) => {
+  const activePagination = (index) => {
     return (
       <span className="page-link">
         {index}
@@ -50,15 +60,21 @@ const Pagination = ({token, type, pagination, ...props}) => {
     );
   };
 
-  return (
+  return getPagination ? (
     <nav aria-label="...">
       <ul className="pagination pagination-sm justify-content-center">
         <li className={`page-item ${isFirstPage ? "disabled" : ""}`}>
-          <a className="page-link" href="#" onClick={() => clickHandler(pagination.pageNumber)}>Previous</a>
+          <a
+            className="page-link"
+            href="#"
+            onClick={() => clickHandler(getPagination.pageNumber)}
+          >
+            Previous
+          </a>
         </li>
-        {[...Array(pagination.totalPage)].map((x, i) => {
+        {[...Array(getPagination.totalPage)].map((x, i) => {
           const pageNumber = i + 1;
-          const isCurrentPage = pagination.pageNumber === i;
+          const isCurrentPage = getPagination.pageNumber === i;
           return (
             <li
               id={x}
@@ -66,19 +82,23 @@ const Pagination = ({token, type, pagination, ...props}) => {
               className={`page-item ${isCurrentPage ? "active" : ""}`}
             >
               {isCurrentPage
-                ? activePagination(pageNumber, isCurrentPage)
+                ? activePagination(pageNumber)
                 : otherPagination(pageNumber)}
             </li>
           );
         })}
         <li className={`page-item ${isOnlyOnePage ? "disabled" : ""}`}>
-          <a className="page-link" href="#" onClick={() => clickHandler(pagination.pageNumber+2)}>
+          <a
+            className="page-link"
+            href="#"
+            onClick={() => clickHandler(getPagination.pageNumber + 2)}
+          >
             Next
           </a>
         </li>
       </ul>
     </nav>
-  );
+  ) : null;
 };
 
 export default Pagination;

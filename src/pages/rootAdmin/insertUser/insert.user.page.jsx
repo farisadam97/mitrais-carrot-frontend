@@ -31,7 +31,7 @@ const InsertUpdateUser = (props) => {
               <ContainerContent title={"INSERT/UPDATE STAFF"} >
               <FormTab />
                   <TableUser lists={props.lists} isLoading={props.isLoading} />
-                  {props.pagination && <Pagination token={getToken} pagination={props.pagination} type="userList" {...props}/>}
+                  {props.pagination && <Pagination data={props.pagination} type="userList" {...props} />}
               </ContainerContent>
           </Container>
       </div>
