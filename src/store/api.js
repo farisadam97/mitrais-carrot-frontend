@@ -9,6 +9,7 @@ const GetCarrotStaff = createAction("GetCarrotStaff");
 const GetHarvest = createAction("GetHarvest");
 const GetAnnualCarrot = createAction("GetAnnualCarrot");
 const GetAnnualBasket = createAction("GetAnnualBasket");
+const GetStaffBasket = createAction("GetStaffBasket")
 
 export const apiRequest = [
   GetBazaarItem,
