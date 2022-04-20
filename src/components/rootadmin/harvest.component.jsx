@@ -184,8 +184,8 @@ const HarvestComponent = ({lists, listsBasket, isLoading}) => {
                                   ):isLoading} */}
                                 <td>{item.carrotAmount}</td>
                                 <td>{listsBasket[0].currentAmount}</td> {/* left barn */}
-                                <td>{item.createdAt}</td> {/* share barn */}
-                                <td>{item.expireDate}</td> {/* exchange barn */}
+                                <td>{item.createdAt[0] + "-" + item.createdAt[1] + "-" + item.createdAt[2]}</td> {/* share barn */}
+                                <td>{item.expireDate[0] + "-" + item.expireDate[1] + "-" + item.expireDate[2]}</td> {/* exchange barn */}
                                 {/* <td>{item.active}</td> active barn */}
                                 <td className="text-center">
                                     <button type="button" className="btn btn-warning btn-block" onClick={(e) => {editItemHandle(e,item)}} data-modal="modal2" data-toggle="modal2" data-target="#myModal2" data-action="create" value="key">
