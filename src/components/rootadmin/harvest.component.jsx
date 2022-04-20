@@ -46,6 +46,14 @@ const HarvestComponent = ({lists, listsBasket, isLoading}) => {
           alert("Amount cannot be negative");
           return;
         }
+
+        if (getExpDate === "") {
+          alert("Please enter expired date");
+        }
+
+        if (Date.parse(getExpDate) < Date.parse(getCreatedDate)) {
+          alert("Expired date must more than current date");
+        }
     
         setLoadingSubmit(true);
     
@@ -95,6 +103,14 @@ const HarvestComponent = ({lists, listsBasket, isLoading}) => {
       if (getAmount < 0) {
         alert("Amount cannot be negative");
         return;
+      }
+
+      if (getExpDate === "") {
+        alert("Please enter expired date");
+      }
+
+      if (Date.parse(getExpDate) < Date.parse(getCreatedDate)) {
+        alert("Expired date must more than current date");
       }
   
       setLoadingSubmit(true);
