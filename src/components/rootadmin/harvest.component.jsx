@@ -25,7 +25,7 @@ const HarvestComponent = ({lists, listsBasket, isLoading}) => {
     const [getToken, setToken] = useState(cookies.get('access_token'));
     const [getId, setId] = useState(cookies.get('id'));
     const [getAnnualId, setAnnualId] = useState(cookies.get('id'));
-    const [editedId,setEditedId] = useState()
+    const [editedId,setEditedId] = useState();
 
     const handleYears = (e) => {
         setYears(e.value);
@@ -52,13 +52,18 @@ const HarvestComponent = ({lists, listsBasket, isLoading}) => {
         const url = "http://localhost:2022/api/v1/carrot/annual";
         const payload = {
           rootAdminId: getId,
-          amount: parseInt(getAmount),
+          carrotAmount: parseInt(getAmount),
           expireDate : getExpDate,
           
         };
+        const config = {
+          headers: {
+            Authorization: `Bearer ${getToken}`,
+          }
+        }
 
         try {
-          axios.post(url, payload).then((res) => {
+          axios.post(url, payload, config).then((res) => {
             if (res.data.status == "INTERNAL_SERVER_ERROR") {
               alert("Something is wrong! Please Try Again.")
             }
@@ -94,15 +99,21 @@ const HarvestComponent = ({lists, listsBasket, isLoading}) => {
   
       setLoadingSubmit(true);
   
-      const url = "http://localhost:2022/api/v1/carrot/extend";
+      const url = "http://localhost:2022/api/v1/carrot/annual";
       const payload = {
-        id: getId,
+        id: editedId,
         expireDate : getExpDate,
         
       };
 
+      const config = {
+        headers: {
+          Authorization: `Bearer ${getToken}`,
+        }
+      }
+
       try {
-        axios.put(url, payload).then((res) => {
+        axios.put(url, payload, config).then((res) => {
           if (res.data.status == "INTERNAL_SERVER_ERROR") {
             alert("Something is wrong! Please Try Again.")
           }
@@ -115,7 +126,7 @@ const HarvestComponent = ({lists, listsBasket, isLoading}) => {
       }
   }
       
-  console.log(lists, listsBasket);
+  // console.log(lists, listsBasket);
 
   return (
     <div>
@@ -150,15 +161,15 @@ const HarvestComponent = ({lists, listsBasket, isLoading}) => {
                             <tr key={parseInt(item.id)}>
                                 <td scope="row">{index + 1}</td>
                                 <td>{item.createdAt[0]}</td>
-                                  {listsBasket?.length > 0 ? (
+                                  {/* {listsBasket?.length > 0 ? (
                                     listsBasket.map((item)=>(
                                       <td>{item.earned_amount}</td>
                                     ))
-                                  ):isLoading}
-                                <td>{item.earned_amount}</td>
-                                <td>{item.current_amount}</td> {/* left barn */}
-                                <td>{item.createdAt[0] + "-" + item.createdAt[1] + "-" + item.createdAt[2]}</td> {/* share barn */}
-                                <td>{item.expireDate[0] + "-" + item.expireDate[1] + "-" + item.expireDate[2]}</td> {/* exchange barn */}
+                                  ):isLoading} */}
+                                <td>{item.carrotAmount}</td>
+                                <td>{listsBasket[0].currentAmount}</td> {/* left barn */}
+                                <td>{item.createdAt}</td> {/* share barn */}
+                                <td>{item.expireDate}</td> {/* exchange barn */}
                                 {/* <td>{item.active}</td> active barn */}
                                 <td className="text-center">
                                     <button type="button" className="btn btn-warning btn-block" onClick={(e) => {editItemHandle(e,item)}} data-modal="modal2" data-toggle="modal2" data-target="#myModal2" data-action="create" value="key">

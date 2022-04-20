@@ -7,13 +7,14 @@ const FetchHarvest = store => next => async action => {
 
     next(action);
 
-    const { url, method, data, onSuccess, onError } = action.payload;
+    const { url, method, data, headers, onSuccess, onError } = action.payload;
             try{
                 const response = await axios.request({
                     baseURL,
                     url,
                     method,
                     data,
+                    headers
                 });
                 store.dispatch(FetchHarvestListSuccess({
                     lists: response.data.body.data,
