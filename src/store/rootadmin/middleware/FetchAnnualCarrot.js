@@ -1,31 +1,30 @@
 import axios from "axios";
-import { FetchHarvestListSuccess, FetchHarvestListFailed } from "../harvest";
+import { FetchAnnualCarrotSuccess, FetchAnnualCarrotFailed } from "../annualCarrot";
 import { baseURL } from "./BaseUrl";
 
-const FetchHarvest = store => next => async action => {
-    if (action.type !== "GetHarvest") return next(action);
+const FetchAnnualCarrot = store => next => async action => {
+    if (action.type !== "GetAnnualCarrot") return next(action);
 
     next(action);
 
-    const { url, method, data, headers, onSuccess, onError } = action.payload;
+    const { url, method, data, onSuccess, onError } = action.payload;
             try{
                 const response = await axios.request({
                     baseURL,
                     url,
                     method,
                     data,
-                    headers
                 });
-                store.dispatch(FetchHarvestListSuccess({
+                store.dispatch(FetchAnnualCarrotSuccess({
                     lists: response.data.body.data,
                     pagination: response.data.body.pagination,
                 }))
             }catch(error){
-                store.dispatch(FetchHarvestListFailed({
+                store.dispatch(FetchAnnualCarrotFailed({
                     error : error.message,
                 }))
             }
     }
 
 
-export default FetchHarvest
+export default FetchAnnualCarrot

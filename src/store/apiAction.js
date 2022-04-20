@@ -8,6 +8,7 @@ const GetUsersList = createAction("GetUsersList");
 const GetBasketHistory = createAction("GetBasketHistory");
 const GetDonationHistory = createAction("GetDonationHistory");
 const GetRewardHistory = createAction("GetRewardHistory");
+const GetAnnualBasket = createAction("GetAnnualBasket");
 
 export const apiRequest = [
   GetBazaarItem,
@@ -18,4 +19,5 @@ export const apiRequest = [
   GetBasketHistory,
   GetDonationHistory,
   GetRewardHistory,
+  GetAnnualBasket,
 ];

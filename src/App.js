@@ -32,6 +32,9 @@ import InsertUpdateUser from "./pages/rootAdmin/insertUser/insert.user.page";
 import ManagerPage from "./pages/admin/manager.page";
 import CarrotStaffPage from "./pages/admin/carrot.staff.page";
 import HarvestPage from "./pages/rootAdmin/harvest.page";
+import DashboardRootAdmin from "./components/rootAdmin/dasboard.component";
+import RootAdminDashboardPage from "./pages/rootAdmin/dashboard/dashboard.root.page";
+import ShareCarrotPage from "./pages/manager/share.carrot.page";
 import Distribution from "./components/rootAdmin/distribution";
 import ShareCarrotPage from "./pages/manager/share.carrot.page";
 
@@ -51,32 +54,35 @@ function App() {
 
       <Route element={<RequireAuth allowedRoles={[RolesConfig.MANAGER]} />}>
         <Route path={RouteConfig.MANAGER} element={<IndexManager />}>
-          <Route index element={<ShareCarrotPage />} />
-          <Route path="bazaar" element={<DashboardStaff />} />
+          <Route path="bazaar" element={<DashboardStaff/>}/>
+          <Route path="history-transaction" element={<HistoryTransaction />} />
+          <Route path="share-carrot" element={<ShareCarrotPage />} />
           {/* <Route path="share-carrot" element={<ShareCarrotPage />} /> */}
           <Route path="reward/:id" element={<DetailsItem />} />
         </Route>
       </Route>
 
       <Route element={<RequireAuth allowedRoles={[RolesConfig.ADMIN]} />}>
-        <Route path={RouteConfig.ADMIN} element={<IndexAdmin />}>
-          <Route index element={<CarrotStaffPage />} />
-          <Route path="bazaar-claimed" element={<BazaarClaimedPage />} />
-          <Route path="bazaar" element={<BazaarAdminPage />} />
-          <Route path="staff-group" element={<StaffGroup />} />
-          <Route path="staff-group/:id" element={<StaffGroupDetail />} />
-          <Route path="manager-list" element={<ManagerPage />} />
-          <Route path="insert-update" element={<InsertUpdateUser />} />
+      <Route path={RouteConfig.ADMIN} element={<IndexAdmin />}>
+        <Route index element={<CarrotStaffPage />} />
+        <Route path="bazaar-claimed" element={<BazaarClaimedPage />} />
+        <Route path="bazaar" element={<BazaarAdminPage />} />
+        <Route path="staff-group" element={<StaffGroup />} />
+        <Route path="staff-group/:id" element={<StaffGroupDetail />} />
+        <Route path="manager-list" element={<ManagerPage />} />
+        <Route path="insert-update" element={<InsertUpdateUser />} />
+        <Route path="carrot-summary" element={<CarrotStaffPage />} />
         </Route>
       </Route>
 
       <Route element={<RequireAuth allowedRoles={[RolesConfig.ROOT_ADMIN]} />}>
-        <Route path={RouteConfig.ROOT_ADMIN} element={<RootAdminIndex />}>
-          <Route path="settings" element={<Setting />} />
-          <Route path="assign-role" element={<AssignRole />} />
-          <Route path="insert-update" element={<InsertUpdateUser />} />
-          <Route path="harvest" element={<HarvestPage />} />
-          <Route path="distribution" element={<Distribution />} />
+      <Route path={RouteConfig.ROOT_ADMIN} element={<RootAdminIndex />}>
+        <Route path="dashboard" element={<RootAdminDashboardPage/>} />
+        <Route path="settings" element={<Setting />} />
+        <Route path="assign-role" element={<AssignRole />} />
+        <Route path="insert-update" element={<InsertUpdateUser />} />
+        <Route path="harvest" element={<HarvestPage />} />
+        <Route path="distribution" element={<Distribution />} />
         </Route>
       </Route>
 
