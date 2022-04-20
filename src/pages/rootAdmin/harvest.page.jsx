@@ -9,19 +9,17 @@ import Cookies from 'universal-cookie';
 const HarvestPage = (props) => {
   const cookies = new Cookies();
   const [getToken, setToken] = useState(cookies.get('access_token'));
-  const [getBasketId, setBasketId] = useState(cookies.get('basket_id'));
   const [getId, setId] = useState(cookies.get('id'));
     useEffect(() => {
-        props.loadHarvest()
+        props.loadHarvest(getToken)
         props.loadBasket(getId, getToken)
-        console.log(props)
-      }, [props.listsBasket])
+      }, [])
 
   return (
     <div>
             <ContainerContent title="HARVEST PLAN">
             <div className="col-md-12">
-                {<HarvestComponent lists={props.lists} listsBasket={props.listBasket} isLoading={props.isLoading} isLoadingBasket={props.isLoadingBasket}/>}
+                {props.listsBasket[0] && props.lists[0] && <HarvestComponent lists={props.lists} listsBasket={props.listsBasket} isLoading={props.isLoading} isLoadingBasket={props.isLoadingBasket}/>}
                 {/* <HarvestComponent lists={props.lists} listsBasket={props.listsBasket}  isLoading={props.isLoading} /> */}
                 {/* <ManagerComponent lists={props.lists} isLoading={props.isLoading} /> */}
                 {/* <Pagination {...props.pagination} /> */}
@@ -37,7 +35,7 @@ const mapStateToProps = (state) => {
       isLoading: state.harvestList.isLoading,
       error: state.harvestList.error,
       pagination: state.harvestList.pagination,
-      listsBasket: state.annualBasket.listsBasket,
+      listsBasket: state.annualBasket.lists,
       isLoadingBasket : state.annualBasket.isLoadingBasket,
       errorBasket: state.annualBasket.errorBasket,
       paginationBasket : state.annualBasket.paginationBasket,
@@ -46,18 +44,21 @@ const mapStateToProps = (state) => {
   
   const mapDispatchToProps = (dispatch) => {
     return {
-      loadHarvest: () => {
+      loadHarvest: (token) => {
         return dispatch({
           type: "GetHarvest",
           payload: {
             url: "/carrot/annual",
             method: "GET",
-            data: {
-              pageNumber: "0",
-              pageSize: "10",
-              sortBy: "id",
-              sortDir: "asc",
-            },
+            // data: {
+            //   pageNumber: "0",
+            //   pageSize: "10",
+            //   sortBy: "id",
+            //   sortDir: "asc",
+            // },
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
           },
         });
       },
