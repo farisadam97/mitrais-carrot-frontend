@@ -253,7 +253,7 @@ const BazaarAdminPage = () => {
     }
 
     const toggleActive = (element) => {
-        let msg = (element.isActive === 0) ? "Item "+element.name + " has been activated" : "Item "+element.name + " has been deactivated"
+        let msg = (element.isActive === 1) ? "Item "+element.name + " has been activated" : "Item "+element.name + " has been deactivated"
 
         setIsLoading(true)
         axios.put(

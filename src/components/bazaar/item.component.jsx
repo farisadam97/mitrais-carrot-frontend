@@ -11,14 +11,16 @@ const BazaarItem = (props) => {
                     <div className="card mb-4">
                         <div className="card-body">
                             {/* add image here */}
-                            <img 
-                                src={item.linkImg !== ""? item.linkImg : noImages}
-                                alt=""
-                                style={{
-                                    objectFit:"contain",
-                                    maxWidth:"210px",
-                                    height:"240px"
-                            }} />
+                            <div className="mb-3 text-center">
+                                <img 
+                                    src={item.linkImg !== ""? item.linkImg : noImages}
+                                    alt=""
+                                    style={{
+                                        objectFit:"contain",
+                                        maxWidth:"210px",
+                                        height:"240px"
+                                }} />
+                            </div>
                             <h5 className="card-title">{item.name}</h5>
                             <p className="card-text">{item.rate} Carrots</p>
                         </div>
