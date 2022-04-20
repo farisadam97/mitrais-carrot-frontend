@@ -18,31 +18,6 @@ const DashboardRootAdmin = ({ lists, isLoading }) => {
 
   return (
     <div className='row'>
-        <div className='col-md-6 text-center'>
-            <h5 className='my-3 box-title'>Carrot Available On System</h5>
-            {/* <div id='chartdiv' style={{overflow:"hidden", textAlign:"left"}}>
-                <div className='amchart-main-div' style={{position:"relative"}}>
-                    
-                </div>
-            </div> */}
-            <PieChart width={400} height={400}>
-                {/* <Pie data={data01} dataKey="value" cx="50%" cy="50%" outerRadius={60} fill="#8884d8" /> */}
-                <Pie
-                    data={data}
-                    cx={120}
-                    cy={200}
-                    innerRadius={60}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    paddingAngle={5}
-                    dataKey="value"
-                    >
-                    {data.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                    </Pie>
-            </PieChart>
-        </div>
         <div className='col-md-6'>
             <h5 className='my-3 box-title'>Staff's Birthday</h5>
             <table className='table table-bordered height-59' style={{width:"100%"}}>

@@ -84,7 +84,7 @@ const mapStateToProps = (state) => {
             url: `/basket/user/${id}`,
             method: "POST",
             data: {
-              fields: "id, shared_amount, donate_amount, spent_amount, current_amount",
+              fields: "id, earned_amount, shared_amount, donate_amount, spent_amount, current_amount",
             },
             headers: {
               Authorization: `Bearer ${token}`
