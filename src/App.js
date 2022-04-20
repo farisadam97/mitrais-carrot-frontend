@@ -36,7 +36,6 @@ import DashboardRootAdmin from "./components/rootAdmin/dasboard.component";
 import RootAdminDashboardPage from "./pages/rootAdmin/dashboard/dashboard.root.page";
 import ShareCarrotPage from "./pages/manager/share.carrot.page";
 import Distribution from "./components/rootAdmin/distribution";
-import ShareCarrotPage from "./pages/manager/share.carrot.page";
 
 function App() {
   return (
@@ -54,9 +53,9 @@ function App() {
 
       <Route element={<RequireAuth allowedRoles={[RolesConfig.MANAGER]} />}>
         <Route path={RouteConfig.MANAGER} element={<IndexManager />}>
+          <Route index element={<ShareCarrotPage />} />
           <Route path="bazaar" element={<DashboardStaff/>}/>
           <Route path="history-transaction" element={<HistoryTransaction />} />
-          <Route path="share-carrot" element={<ShareCarrotPage />} />
           {/* <Route path="share-carrot" element={<ShareCarrotPage />} /> */}
           <Route path="reward/:id" element={<DetailsItem />} />
         </Route>
@@ -77,7 +76,7 @@ function App() {
 
       <Route element={<RequireAuth allowedRoles={[RolesConfig.ROOT_ADMIN]} />}>
       <Route path={RouteConfig.ROOT_ADMIN} element={<RootAdminIndex />}>
-        <Route path="dashboard" element={<RootAdminDashboardPage/>} />
+        <Route index element={<RootAdminDashboardPage/>} />
         <Route path="settings" element={<Setting />} />
         <Route path="assign-role" element={<AssignRole />} />
         <Route path="insert-update" element={<InsertUpdateUser />} />

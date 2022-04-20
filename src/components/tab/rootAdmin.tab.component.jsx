@@ -10,12 +10,12 @@ const RootTabs = () => {
             <div className="col-md-auto nav-pills">
                 <Link className={`nav-link ${url.pathname === "/rootadmin" ? 'active' : '' }`} to="">DASHBOARD</Link>
             </div>
-            <div className="col-md-auto nav-pills">
+            {/* <div className="col-md-auto nav-pills">
                 <Link className={`nav-link ${url.pathname.includes("/bazaar") ? 'active' : '' }`} to="bazaar">BAZAAR</Link>
-            </div>
-            <div className="col-md-auto nav-pills">
+            </div> */}
+            {/* <div className="col-md-auto nav-pills">
                 <Link className={`nav-link ${url.pathname.includes("/assign-role")? 'active' : '' }`} to="assign-role">ASSIGN ROLE</Link>
-            </div>
+            </div> */}
             <div className="col-md-auto nav-pills">
                 <Link className={`nav-link ${url.pathname.includes("/harvest") ? 'active' : '' }`} to="harvest">HARVEST</Link>
             </div>

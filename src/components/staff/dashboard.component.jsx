@@ -19,7 +19,7 @@ const Dashboard = (props) => {
     }
 
     useEffect(() => {
-        props.loadItem(category, token, props.user.office);
+        props.loadItem(category, token, 2);
     },[category])
 
     // const loadItem = () => {
@@ -68,7 +68,7 @@ const mapDispatchToProps = dispatch => {
                     data:{
                         category: category,
                         location: location,
-                        fields: "name, description, id, rate, stock",
+                        fields: "name, description, id, rate, stock,link_img,is_active",
                         page_number: "0",
                         page_size: "10",
                         sort_by: "name",

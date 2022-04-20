@@ -1,7 +1,7 @@
 import React from 'react'
-import ChartComponent from '../chart/chart.component'
+// import ChartComponent from '../chart/chart.component'
 import { PureComponent } from 'react';
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
+// import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
 import * as date from "../../utils/date/date.util";
 import { useState } from 'react';
 

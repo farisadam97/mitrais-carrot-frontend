@@ -18,7 +18,7 @@ const IndexAdmin = (props) => {
                         <Link className={`nav-link ${url.pathname == "/admin" ? 'active' : '' }`} to="">CARROT SUMMARY</Link>
                     </div>
                     <div className="col-md-auto nav-pills">
-                        <Link className={`nav-link ${url.pathname.includes("/manager") ? 'active' : '' }`} to="">MANAGER</Link>
+                        <Link className={`nav-link ${url.pathname.includes("/manager") ? 'active' : '' }`} to="manager-list">MANAGER</Link>
                     </div>
                     <div className="col-md-auto nav-pills">
                         <Link className={`nav-link ${url.pathname.includes("/staff-group") ? 'active' : '' }`} to="staff-group">STAFF GROUP</Link>

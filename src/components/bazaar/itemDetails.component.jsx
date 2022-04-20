@@ -55,7 +55,10 @@ const ItemDetails = (props) => {
                                 <h4 className="my-2 box-title">{props.detailItem[0].category === "reward"? "Reward" : "Social Foundation"}</h4>
                             </div>
                             <div className="col-md-6 br-1">
-                                <img src="img/bazaar_vespa.jpg" className="img-fluid p-3" alt=""/>
+                                <img src={props.detailItem[0].linkImg} className="img-fluid p-3" alt=""/>
+                                {
+                                    console.log(props.detailItem[0])
+                                }
                             </div>
                             <div className="col-md-6 align-self-center p-5">
                                 <h3>{props.detailItem[0].name}</h3>
@@ -109,7 +112,7 @@ const mapDispatchToProps = dispatch => {
                     url: `/reward/${id}`,
                     method: 'POST',
                     data: {
-                        fields: 'name, description, id, rate, stock, category'
+                        fields: 'name, description, id, rate, stock, category, linkImg'
                     },
                     headers: {
                         Authorization: `Bearer ${token}`

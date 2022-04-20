@@ -41,7 +41,7 @@ const initialBasket = [
 const Basket = (props) => {
   const cookies = new Cookies();
   const [getToken, setToken] = useState(cookies.get('access_token'));
-  const [getBasketId, setBasketId] = useState(cookies.get('basket_id'));
+  // const [getBasketId, setBasketId] = useState(cookies.get('basket_id'));
   const [getId, setId] = useState(cookies.get('id'));
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingSubmit, setLoadingSubmit] = useState(false);
@@ -105,7 +105,7 @@ const Basket = (props) => {
 
     const url = "http://localhost:2022/api/v1/transaction/send-carrot";
     const payload = {
-      senderId: getBasketId,
+      senderId: getId,
       receiverId: parseInt(getSelectedUser),
       message: getMessage,
       amount: parseInt(getAmount),
